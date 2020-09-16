@@ -94,6 +94,7 @@ public class DetailActivity extends AppCompatActivity {
                         String movieSeason =jsonObject.getString("totalSeasons");
                         tvSeasons.setText("Total Seasons " +movieSeason);
                         tvSeasons.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ll).setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -141,14 +142,17 @@ public class DetailActivity extends AppCompatActivity {
         tvAwards.setTypeface(typeface);
         tvImdb.setTypeface(typeface);
         tvTitle.setTypeface(font);
-        tvPlot.setTypeface(medium);
-        tvCasting.setTypeface(medium);
-        tvAward.setTypeface(medium);
+       // tvPlot.setTypeface(medium);
+       // tvCasting.setTypeface(medium);
+       // tvAward.setTypeface(medium);
 
     }
 
     public void PlayMovie(View view) {
-
+        Intent intent = new Intent(this, PlayerActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", title);
+        startActivity(intent);
     }
 
     public void Download(View view) {
