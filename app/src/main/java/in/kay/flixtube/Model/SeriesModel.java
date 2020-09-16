@@ -8,6 +8,7 @@ public class SeriesModel {
     String image;
     String type;
 
+
     public String getImdb() {
         return imdb;
     }

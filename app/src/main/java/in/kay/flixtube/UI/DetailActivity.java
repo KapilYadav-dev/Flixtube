@@ -26,7 +26,7 @@ import in.kay.flixtube.R;
 
 public class DetailActivity extends AppCompatActivity {
     String imdb, trailer, url, type, title;
-    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb;
+    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb , tvSeasons;
     RequestQueue requestQueue;
     ImageView iv;
 
@@ -89,6 +89,12 @@ public class DetailActivity extends AppCompatActivity {
                     Picasso.get()
                             .load(moviePoster)
                             .into(iv);
+                    if (type.equalsIgnoreCase("Series"))
+                    {
+                        String movieSeason =jsonObject.getString("totalSeasons");
+                        tvSeasons.setText("Total Seasons " +movieSeason);
+                        tvSeasons.setVisibility(View.VISIBLE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(DetailActivity.this, "Error occured " + e, Toast.LENGTH_SHORT).show();
@@ -123,6 +129,7 @@ public class DetailActivity extends AppCompatActivity {
         tvTime = findViewById(R.id.tv_time);
         tvGenre = findViewById(R.id.tv_genre);
         tvAbout = findViewById(R.id.tv_about);
+        tvSeasons = findViewById(R.id.tv_seasons);
         tvAward = findViewById(R.id.tv_award);
         tvAwards = findViewById(R.id.tv_awards);
         /////////////////////////////////

@@ -62,7 +62,7 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel, MovieAdapt
         if (model.getType().equalsIgnoreCase("free")) {
             holder.vip.setVisibility(View.GONE);
         }
-        holder.v.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
@@ -84,7 +84,6 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel, MovieAdapt
 
     public class movieAdapterViewHolder extends RecyclerView.ViewHolder {
         TextView title, genre;
-        View v;
         ImageView img, vip;
 
         public movieAdapterViewHolder(@NonNull View itemView) {
@@ -93,7 +92,6 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel, MovieAdapt
             genre = itemView.findViewById(R.id.tv_genre);
             img = itemView.findViewById(R.id.iv_cover_img);
             vip = itemView.findViewById(R.id.iv_vip);
-            v = itemView;
         }
     }
 }
