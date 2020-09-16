@@ -20,14 +20,16 @@ import com.squareup.picasso.Picasso;
 
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.R;
+import in.kay.flixtube.UI.DetailActivity;
 
-public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel , MovieAdapter.movieAdapterViewHolder> {
+public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel, MovieAdapter.movieAdapterViewHolder> {
     public MovieAdapter(@NonNull FirebaseRecyclerOptions<MovieModel> options, Context context) {
         super(options);
         this.context = context;
     }
 
     public Context context;
+
     public MovieAdapter(@NonNull FirebaseRecyclerOptions<MovieModel> options) {
         super(options);
     }
@@ -57,15 +59,18 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel , MovieAdap
                                 .into(holder.img);
                     }
                 });
-        if (model.getType().equalsIgnoreCase("free"))
-        {
+        if (model.getType().equalsIgnoreCase("free")) {
             holder.vip.setVisibility(View.GONE);
         }
         holder.v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                intent.putExtra("imdb", model.getImdb());
+                intent.putExtra("type", "Movie");
+                intent.putExtra("trailer", model.getTrailer());
+                intent.putExtra("url", model.getUrl());
+                view.getContext().startActivity(intent);
             }
         });
     }
@@ -73,20 +78,21 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel , MovieAdap
     @NonNull
     @Override
     public movieAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_view, parent , false);
-        return  new movieAdapterViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_view, parent, false);
+        return new movieAdapterViewHolder(view);
     }
 
-    public class  movieAdapterViewHolder extends RecyclerView.ViewHolder {
-        TextView title,genre;
+    public class movieAdapterViewHolder extends RecyclerView.ViewHolder {
+        TextView title, genre;
         View v;
-        ImageView img,vip;
+        ImageView img, vip;
+
         public movieAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            title=itemView.findViewById(R.id.tv_movie_name);
-            genre=itemView.findViewById(R.id.tv_genre);
-            img=itemView.findViewById(R.id.iv_cover_img);
-            vip=itemView.findViewById(R.id.iv_vip);
+            title = itemView.findViewById(R.id.tv_movie_name);
+            genre = itemView.findViewById(R.id.tv_genre);
+            img = itemView.findViewById(R.id.iv_cover_img);
+            vip = itemView.findViewById(R.id.iv_vip);
             v = itemView;
         }
     }

@@ -1,6 +1,7 @@
 package in.kay.flixtube.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.R;
+import in.kay.flixtube.UI.DetailActivity;
 
 public class FeatureAdapter extends FirebaseRecyclerAdapter<MovieModel, FeatureAdapter.FeatureAdapterViewHolder> {
 Context context;
@@ -61,6 +63,17 @@ Context context;
         {
             holder.vip.setVisibility(View.GONE);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                intent.putExtra("imdb", model.getImdb());
+                intent.putExtra("type", "Movie");
+                intent.putExtra("trailer", model.getTrailer());
+                intent.putExtra("url", model.getUrl());
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 
