@@ -1,8 +1,10 @@
-package in.kay.flixtube;
+package in.kay.flixtube.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import in.kay.flixtube.R;
 
 public class MainActivity extends AppCompatActivity {
 
