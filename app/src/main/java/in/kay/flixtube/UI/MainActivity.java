@@ -2,7 +2,9 @@ package in.kay.flixtube.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,8 +15,11 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import in.kay.flixtube.Adapter.FeatureAdapter;
 import in.kay.flixtube.Adapter.MovieAdapter;
+import in.kay.flixtube.Adapter.SeriesAdapter;
 import in.kay.flixtube.Model.MovieModel;
+import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tvName, tvFeatured, tvMovies ,tvSeries;
     RecyclerView rvFeatured, rvMovies, rvSeries;
     MovieAdapter movieAdapter;
+    FeatureAdapter featureAdapter;
+    SeriesAdapter seriesAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private void initz() {
         LoadViews();
         LoadMovies();
+        LoadFeatured();
+        LoadSeries();
     }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -56,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         rvMovies = findViewById(R.id.rv_movies);
         /////
         rvMovies.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvFeatured.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        SnapHelper snapHelpernew = new PagerSnapHelper();
+        snapHelpernew.attachToRecyclerView(rvFeatured);
+        rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         /////
         tvName.setTypeface(font);
         tvFeatured.setTypeface(typeface);
@@ -70,6 +83,24 @@ public class MainActivity extends AppCompatActivity {
         rvMovies.setAdapter(movieAdapter);
         movieAdapter.startListening();
     }
+    private void LoadFeatured() {
+        FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
+                .setQuery(rootRef.child("Movies").orderByChild("featured").equalTo("Yes"), MovieModel.class)
+                .build();
+        featureAdapter = new FeatureAdapter(options ,this);
+        rvFeatured.setAdapter(featureAdapter);
+        featureAdapter.startListening();
+
+    }
+    private void LoadSeries() {
+        FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
+                .setQuery(rootRef.child("Webseries"), SeriesModel.class)
+                .build();
+        seriesAdapter = new SeriesAdapter(options,this);
+        rvSeries.setAdapter(seriesAdapter);
+        seriesAdapter.startListening();
+    }
+
     private void hideSystemUI() {
         //https://developer.android.com/training/system-ui/immersive.html
         View decorView = getWindow().getDecorView();
