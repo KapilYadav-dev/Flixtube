@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -95,4 +97,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void ViewAllSeries(View view) {
+        Intent intent=new Intent(this,ViewAllActivity.class);
+        intent.putExtra("type","Webseries");
+        startActivity(intent);
+    }
+
+    public void ViewAllMovies(View view) {
+        Intent intent=new Intent(this,ViewAllActivity.class);
+        intent.putExtra("type","Movies");
+        startActivity(intent);
+    }
 }
