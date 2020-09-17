@@ -94,4 +94,5 @@ public class MainActivity extends AppCompatActivity {
         seriesAdapter.startListening();
     }
 
+
 }

@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.pixplicity.easyprefs.library.Prefs;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import in.kay.flixtube.R;
@@ -52,6 +53,7 @@ public class PlayerActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ContinueWatching();
                 startActivity(new Intent(PlayerActivity.this,MainActivity.class));
             }
         });
@@ -60,13 +62,7 @@ public class PlayerActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("Error", " exoplayer error " + e.toString());
         }
-    }
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            hideSystemUI();
-        }
+
     }
     private void ExoPlayerLogic() {
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -80,6 +76,15 @@ public class PlayerActivity extends AppCompatActivity {
         exoPlayerView.setKeepScreenOn(true);
         exoPlayer.prepare(mediaSource);
         exoPlayer.setPlayWhenReady(true);
+        //Used to know user is playing that video and if true then continue to last location
+        String pref_url= Prefs.getString("url","null");
+        String pref_title= Prefs.getString("title","null");
+        if (pref_url.equalsIgnoreCase(videoURL) && pref_title.equalsIgnoreCase(title))
+        {
+            Long time= Prefs.getLong("time",0);
+            Log.d("Last_Time", "Video time is "+time);
+            exoPlayer.seekTo(time);
+        }
         exoPlayer.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest) {
@@ -100,7 +105,10 @@ public class PlayerActivity extends AppCompatActivity {
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED)
                 {
+                    TastyToast.makeText(PlayerActivity.this,"Show has been ended",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                    Prefs.putLong("time", 0);
                     startActivity(new Intent(PlayerActivity.this,MainActivity.class));
+
                 }
                 else if (playbackState==ExoPlayer.STATE_BUFFERING)
                 {
@@ -134,24 +142,28 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         releasePlayer();
+        ContinueWatching();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         releasePlayer();
+        ContinueWatching();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         releasePlayer();
+        ContinueWatching();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         releasePlayer();
+        ContinueWatching();
     }
     private void releasePlayer() {
         if (exoPlayer != null) {
@@ -159,20 +171,9 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-    private void hideSystemUI() {
-        // Enables regular immersive mode.
-        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
-        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE
-                        // Set the content to appear under the system bars so that the
-                        // content doesn't resize when the system bars hide and show.
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        // Hide the nav bar and status bar
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    private void ContinueWatching() {
+        Prefs.putString("url", videoURL);
+        Prefs.putString("title", title);
+        Prefs.putLong("time", exoPlayer.getCurrentPosition());
     }
 }
