@@ -23,12 +23,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.kay.flixtube.R;
+import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity {
     String imdb, trailer, url, type, title;
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb , tvSeasons;
     RequestQueue requestQueue;
     ImageView iv;
+    Helper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +136,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void Download(View view) {
-
+        TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+        helper = new Helper();
+        helper.DownloadFile(this, title, "Movie", url);
     }
 
 }
