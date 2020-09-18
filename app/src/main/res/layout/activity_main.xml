@@ -52,19 +52,6 @@
                 android:textColor="@color/white"
                 android:textSize="30dp" />
 
-            <TextView
-                android:id="@+id/tv_featured_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_slogan"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="View all"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_featured"
@@ -89,6 +76,7 @@
                 android:id="@+id/tv_series_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="ViewAllSeries"
                 android:layout_below="@id/rv_movies"
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="10dp"
@@ -106,6 +94,7 @@
                 android:layout_below="@id/rv_featured"
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="10dp"
+                android:onClick="ViewAllMovies"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="sans-serif-medium"

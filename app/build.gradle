@@ -47,6 +47,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     //Volley
     implementation 'com.android.volley:volley:1.1.1'
+    //Animatoo
+    implementation 'com.github.mohammadatif:Animatoo:master'
     //ExoPlayer
     implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
     implementation 'com.google.android.exoplayer:exoplayer-core:r2.4.0'

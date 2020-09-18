@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -94,5 +97,19 @@ public class MainActivity extends AppCompatActivity {
         seriesAdapter.startListening();
     }
 
+
+    public void ViewAllSeries(View view) {
+        Intent intent=new Intent(this,ViewAllActivity.class);
+        intent.putExtra("type","Webseries");
+        startActivity(intent);
+        Animatoo.animateFade(this);
+    }
+
+    public void ViewAllMovies(View view) {
+        Intent intent=new Intent(this,ViewAllActivity.class);
+        intent.putExtra("type","Movies");
+        startActivity(intent);
+        Animatoo.animateFade(this);
+    }
 
 }

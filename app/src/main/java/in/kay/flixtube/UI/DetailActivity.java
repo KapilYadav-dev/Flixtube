@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 
@@ -122,6 +123,9 @@ public class DetailActivity extends AppCompatActivity {
         tvAwards.setTypeface(typeface);
         tvImdb.setTypeface(typeface);
         tvTitle.setTypeface(font);
+       // tvPlot.setTypeface(medium);
+       // tvCasting.setTypeface(medium);
+       // tvAward.setTypeface(medium);
 
     }
 
@@ -138,10 +142,9 @@ public class DetailActivity extends AppCompatActivity {
         helper.DownloadFile(this, title, "Movie", url);
     }
 
-    public void TrailerPlay(View view) {
-        Intent intent = new Intent(this, PlayerActivity.class);
-        intent.putExtra("url", trailer);
-        intent.putExtra("title", title +" trailer");
-        startActivity(intent);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
     }
 }

@@ -15,7 +15,6 @@ import in.dd4you.appsconfig.DD4YouConfig;
 
 public class Helper {
     DD4YouConfig dd4YouConfig;
-    DownloadManager downloadManager;
     public String encryptString(String password,String str) {
         try {
             String encryptedMsg = AESCrypt.encrypt(password, str);
