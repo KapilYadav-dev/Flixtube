@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "64713193900",
+    "firebase_url": "https://flixtube-ba0e3.firebaseio.com",
+    "project_id": "flixtube-ba0e3",
+    "storage_bucket": "flixtube-ba0e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64713193900:android:447cff8bc6c53472e8e209",
+        "android_client_info": {
+          "package_name": "in.kay.flixtube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64713193900-8ema9qg1k40vid30jq3lsc568nnov7iq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuxdYj4Tr4phJz0GTykWkEOx-wY4sasSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64713193900-8ema9qg1k40vid30jq3lsc568nnov7iq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
