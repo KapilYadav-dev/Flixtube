@@ -1,146 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBlack"
-    tools:context=".UI.MainActivity">
+    android:background="#554F4F"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    tools:context=".MainActivity">
 
-    <androidx.core.widget.NestedScrollView
+    <Button
+        android:id="@+id/buttondlogin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:background="@drawable/button2"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.705" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <Button
+        android:id="@+id/buttondsignup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:background="@drawable/button"
+        android:text="Sign up"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttondlogin"
+        app:layout_constraintVertical_bias="0.156" />
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif-black"
-                android:text="Hi, Amy"
-                android:textColor="@color/white"
-                android:textSize="30dp" />
-
-            <TextView
-                android:id="@+id/tv_slogan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_name"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/raleway_medium"
-                android:text="Ready to choose your movie?"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-
-
-            <TextView
-                android:id="@+id/tv_featured"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_slogan"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="50dp"
-                android:fontFamily="sans-serif-black"
-                android:text="Featured"
-                android:textColor="@color/white"
-                android:textSize="30dp" />
-
-            <TextView
-                android:id="@+id/tv_featured_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_slogan"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="View all"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_featured"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_featured"
-                android:layout_margin="10dp" />
-
-            <TextView
-                android:id="@+id/tv_movies"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rv_featured"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif-black"
-                android:text="Movies"
-                android:textColor="@color/white"
-                android:textSize="30dp" />
-
-            <TextView
-                android:id="@+id/tv_series_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rv_movies"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="View all"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/tv_movie_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rv_featured"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="View all"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_movies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_movies"
-                android:layout_margin="10dp" />
-
-            <TextView
-                android:id="@+id/tv_series"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rv_movies"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif-black"
-                android:text="Series"
-                android:textColor="@color/white"
-                android:textSize="30dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_series"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_series"
-                android:layout_margin="10dp" />
-
-
-        </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
