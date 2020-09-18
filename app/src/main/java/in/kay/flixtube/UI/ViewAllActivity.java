@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,10 +24,11 @@ public class ViewAllActivity extends AppCompatActivity {
     DatabaseReference rootRef;
     EditText etQuery;
     ImageView ivSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String type=getIntent().getStringExtra("type");
+        String type = getIntent().getStringExtra("type");
         setContentView(R.layout.activity_view_all);
         initz();
         LoadData("", type);
@@ -40,7 +40,7 @@ public class ViewAllActivity extends AppCompatActivity {
         ivSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String strQuery=etQuery.getText().toString();
+                String strQuery = etQuery.getText().toString();
                 LoadData(strQuery, type);
             }
         });
@@ -48,7 +48,7 @@ public class ViewAllActivity extends AppCompatActivity {
 
     private void LoadData(String strQuery, String type) {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
-                .setQuery(rootRef.child(type).orderByChild("title").startAt(strQuery).endAt(strQuery +"\uf8ff"), MovieModel.class)
+                .setQuery(rootRef.child(type).orderByChild("title").startAt(strQuery).endAt(strQuery + "\uf8ff"), MovieModel.class)
                 .build();
         allAdapter = new AllAdapter(options, this, type);
         rvAll.setAdapter(allAdapter);
@@ -59,11 +59,12 @@ public class ViewAllActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
         rvAll = findViewById(R.id.rv_all);
         rvAll.setLayoutManager(new GridLayoutManager(this, 2));
-        etQuery=findViewById(R.id.et_query);
-        ivSearch=findViewById(R.id.iv_search);
+        etQuery = findViewById(R.id.et_query);
+        ivSearch = findViewById(R.id.iv_search);
     }
+
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
         Animatoo.animateFade(this); //fire the slide left animation
     }
