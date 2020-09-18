@@ -36,7 +36,7 @@ Context context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final FeatureAdapterViewHolder holder, int position, @NonNull final MovieModel model) {
+    protected void onBindViewHolder(@NonNull final FeatureAdapterViewHolder holder, final int position, @NonNull final MovieModel model) {
         Typeface medium = Typeface.createFromAsset(context.getAssets(), "Gilroy-Medium.ttf");
         Typeface regular = Typeface.createFromAsset(context.getAssets(), "Gilroy-Regular.ttf");
         holder.title.setText(model.getTitle());
