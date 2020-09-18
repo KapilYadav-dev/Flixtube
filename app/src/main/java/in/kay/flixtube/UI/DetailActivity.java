@@ -2,14 +2,13 @@ package in.kay.flixtube.UI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,7 +27,7 @@ import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity {
     String imdb, trailer, url, type, title;
-    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb , tvSeasons;
+    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons;
     RequestQueue requestQueue;
     ImageView iv;
     Helper helper;
@@ -39,8 +38,18 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         GetValues();
         initz();
-        GetDatafromURL();
+        GetData getData = new GetData();
+        getData.execute();
 
+    }
+
+    private class GetData extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            GetDatafromURL();
+            return null;
+        }
     }
 
     private void GetDatafromURL() {
@@ -70,10 +79,9 @@ public class DetailActivity extends AppCompatActivity {
                     Picasso.get()
                             .load(moviePoster)
                             .into(iv);
-                    if (type.equalsIgnoreCase("Series"))
-                    {
-                        String movieSeason =jsonObject.getString("totalSeasons");
-                        tvSeasons.setText("Total Seasons " +movieSeason);
+                    if (type.equalsIgnoreCase("Series")) {
+                        String movieSeason = jsonObject.getString("totalSeasons");
+                        tvSeasons.setText("Total Seasons " + movieSeason);
                         tvSeasons.setVisibility(View.VISIBLE);
                         findViewById(R.id.ll).setVisibility(View.GONE);
                     }
@@ -123,9 +131,9 @@ public class DetailActivity extends AppCompatActivity {
         tvAwards.setTypeface(typeface);
         tvImdb.setTypeface(typeface);
         tvTitle.setTypeface(font);
-       // tvPlot.setTypeface(medium);
-       // tvCasting.setTypeface(medium);
-       // tvAward.setTypeface(medium);
+        // tvPlot.setTypeface(medium);
+        // tvCasting.setTypeface(medium);
+        // tvAward.setTypeface(medium);
 
     }
 
