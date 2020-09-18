@@ -147,4 +147,11 @@ public class DetailActivity extends AppCompatActivity {
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
     }
+
+    public void TrailerPlay(View view) {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        intent.putExtra("url", trailer);
+        intent.putExtra("title", title +" trailer");
+        startActivity(intent);
+    }
 }
