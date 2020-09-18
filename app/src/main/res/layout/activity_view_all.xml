@@ -18,8 +18,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/iv_search"
@@ -46,6 +45,17 @@
                 android:textSize="14sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:text="We are working for this one.."
+        android:textColor="@color/white"
+        android:fontFamily="@font/raleway_medium"
+        android:textSize="24dp"
+        android:layout_centerInParent="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_all"

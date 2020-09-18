@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 
@@ -141,4 +142,9 @@ public class DetailActivity extends AppCompatActivity {
         helper.DownloadFile(this, title, "Movie", url);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+    }
 }

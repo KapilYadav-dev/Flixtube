@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.squareup.picasso.Callback;
@@ -72,6 +73,7 @@ Context context;
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("url", model.getUrl());
                 view.getContext().startActivity(intent);
+                Animatoo.animateSlideLeft(context);
             }
         });
 

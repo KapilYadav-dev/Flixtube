@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,6 +34,7 @@ public class ViewAllActivity extends AppCompatActivity {
         LoadData("", type);
         SearchEvent(type);
     }
+
 
     private void SearchEvent(final String type) {
         ivSearch.setOnClickListener(new View.OnClickListener() {
@@ -58,5 +61,10 @@ public class ViewAllActivity extends AppCompatActivity {
         rvAll.setLayoutManager(new GridLayoutManager(this, 2));
         etQuery=findViewById(R.id.et_query);
         ivSearch=findViewById(R.id.iv_search);
+    }
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Animatoo.animateFade(this); //fire the slide left animation
     }
 }
