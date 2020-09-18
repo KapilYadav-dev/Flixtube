@@ -7,7 +7,25 @@ public class SeriesModel {
     String trailer;
     String image;
     String type;
+    String episode, url, season;
 
+    public String getEpisode() {
+        return episode;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public SeriesModel(String episode, String url, String season) {
+        this.episode = episode;
+        this.url = url;
+        this.season = season;
+    }
 
     public String getImdb() {
         return imdb;

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,12 +35,9 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
         this.type = type;
     }
 
-    public AllAdapter(@NonNull FirebaseRecyclerOptions<MovieModel> options) {
-        super(options);
-    }
 
     @Override
-    protected void onBindViewHolder(@NonNull final AllAdapterViewHolder holder, int position, @NonNull final MovieModel model) {
+    protected void onBindViewHolder(@NonNull final AllAdapterViewHolder holder, final int position, @NonNull final MovieModel model) {
         Typeface medium = Typeface.createFromAsset(context.getAssets(), "Gilroy-Medium.ttf");
         Typeface regular = Typeface.createFromAsset(context.getAssets(), "Gilroy-Regular.ttf");
         holder.title.setText(model.getTitle());
@@ -72,9 +70,10 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("imdb", model.getImdb());
-                intent.putExtra("type", "Movie");
+                intent.putExtra("type", type);
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("url", model.getUrl());
+                intent.putExtra("key", getRef(position).getKey());
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }

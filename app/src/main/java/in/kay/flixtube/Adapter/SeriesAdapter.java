@@ -36,7 +36,7 @@ Context context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final SeriesAdapterViewHolder holder, int position, @NonNull final SeriesModel model) {
+    protected void onBindViewHolder(@NonNull final SeriesAdapterViewHolder holder, final int position, @NonNull final SeriesModel model) {
         Typeface medium = Typeface.createFromAsset(context.getAssets(), "Gilroy-Medium.ttf");
         Typeface regular = Typeface.createFromAsset(context.getAssets(), "Gilroy-Regular.ttf");
         holder.title.setText(model.getTitle());
@@ -71,6 +71,7 @@ Context context;
                 intent.putExtra("imdb", model.getImdb());
                 intent.putExtra("type", "Series");
                 intent.putExtra("trailer", model.getTrailer());
+                intent.putExtra("key", getRef(position).getKey());
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }

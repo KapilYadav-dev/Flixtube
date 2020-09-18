@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,21 +21,29 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.kay.flixtube.Adapter.SeriesPlayAdapter;
+import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
 import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity {
-    String imdb, trailer, url, type, title;
+    String imdb, trailer, url, type, title, image;
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons;
     RequestQueue requestQueue;
     ImageView iv;
     Helper helper;
+    RecyclerView rvSeries;
+    DatabaseReference rootRef;
+    SeriesPlayAdapter seriesPlayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +53,34 @@ public class DetailActivity extends AppCompatActivity {
         initz();
         GetData getData = new GetData();
         getData.execute();
+    }
 
+    private void LoadSeries(JSONObject jsonObject) {
+        if (type.equalsIgnoreCase("Series") || type.equalsIgnoreCase("Webseries")) {
+            String movieSeason = null;
+            try {
+                movieSeason = jsonObject.getString("totalSeasons");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            tvSeasons.setText("Total Seasons " + movieSeason);
+            tvSeasons.setVisibility(View.VISIBLE);
+            findViewById(R.id.ll).setVisibility(View.GONE);
+            rvSeries.setVisibility(View.VISIBLE);
+            findViewById(R.id.tv_watch).setVisibility(View.VISIBLE);
+            findViewById(R.id.ll).setVisibility(View.GONE);
+            String key = getIntent().getStringExtra("key");
+            rootRef = FirebaseDatabase.getInstance().getReference();
+            FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
+                    .setQuery(rootRef.child("Webseries").child(key).child("Source"), SeriesModel.class)
+                    .build();
+            seriesPlayAdapter = new SeriesPlayAdapter(options, this, image);
+            rvSeries.setAdapter(seriesPlayAdapter);
+            seriesPlayAdapter.startListening();
+        }
     }
 
     private class GetData extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... voids) {
             GetDatafromURL();
@@ -65,7 +101,8 @@ public class DetailActivity extends AppCompatActivity {
                     String movieImdb = jsonObject.getString("imdbRating");
                     String movieDate = jsonObject.getString("Released");
                     String movieTime = jsonObject.getString("Runtime");
-                    String moviePoster = jsonObject.getString("Poster");
+                    String moviePoster = image = jsonObject.getString("Poster");
+                    Log.d("ImageValue", "Image is " + image);
                     String moviePlot = jsonObject.getString("Plot");
                     String movieCast = jsonObject.getString("Actors");
                     String movieAward = jsonObject.getString("Awards");
@@ -79,21 +116,16 @@ public class DetailActivity extends AppCompatActivity {
                     Picasso.get()
                             .load(moviePoster)
                             .into(iv);
-                    if (type.equalsIgnoreCase("Series")) {
-                        String movieSeason = jsonObject.getString("totalSeasons");
-                        tvSeasons.setText("Total Seasons " + movieSeason);
-                        tvSeasons.setVisibility(View.VISIBLE);
-                        findViewById(R.id.ll).setVisibility(View.GONE);
-                    }
+                    LoadSeries(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(DetailActivity.this, "Error occured " + e, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, "Error occurred " + e, Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailActivity.this, "Error occured " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, "Error occurred " + error, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);
@@ -124,6 +156,9 @@ public class DetailActivity extends AppCompatActivity {
         tvAwards = findViewById(R.id.tv_awards);
         /////////////////////////////////
         iv = findViewById(R.id.iv_cover_img);
+        /////////////////////////////////
+        rvSeries = findViewById(R.id.rv_series);
+        rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         /////////////////////////////////
         tvAbout.setTypeface(typeface);
         tvGenre.setTypeface(typeface);
