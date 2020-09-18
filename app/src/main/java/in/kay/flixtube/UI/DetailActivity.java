@@ -122,9 +122,6 @@ public class DetailActivity extends AppCompatActivity {
         tvAwards.setTypeface(typeface);
         tvImdb.setTypeface(typeface);
         tvTitle.setTypeface(font);
-       // tvPlot.setTypeface(medium);
-       // tvCasting.setTypeface(medium);
-       // tvAward.setTypeface(medium);
 
     }
 
@@ -141,4 +138,10 @@ public class DetailActivity extends AppCompatActivity {
         helper.DownloadFile(this, title, "Movie", url);
     }
 
+    public void TrailerPlay(View view) {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        intent.putExtra("url", trailer);
+        intent.putExtra("title", title +" trailer");
+        startActivity(intent);
+    }
 }
