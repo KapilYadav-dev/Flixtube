@@ -1,16 +1,19 @@
 package in.kay.flixtube.UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -26,17 +29,19 @@ import in.kay.flixtube.R;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseReference rootRef;
-    TextView tvName, tvFeatured, tvMovies ,tvSeries;
+    TextView tvName, tvFeatured, tvMovies, tvSeries;
     RecyclerView rvFeatured, rvMovies, rvSeries;
     MovieAdapter movieAdapter;
     FeatureAdapter featureAdapter;
     SeriesAdapter seriesAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initz();
     }
+
     private void initz() {
         LoadViews();
         LoadMovies();
@@ -71,45 +76,61 @@ public class MainActivity extends AppCompatActivity {
         tvMovies.setTypeface(typeface);
         tvSeries.setTypeface(typeface);
     }
+
     private void LoadMovies() {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
                 .setQuery(rootRef.child("Movies"), MovieModel.class)
                 .build();
-        movieAdapter = new MovieAdapter(options,this);
+        movieAdapter = new MovieAdapter(options, this);
         rvMovies.setAdapter(movieAdapter);
         movieAdapter.startListening();
     }
+
     private void LoadFeatured() {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
                 .setQuery(rootRef.child("Movies").orderByChild("featured").equalTo("Yes"), MovieModel.class)
                 .build();
-        featureAdapter = new FeatureAdapter(options ,this);
+        featureAdapter = new FeatureAdapter(options, this);
         rvFeatured.setAdapter(featureAdapter);
         featureAdapter.startListening();
 
     }
+
     private void LoadSeries() {
         FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
                 .setQuery(rootRef.child("Webseries"), SeriesModel.class)
                 .build();
-        seriesAdapter = new SeriesAdapter(options,this);
+        seriesAdapter = new SeriesAdapter(options, this);
         rvSeries.setAdapter(seriesAdapter);
         seriesAdapter.startListening();
     }
 
 
     public void ViewAllSeries(View view) {
-        Intent intent=new Intent(this,ViewAllActivity.class);
-        intent.putExtra("type","Webseries");
+        Intent intent = new Intent(this, ViewAllActivity.class);
+        intent.putExtra("type", "Webseries");
         startActivity(intent);
         Animatoo.animateFade(this);
     }
 
     public void ViewAllMovies(View view) {
-        Intent intent=new Intent(this,ViewAllActivity.class);
-        intent.putExtra("type","Movies");
+        Intent intent = new Intent(this, ViewAllActivity.class);
+        intent.putExtra("type", "Movies");
         startActivity(intent);
         Animatoo.animateFade(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        CloseApp();
+    }
+
+    private void CloseApp() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
     }
 
 }

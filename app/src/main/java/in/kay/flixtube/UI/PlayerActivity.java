@@ -123,6 +123,7 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 TastyToast.makeText(PlayerActivity.this,"Error Occured "+error,TastyToast.LENGTH_SHORT,TastyToast.ERROR);
+                startActivity(new Intent(PlayerActivity.this,MainActivity.class));
 
             }
 
