@@ -107,15 +107,17 @@
         android:id="@+id/textreset"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginTop="20dp"
         android:text="Forgot password? Click to Reset"
+        android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonlogin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63" />
 
     <Button
         android:id="@+id/buttongooglelogin "

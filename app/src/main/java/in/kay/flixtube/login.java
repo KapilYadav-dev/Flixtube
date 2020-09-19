@@ -1,13 +1,16 @@
 package in.kay.flixtube;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,16 +22,21 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     FirebaseAuth mAuth;
     EditText etpassword, etemail;
     String email,password;
+    TextView forgotpassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth= FirebaseAuth.getInstance();
         etemail = findViewById(R.id.email);
         etpassword = findViewById(R.id.password);
-        mAuth= FirebaseAuth.getInstance();
+        forgotpassword=findViewById(R.id.textreset);
+
         findViewById(R.id.textsignup).setOnClickListener(this);
         findViewById(R.id.buttonlogin).setOnClickListener(this);
+        findViewById(R.id.textreset).setOnClickListener(this);
     }
 
     private void login(){
@@ -48,11 +56,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         }
         if (password.isEmpty()) {
             etpassword.setError("Password cannot be empty");
-            etpassword.requestFocus();
-            return;
-        }
-        if (password.length() < 6) {
-            etpassword.setError("Password should have minimum 6 characters");
             etpassword.requestFocus();
             return;
         }
@@ -85,6 +88,35 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.buttonlogin:
                 login();
+                break;
+
+            case R.id.textreset:
+                final EditText resetmail=new EditText(view.getContext());
+                AlertDialog.Builder resetdialog= new AlertDialog.Builder(view.getContext());
+                resetdialog.setTitle("Reset password?");
+                resetdialog.setMessage("Enter the email to receive the password reset link");
+                resetdialog.setView(resetmail);
+
+                resetdialog.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String email= resetmail.getText().toString();
+                        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                {
+                                    Toast.makeText(login.this, "Reset link has been sent", Toast.LENGTH_SHORT).show();
+
+                                }
+                                else {
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+                resetdialog.create().show();
                 break;
 
         }

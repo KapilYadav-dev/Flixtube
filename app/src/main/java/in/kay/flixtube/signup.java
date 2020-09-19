@@ -14,18 +14,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
+import java.util.HashMap;
 
 public class signup extends AppCompatActivity implements View.OnClickListener {
 
     EditText etusername, etpassword, etemail;
     private FirebaseAuth mAuth;
     String name,email,password;
+    DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
+        mAuth = FirebaseAuth.getInstance();
+        rootRef = FirebaseDatabase.getInstance().getReference();
         etemail = findViewById(R.id.email);
         etusername = findViewById(R.id.name);
         etpassword = findViewById(R.id.password);
@@ -36,8 +43,6 @@ public class signup extends AppCompatActivity implements View.OnClickListener {
                 signUp();
             }
         });
-
-        mAuth = FirebaseAuth.getInstance();
     }
 
     private void signUp() {
@@ -65,28 +70,31 @@ public class signup extends AppCompatActivity implements View.OnClickListener {
             etpassword.setError("Password cannot be empty");
             etpassword.requestFocus();
             return;
-        }
-        if (password.length() < 6) {
-            etpassword.setError("Password should have minimum 6 characters");
-            etpassword.requestFocus();
-            return;
-        }
-        else{
-            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        } else {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful())
-                    {
-                        Toast.makeText(signup.this, name+", you are registered successfully", Toast.LENGTH_SHORT).show();
-                    }
 
-                    else
-                        Toast.makeText(signup.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()) {
+                        mAuth.getCurrentUser().sendEmailVerification();
+                        Toast.makeText(signup.this, name + ", you are registered successfully, check your email for verification", Toast.LENGTH_LONG).show();
+                        createdatabase();
+                    } else
+                        Toast.makeText(signup.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
         }
+
     }
+        private void createdatabase() {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("Email", email);
+            map.put("Name", name);
+            map.put("Membership","Normal");
+            map.put("Violation","No");
+            rootRef.child("User").child(mAuth.getCurrentUser().getUid()).setValue(map);
+        }
 
 
     @Override
