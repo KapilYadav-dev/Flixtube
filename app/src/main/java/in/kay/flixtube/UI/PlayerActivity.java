@@ -1,6 +1,5 @@
 package in.kay.flixtube.UI;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +9,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.nisrulz.sensey.FlipDetector;
+import com.github.nisrulz.sensey.Sensey;
+import com.github.nisrulz.sensey.ShakeDetector;
+import com.github.nisrulz.sensey.TiltDirectionDetector;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -37,26 +40,17 @@ import in.kay.flixtube.R;
 public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView exoPlayerView;
     SimpleExoPlayer exoPlayer;
-    String videoURL,title ;
+    String videoURL, title;
     TextView Name;
     ImageView back;
+    FlipDetector.FlipListener flipListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        videoURL=getIntent().getStringExtra("url");
-        title=getIntent().getStringExtra("title");
-        Name=findViewById(R.id.title);
-        Name.setText(title);
-        exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exo_player_view);
-        back=findViewById(R.id.iv_back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ContinueWatching();
-                onBackPressed();
-            }
-        });
+        getValue();
+        initz();
+        SensorFn();
         try {
             ExoPlayerLogic();
         } catch (Exception e) {
@@ -64,6 +58,51 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
     }
+
+    private void SensorFn() {
+        FlipFN();
+    }
+
+
+
+    private void FlipFN() {
+         flipListener = new FlipDetector.FlipListener() {
+            @Override
+            public void onFaceUp() {
+                Log.d("LOGMSG", "onFaceUp: ");
+                playPlayer();
+            }
+
+            @Override
+            public void onFaceDown() {
+                // Device Facing down
+                Log.d("LOGMSG", "onFaceDown: ");
+                pausePlayer();
+            }
+        };
+        Sensey.getInstance().startFlipDetection(flipListener);
+    }
+
+    private void getValue() {
+        videoURL = getIntent().getStringExtra("url");
+        title = getIntent().getStringExtra("title");
+    }
+
+    private void initz() {
+        Sensey.getInstance().init(this);
+        Name = findViewById(R.id.title);
+        Name.setText(title);
+        exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exo_player_view);
+        back = findViewById(R.id.iv_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ContinueWatching();
+                onBackPressed();
+            }
+        });
+    }
+
     private void ExoPlayerLogic() {
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
@@ -77,12 +116,11 @@ public class PlayerActivity extends AppCompatActivity {
         exoPlayer.prepare(mediaSource);
         exoPlayer.setPlayWhenReady(true);
         //Used to know user is playing that video and if true then continue to last location
-        String pref_url= Prefs.getString("url","null");
-        String pref_title= Prefs.getString("title","null");
-        if (pref_url.equalsIgnoreCase(videoURL) && pref_title.equalsIgnoreCase(title))
-        {
-            Long time= Prefs.getLong("time",0);
-            Log.d("Last_Time", "Video time is "+time);
+        String pref_url = Prefs.getString("url", "null");
+        String pref_title = Prefs.getString("title", "null");
+        if (pref_url.equalsIgnoreCase(videoURL) && pref_title.equalsIgnoreCase(title)) {
+            Long time = Prefs.getLong("time", 0);
+            Log.d("Last_Time", "Video time is " + time);
             exoPlayer.seekTo(time);
         }
         exoPlayer.addListener(new ExoPlayer.EventListener() {
@@ -103,26 +141,21 @@ public class PlayerActivity extends AppCompatActivity {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (playbackState == ExoPlayer.STATE_ENDED)
-                {
-                    TastyToast.makeText(PlayerActivity.this,"Content has been ended",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                if (playbackState == ExoPlayer.STATE_ENDED) {
+                    TastyToast.makeText(PlayerActivity.this, "Content has been ended", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     Prefs.putLong("time", 0);
                     onBackPressed();
 
-                }
-                else if (playbackState==ExoPlayer.STATE_BUFFERING)
-                {
+                } else if (playbackState == ExoPlayer.STATE_BUFFERING) {
 
-                }
-                else if (!(playbackState==ExoPlayer.STATE_BUFFERING))
-                {
+                } else if (!(playbackState == ExoPlayer.STATE_BUFFERING)) {
 
                 }
             }
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                TastyToast.makeText(PlayerActivity.this,"Error Occured "+error,TastyToast.LENGTH_SHORT,TastyToast.ERROR);
+                TastyToast.makeText(PlayerActivity.this, "Error Occured " + error, TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 onBackPressed();
 
             }
@@ -142,8 +175,7 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        releasePlayer();
-        ContinueWatching();
+        pausePlayer();
     }
 
     @Override
@@ -151,6 +183,8 @@ public class PlayerActivity extends AppCompatActivity {
         super.onStop();
         releasePlayer();
         ContinueWatching();
+        Sensey.getInstance().stopFlipDetection(flipListener);
+        Sensey.getInstance().stop();
     }
 
     @Override
@@ -158,6 +192,8 @@ public class PlayerActivity extends AppCompatActivity {
         super.onDestroy();
         releasePlayer();
         ContinueWatching();
+        Sensey.getInstance().stopFlipDetection(flipListener);
+        Sensey.getInstance().stop();
     }
 
     @Override
@@ -165,7 +201,10 @@ public class PlayerActivity extends AppCompatActivity {
         super.onBackPressed();
         releasePlayer();
         ContinueWatching();
+        Sensey.getInstance().stopFlipDetection(flipListener);
+        Sensey.getInstance().stop();
     }
+
     private void releasePlayer() {
         if (exoPlayer != null) {
             exoPlayer.release();
@@ -176,5 +215,15 @@ public class PlayerActivity extends AppCompatActivity {
         Prefs.putString("url", videoURL);
         Prefs.putString("title", title);
         Prefs.putLong("time", exoPlayer.getCurrentPosition());
+    }
+    private void pausePlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.setPlayWhenReady(false);
+        }
+    }
+    private void playPlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.setPlayWhenReady(true);
+        }
     }
 }
