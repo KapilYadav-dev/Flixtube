@@ -37,7 +37,7 @@ import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity {
     String imdb, trailer, url, type, title, image;
-    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons;
+    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons , tvWatch;
     RequestQueue requestQueue;
     ImageView iv;
     Helper helper;
@@ -150,6 +150,7 @@ public class DetailActivity extends AppCompatActivity {
         tvPlot = findViewById(R.id.tv_plot);
         tvTime = findViewById(R.id.tv_time);
         tvGenre = findViewById(R.id.tv_genre);
+        tvWatch = findViewById(R.id.tv_watch);
         tvAbout = findViewById(R.id.tv_about);
         tvSeasons = findViewById(R.id.tv_seasons);
         tvAward = findViewById(R.id.tv_award);
@@ -169,6 +170,7 @@ public class DetailActivity extends AppCompatActivity {
         tvPlot.setTypeface(brandon);
         tvCasting.setTypeface(brandon);
         tvAward.setTypeface(brandon);
+        tvWatch.setTypeface(brandon);
 
     }
 
