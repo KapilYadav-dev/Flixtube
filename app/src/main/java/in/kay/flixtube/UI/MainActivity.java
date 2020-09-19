@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         movieAdapter = new MovieAdapter(options, this);
         rvMovies.setAdapter(movieAdapter);
-        movieAdapter.startListening();
+
     }
 
     private void LoadFeatured() {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         featureAdapter = new FeatureAdapter(options, this);
         rvFeatured.setAdapter(featureAdapter);
-        featureAdapter.startListening();
+
 
     }
 
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         seriesAdapter = new SeriesAdapter(options, this);
         rvSeries.setAdapter(seriesAdapter);
-        seriesAdapter.startListening();
+
     }
 
 
@@ -169,4 +169,19 @@ public class MainActivity extends AppCompatActivity {
         android.os.Process.killProcess(pid);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        movieAdapter.startListening();
+        featureAdapter.startListening();
+        seriesAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        movieAdapter.stopListening();
+        featureAdapter.stopListening();
+        seriesAdapter.stopListening();
+    }
 }
