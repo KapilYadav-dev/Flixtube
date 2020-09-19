@@ -1,14 +1,12 @@
 package in.kay.flixtube.UI;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -17,8 +15,11 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import in.kay.flixtube.Adapter.FeatureAdapter;
 import in.kay.flixtube.Adapter.MovieAdapter;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     MovieAdapter movieAdapter;
     FeatureAdapter featureAdapter;
     SeriesAdapter seriesAdapter;
+    int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,48 @@ public class MainActivity extends AppCompatActivity {
         LoadMovies();
         LoadFeatured();
         LoadSeries();
+        GetSizeRV();
     }
+
+    private void GetSizeRV() {
+        FnSeries();
+        FnMovie();
+    }
+
+    private void FnSeries() {
+        rootRef.child("Webseries").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                size = (int) snapshot.getChildrenCount();
+                rvSeries.smoothScrollToPosition(size);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    private void FnMovie() {
+        rootRef.child("Movies").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                size = (int) snapshot.getChildrenCount();
+                rvMovies.smoothScrollToPosition(size);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
 
 
     private void LoadViews() {
         rootRef = FirebaseDatabase.getInstance().getReference();
         /////
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
-        Typeface typeface = Typeface.createFromAsset(this.getAssets(), "Montserrat_bold.ttf");
         /////
         tvName = findViewById(R.id.tv_name);
         tvFeatured = findViewById(R.id.tv_featured);
@@ -65,21 +101,21 @@ public class MainActivity extends AppCompatActivity {
         rvSeries = findViewById(R.id.rv_series);
         rvMovies = findViewById(R.id.rv_movies);
         /////
-        rvMovies.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvMovies.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         rvFeatured.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         SnapHelper snapHelpernew = new PagerSnapHelper();
         snapHelpernew.attachToRecyclerView(rvFeatured);
-        rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         /////
         tvName.setTypeface(font);
-        tvFeatured.setTypeface(typeface);
-        tvMovies.setTypeface(typeface);
-        tvSeries.setTypeface(typeface);
+        tvFeatured.setTypeface(font);
+        tvMovies.setTypeface(font);
+        tvSeries.setTypeface(font);
     }
 
     private void LoadMovies() {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
-                .setQuery(rootRef.child("Movies"), MovieModel.class)
+                .setQuery(rootRef.child("Movies").limitToFirst(5), MovieModel.class)
                 .build();
         movieAdapter = new MovieAdapter(options, this);
         rvMovies.setAdapter(movieAdapter);
@@ -98,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadSeries() {
         FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
-                .setQuery(rootRef.child("Webseries"), SeriesModel.class)
+                .setQuery(rootRef.child("Webseries").limitToFirst(5), SeriesModel.class)
                 .build();
         seriesAdapter = new SeriesAdapter(options, this);
         rvSeries.setAdapter(seriesAdapter);

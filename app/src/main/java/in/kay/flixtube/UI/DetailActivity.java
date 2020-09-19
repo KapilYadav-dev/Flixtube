@@ -140,7 +140,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void initz() {
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
-        Typeface medium = Typeface.createFromAsset(this.getAssets(), "Gilroy-Medium.ttf");
+        Typeface brandon = Typeface.createFromAsset(this.getAssets(), "Brandon.ttf");
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "Gilroy-Light.ttf");
         /////////////////////////////////
         tvTitle = findViewById(R.id.tv_title);
@@ -166,9 +166,9 @@ public class DetailActivity extends AppCompatActivity {
         tvAwards.setTypeface(typeface);
         tvImdb.setTypeface(typeface);
         tvTitle.setTypeface(font);
-        // tvPlot.setTypeface(medium);
-        // tvCasting.setTypeface(medium);
-        // tvAward.setTypeface(medium);
+        tvPlot.setTypeface(brandon);
+        tvCasting.setTypeface(brandon);
+        tvAward.setTypeface(brandon);
 
     }
 

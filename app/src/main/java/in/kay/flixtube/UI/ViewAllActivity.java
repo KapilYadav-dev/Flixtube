@@ -51,7 +51,6 @@ public class ViewAllActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
                 .setQuery(rootRef.child(type).orderByChild("title").startAt(strQuery).endAt(strQuery + "\uf8ff"), MovieModel.class)
                 .build();
-        Toast.makeText(this, "Type is "+type, Toast.LENGTH_SHORT).show();
         allAdapter = new AllAdapter(options, this, type);
         rvAll.setAdapter(allAdapter);
         allAdapter.startListening();
