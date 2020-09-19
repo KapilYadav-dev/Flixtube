@@ -54,7 +54,7 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ContinueWatching();
-                startActivity(new Intent(PlayerActivity.this,MainActivity.class));
+                onBackPressed();
             }
         });
         try {
@@ -105,9 +105,9 @@ public class PlayerActivity extends AppCompatActivity {
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED)
                 {
-                    TastyToast.makeText(PlayerActivity.this,"Show has been ended",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                    TastyToast.makeText(PlayerActivity.this,"Content has been ended",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                     Prefs.putLong("time", 0);
-                    startActivity(new Intent(PlayerActivity.this,MainActivity.class));
+                    onBackPressed();
 
                 }
                 else if (playbackState==ExoPlayer.STATE_BUFFERING)
@@ -123,7 +123,7 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 TastyToast.makeText(PlayerActivity.this,"Error Occured "+error,TastyToast.LENGTH_SHORT,TastyToast.ERROR);
-                startActivity(new Intent(PlayerActivity.this,MainActivity.class));
+                onBackPressed();
 
             }
 

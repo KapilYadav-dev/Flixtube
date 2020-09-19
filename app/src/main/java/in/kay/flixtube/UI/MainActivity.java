@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadMovies() {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
-                .setQuery(rootRef.child("Movies").limitToFirst(5), MovieModel.class)
+                .setQuery(rootRef.child("Movies"), MovieModel.class)
                 .build();
         movieAdapter = new MovieAdapter(options, this);
         rvMovies.setAdapter(movieAdapter);
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadSeries() {
         FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
-                .setQuery(rootRef.child("Webseries").limitToFirst(5), SeriesModel.class)
+                .setQuery(rootRef.child("Webseries"), SeriesModel.class)
                 .build();
         seriesAdapter = new SeriesAdapter(options, this);
         rvSeries.setAdapter(seriesAdapter);

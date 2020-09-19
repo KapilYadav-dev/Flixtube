@@ -39,15 +39,15 @@
                     android:id="@+id/tv_movie_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="120dp"
                     android:elevation="1dp"
+                    android:layout_marginStart="20dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Avenger Infinity War"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="20dp"
+                    android:textSize="24dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -55,13 +55,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_movie_name"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:elevation="1dp"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:layout_marginStart="20dp"
                     android:text="Action/Adventure"
-                    android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="16dp" />
 
