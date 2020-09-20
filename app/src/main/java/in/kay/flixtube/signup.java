@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import java.util.HashMap;
 
 public class signup extends AppCompatActivity implements View.OnClickListener {
@@ -26,6 +25,7 @@ public class signup extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     String name,email,password;
     DatabaseReference rootRef;
+    //public static String uname="in.kay.flixtube.name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,9 @@ public class signup extends AppCompatActivity implements View.OnClickListener {
                     if (task.isSuccessful()) {
                         mAuth.getCurrentUser().sendEmailVerification();
                         Toast.makeText(signup.this, name + ", you are registered successfully, check your email for verification", Toast.LENGTH_LONG).show();
+                      // Intent intent= new Intent(signup.this,navactivity.class);
+                       // intent.putExtra(uname,name);
+                        //startActivity(intent);
                         createdatabase();
                     } else
                         Toast.makeText(signup.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

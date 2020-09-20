@@ -20,9 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
     FirebaseAuth mAuth;
-    EditText etpassword, etemail;
-    String email,password;
+    EditText etpassword, etemail,etusername;
+    String email,password,name;
     TextView forgotpassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         mAuth= FirebaseAuth.getInstance();
         etemail = findViewById(R.id.email);
         etpassword = findViewById(R.id.password);
+        etusername = findViewById(R.id.name);
+
         forgotpassword=findViewById(R.id.textreset);
 
         findViewById(R.id.textsignup).setOnClickListener(this);
@@ -40,7 +43,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void login(){
-
+      //  Intent intent= getIntent();
+       // name=intent.getStringExtra(login.uname);
         email = etemail.getText().toString();
         password = etpassword.getText().toString();
 
@@ -65,8 +69,10 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful())
                     {
-                        Toast.makeText(login.this, "Successful sign-in", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(login.this," Successful sign-in", Toast.LENGTH_SHORT).show();
+                       Intent intent= new Intent(login.this,navactivity.class);
+                      //  intent.putExtra(uname,name);
+                        startActivity(intent);
                     }
                     else
                     {
