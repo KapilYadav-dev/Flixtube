@@ -62,5 +62,7 @@ dependencies {
     implementation 'com.pixplicity.easyprefs:library:1.9.0'
     //Sensy Lib
     implementation 'com.github.nisrulz:sensey:1.8.0'
+    //Material dialog
+    implementation 'com.gdacciaro:iosdialog:1.0.3'
 
 }

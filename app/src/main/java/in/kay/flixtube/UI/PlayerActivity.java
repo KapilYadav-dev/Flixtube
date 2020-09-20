@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,12 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 import com.github.nisrulz.sensey.FlipDetector;
 import com.github.nisrulz.sensey.Sensey;
-import com.github.nisrulz.sensey.ShakeDetector;
-import com.github.nisrulz.sensey.TiltDirectionDetector;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -32,10 +35,17 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.sdsmdg.tastytoast.TastyToast;
 
+import java.util.HashMap;
+
 import in.kay.flixtube.R;
+import in.kay.flixtube.Utils.Helper;
 
 public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView exoPlayerView;
@@ -44,6 +54,8 @@ public class PlayerActivity extends AppCompatActivity {
     TextView Name;
     ImageView back;
     FlipDetector.FlipListener flipListener;
+    DatabaseReference rootRef;
+    Helper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +76,8 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
 
-
     private void FlipFN() {
-         flipListener = new FlipDetector.FlipListener() {
+        flipListener = new FlipDetector.FlipListener() {
             @Override
             public void onFaceUp() {
                 Log.d("LOGMSG", "onFaceUp: ");
@@ -89,6 +100,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void initz() {
+        rootRef= FirebaseDatabase.getInstance().getReference();
         Sensey.getInstance().init(this);
         Name = findViewById(R.id.title);
         Name.setText(title);
@@ -216,14 +228,64 @@ public class PlayerActivity extends AppCompatActivity {
         Prefs.putString("title", title);
         Prefs.putLong("time", exoPlayer.getCurrentPosition());
     }
+
     private void pausePlayer() {
         if (exoPlayer != null) {
             exoPlayer.setPlayWhenReady(false);
         }
     }
+
     private void playPlayer() {
         if (exoPlayer != null) {
             exoPlayer.setPlayWhenReady(true);
         }
+    }
+
+    public void Report(View view) {
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+        new iOSDialogBuilder(PlayerActivity.this)
+                .setTitle("Report this Media")
+                .setSubtitle("You are going to report this media if case this isn't working or found some infringing content.")
+                .setBoldPositiveLabel(true)
+                .setCancelable(false)
+                .setFont(font)
+                .setPositiveListener(getString(R.string.ok),new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        ReportDB();
+                        dialog.dismiss();
+
+                    }
+                })
+                .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .build().show();
+    }
+
+    private void ReportDB() {
+        helper=new Helper();
+        String date=helper.Date(this);
+        String time=helper.Time(this);
+        String movieName=title;
+        HashMap<String,Object>map =new HashMap<>();
+        map.put("Date",date);
+        map.put("Time",time);
+        map.put("MovieName",movieName);
+        rootRef.child("Reports").push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                TastyToast.makeText(PlayerActivity.this,"Successfully reported Media",TastyToast.LENGTH_LONG,TastyToast.INFO);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                TastyToast.makeText(PlayerActivity.this,"Error while reporting media, "+e,TastyToast.LENGTH_LONG,TastyToast.ERROR);
+            }
+        });
+
     }
 }

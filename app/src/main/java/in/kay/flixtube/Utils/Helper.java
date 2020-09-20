@@ -36,6 +36,18 @@ public class Helper {
         String id=dd4YouConfig.getDeviceId();
         return id;
     }
+    public String Date(Context mcontext) {
+        dd4YouConfig=new DD4YouConfig(mcontext);
+        String date=dd4YouConfig.getCurrentDate();
+        return date;
+    }
+    public String Time(Context mcontext)
+    {
+        dd4YouConfig=new DD4YouConfig(mcontext);
+        String time=dd4YouConfig.getCurrentTime();
+        return time;
+    }
+
     public void DownloadFile(Context context,String title,String type,String url) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription(type);
