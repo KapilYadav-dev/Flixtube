@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.R;
-import in.kay.flixtube.UI.DetailActivity;
+import in.kay.flixtube.UI.HomeUI.DetailActivity;
 
 public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.AllAdapterViewHolder> {
 

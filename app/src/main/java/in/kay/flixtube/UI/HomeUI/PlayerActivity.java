@@ -1,4 +1,4 @@
-package in.kay.flixtube.UI;
+package in.kay.flixtube.UI.HomeUI;
 
 import android.graphics.Typeface;
 import android.net.Uri;

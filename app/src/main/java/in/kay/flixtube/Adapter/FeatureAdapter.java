@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.R;
-import in.kay.flixtube.UI.DetailActivity;
+import in.kay.flixtube.UI.HomeUI.DetailActivity;
 
 public class FeatureAdapter extends FirebaseRecyclerAdapter<MovieModel, FeatureAdapter.FeatureAdapterViewHolder> {
 Context context;

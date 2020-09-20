@@ -1,4 +1,4 @@
-package in.kay.flixtube.UI;
+package in.kay.flixtube.UI.HomeUI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -26,7 +26,10 @@ import in.kay.flixtube.Adapter.MovieAdapter;
 import in.kay.flixtube.Adapter.SeriesAdapter;
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.Model.SeriesModel;
+import in.kay.flixtube.Model.UsersModel;
 import in.kay.flixtube.R;
+import in.kay.flixtube.Utils.Application;
+import in.kay.flixtube.Utils.Helper;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseReference rootRef;
@@ -36,11 +39,15 @@ public class MainActivity extends AppCompatActivity {
     FeatureAdapter featureAdapter;
     SeriesAdapter seriesAdapter;
     int size;
+    Helper helper;
+    UsersModel usersModel;
+    Application application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        application = (Application) this.getApplication();
         initz();
     }
 
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         LoadSeries();
         GetSizeRV();
     }
+
 
     private void GetSizeRV() {
         FnSeries();
@@ -86,9 +94,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void LoadViews() {
         rootRef = FirebaseDatabase.getInstance().getReference();
+        /////
+        helper = new Helper();
+        /////
+        usersModel = application.getUsersModel();
         /////
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
         /////
@@ -108,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         /////
         tvName.setTypeface(font);
+        tvName.setText("Hey, " + usersModel.getName());
         tvFeatured.setTypeface(font);
         tvMovies.setTypeface(font);
         tvSeries.setTypeface(font);

@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
-import in.kay.flixtube.UI.PlayerActivity;
+import in.kay.flixtube.UI.HomeUI.PlayerActivity;
 
 public class SeriesPlayAdapter extends FirebaseRecyclerAdapter<SeriesModel, SeriesPlayAdapter.SeriesPlayAdapterViewModel> {
     Context context;

@@ -1,4 +1,4 @@
-package in.kay.flixtube.UI;
+package in.kay.flixtube.UI.HomeUI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -32,7 +32,9 @@ import org.json.JSONObject;
 
 import in.kay.flixtube.Adapter.SeriesPlayAdapter;
 import in.kay.flixtube.Model.SeriesModel;
+import in.kay.flixtube.Model.UsersModel;
 import in.kay.flixtube.R;
+import in.kay.flixtube.Utils.Application;
 import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity {
@@ -44,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     RecyclerView rvSeries;
     DatabaseReference rootRef;
     SeriesPlayAdapter seriesPlayAdapter;
-
+    UsersModel usersModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

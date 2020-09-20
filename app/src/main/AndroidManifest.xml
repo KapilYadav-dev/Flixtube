@@ -14,25 +14,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UI.ViewAllActivity">
-        </activity>
-        <activity
-            android:name=".UI.PlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:resizeableActivity="true"
-            android:screenOrientation="landscape"
-            android:fitsSystemWindows="true"  />
-        <activity
-            android:name=".UI.DetailActivity"
+        <activity android:name=".UI.IntroUI.SignupActivity"
             android:fitsSystemWindows="true" />
-        <activity
-            android:name=".UI.MainActivity"
-            android:fitsSystemWindows="true">
+        <activity android:name=".UI.IntroUI.LoginActivity"
+            android:fitsSystemWindows="true" />
+        <activity android:name=".UI.IntroUI.LandingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".UI.HomeUI.ViewAllActivity"
+            android:fitsSystemWindows="true" />
+        <activity
+            android:name=".UI.HomeUI.PlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:fitsSystemWindows="true"
+            android:resizeableActivity="true"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".UI.HomeUI.DetailActivity"
+            android:fitsSystemWindows="true" />
+        <activity
+            android:name=".UI.HomeUI.MainActivity"
+            android:fitsSystemWindows="true">
         </activity>
     </application>
 
