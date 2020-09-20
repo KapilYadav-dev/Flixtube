@@ -104,7 +104,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_movies"
                 android:layout_margin="10dp" />
@@ -123,7 +123,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_series"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_series"
                 android:layout_margin="10dp" />
