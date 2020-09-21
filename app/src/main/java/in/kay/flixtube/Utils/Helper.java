@@ -6,16 +6,27 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.scottyab.aescrypt.AESCrypt;
 
 import java.security.GeneralSecurityException;
 
 import in.dd4you.appsconfig.DD4YouConfig;
+import in.kay.flixtube.Model.UsersModel;
 
 public class Helper {
     DD4YouConfig dd4YouConfig;
-    public String encryptString(String password,String str) {
+
+    public String encryptString(String password, String str) {
         try {
             String encryptedMsg = AESCrypt.encrypt(password, str);
             return encryptedMsg;

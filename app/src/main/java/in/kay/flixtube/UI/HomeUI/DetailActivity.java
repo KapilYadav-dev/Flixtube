@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,8 +23,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 
@@ -32,29 +40,61 @@ import org.json.JSONObject;
 
 import in.kay.flixtube.Adapter.SeriesPlayAdapter;
 import in.kay.flixtube.Model.SeriesModel;
-import in.kay.flixtube.Model.UsersModel;
 import in.kay.flixtube.R;
-import in.kay.flixtube.Utils.Application;
 import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity {
-    String imdb, trailer, url, type, title, image;
-    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons , tvWatch;
+
+    String imdb, trailer, url, type, title, image, contentType;
+    TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons, tvWatch;
     RequestQueue requestQueue;
     ImageView iv;
     Helper helper;
     RecyclerView rvSeries;
     DatabaseReference rootRef;
     SeriesPlayAdapter seriesPlayAdapter;
-    UsersModel usersModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        InitAll();
+
+    }
+
+    private void InitAll() {
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final String membership = snapshot.child("Membership").getValue(String.class);
+                Initz(membership);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void Initz(final String membership) {
         GetValues();
-        initz();
+        InitzViews();
         GetData getData = new GetData();
         getData.execute();
+        findViewById(R.id.btn_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlayMovie(membership);
+            }
+        });
+        findViewById(R.id.btn_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Download();
+            }
+        });
     }
 
     private void LoadSeries(JSONObject jsonObject) {
@@ -72,7 +112,6 @@ public class DetailActivity extends AppCompatActivity {
             findViewById(R.id.tv_watch).setVisibility(View.VISIBLE);
             findViewById(R.id.ll).setVisibility(View.GONE);
             String key = getIntent().getStringExtra("key");
-            rootRef = FirebaseDatabase.getInstance().getReference();
             FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
                     .setQuery(rootRef.child("Webseries").child(key).child("Source"), SeriesModel.class)
                     .build();
@@ -138,9 +177,10 @@ public class DetailActivity extends AppCompatActivity {
         trailer = getIntent().getStringExtra("trailer");
         type = getIntent().getStringExtra("type");
         url = getIntent().getStringExtra("url");
+        contentType = getIntent().getStringExtra("movieType");
     }
 
-    private void initz() {
+    private void InitzViews() {
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
         Typeface brandon = Typeface.createFromAsset(this.getAssets(), "Brandon.ttf");
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "Gilroy-Light.ttf");
@@ -176,14 +216,50 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    public void PlayMovie(View view) {
-        Intent intent = new Intent(this, PlayerActivity.class);
-        intent.putExtra("url", url);
-        intent.putExtra("title", title);
-        startActivity(intent);
+    public void PlayMovie(String membership) {
+        if (contentType.equalsIgnoreCase("Premium")) {
+            if (membership.equalsIgnoreCase("VIP")) {
+                Intent intent = new Intent(this, PlayerActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            } else {
+                ShowPopup();
+            }
+        } else {
+            Intent intent = new Intent(this, PlayerActivity.class);
+            intent.putExtra("url", url);
+            intent.putExtra("title", title);
+            startActivity(intent);
+        }
     }
 
-    public void Download(View view) {
+    private void ShowPopup() {
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+        new iOSDialogBuilder(DetailActivity.this)
+                .setTitle("Buy Premium")
+                .setSubtitle("You discovered premium feature. Streaming is a premium content, thus require VIP account. Press Buy to continue")
+                .setBoldPositiveLabel(true)
+                .setFont(font)
+                .setCancelable(false)
+                .setPositiveListener(getString(R.string.buy), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        Toast.makeText(DetailActivity.this, "Clicked!", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
+                    }
+                })
+                .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .build().show();
+    }
+
+    public void Download() {
         TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
         helper = new Helper();
         helper.DownloadFile(this, title, "Movie", url);
@@ -198,7 +274,7 @@ public class DetailActivity extends AppCompatActivity {
     public void TrailerPlay(View view) {
         Intent intent = new Intent(this, PlayerActivity.class);
         intent.putExtra("url", trailer);
-        intent.putExtra("title", title +" trailer");
+        intent.putExtra("title", title + " trailer");
         startActivity(intent);
     }
 }

@@ -19,21 +19,34 @@ import in.kay.flixtube.Adapter.AllAdapter;
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.R;
 
-public class ViewAllActivity extends AppCompatActivity {
+public class ViewAllActivity extends AppCompatActivity implements View.OnClickListener {
     RecyclerView rvAll;
     AllAdapter allAdapter;
     DatabaseReference rootRef;
     EditText etQuery;
     ImageView ivSearch;
-
+    String  type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String type = getIntent().getStringExtra("type");
+        type = getIntent().getStringExtra("type");
         setContentView(R.layout.activity_view_all);
         initz();
         LoadData("", type);
         SearchEvent(type);
+        ClickEvents();
+    }
+
+    private void ClickEvents() {
+        findViewById(R.id.tv_adventure).setOnClickListener(this);
+        findViewById(R.id.tv_horror).setOnClickListener(this);
+        findViewById(R.id.tv_romance).setOnClickListener(this);
+        findViewById(R.id.tv_Documentary).setOnClickListener(this);
+        findViewById(R.id.tv_thriller).setOnClickListener(this);
+        findViewById(R.id.tv_action).setOnClickListener(this);
+        findViewById(R.id.tv_comedy).setOnClickListener(this);
+        findViewById(R.id.tv_kids).setOnClickListener(this);
+        findViewById(R.id.tv_sci_fi).setOnClickListener(this);
     }
 
 
@@ -68,5 +81,47 @@ public class ViewAllActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Animatoo.animateFade(this); //fire the slide left animation
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_horror:
+                searchData("Horror");
+                break;
+            case R.id.tv_adventure:
+                searchData("Adventure");
+                break;
+            case R.id.tv_action:
+                searchData("Action");
+                break;
+            case R.id.tv_comedy:
+                searchData("Comedy");
+                break;
+            case R.id.tv_thriller:
+                searchData("Thriller");
+                break;
+            case R.id.tv_romance:
+                searchData("Romance");
+                break;
+            case R.id.tv_sci_fi:
+                searchData("Sci-fi");
+                break;
+            case R.id.tv_Documentary:
+                searchData("Documentary");
+                break;
+            case R.id.tv_kids:
+                searchData("Kids");
+                break;
+        }
+    }
+
+    private void searchData(String string) {
+        FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
+                .setQuery(rootRef.child(type).orderByChild("category").startAt(string).endAt(string + "\uf8ff"), MovieModel.class)
+                .build();
+        allAdapter = new AllAdapter(options, this, type);
+        rvAll.setAdapter(allAdapter);
+        allAdapter.startListening();
     }
 }

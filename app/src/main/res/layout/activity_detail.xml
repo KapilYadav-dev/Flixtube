@@ -42,12 +42,12 @@
                     <ImageView
                         android:id="@+id/iv_btn"
                         android:layout_width="60dp"
-                        android:onClick="TrailerPlay"
                         android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:layout_marginEnd="120dp"
                         android:layout_marginBottom="5dp"
                         android:elevation="1dp"
+                        android:onClick="TrailerPlay"
                         android:src="@drawable/ic_play" />
 
 
@@ -60,10 +60,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cv_Top"
                 android:layout_marginStart="20dp"
-                android:letterSpacing="0.05"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:ellipsize="end"
+                android:letterSpacing="0.05"
                 android:maxLines="2"
                 android:text="Avengers:Endgame"
                 android:textColor="@color/white"
@@ -81,10 +81,10 @@
                 android:text="Action, Adventure, Drama, Sci-Fi    |    26 Apr 2019"
                 android:textColor="@color/white"
                 android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tv_seasons"
                 android:layout_width="wrap_content"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_genre"
                 android:layout_marginStart="20dp"
@@ -93,7 +93,8 @@
                 android:ellipsize="end"
                 android:text="Seasons -3 "
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_imbd"
@@ -144,10 +145,10 @@
                 android:alpha="0.9"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
-                android:textFontWeight="900"
                 android:maxLines="2"
                 android:text="Plot"
                 android:textColor="@color/white"
+                android:textFontWeight="900"
                 android:textSize="30dp" />
 
             <TextView
@@ -172,13 +173,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:alpha="0.9"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
-                android:textFontWeight="900"
-                android:alpha="0.9"
                 android:maxLines="2"
                 android:text="Cast"
                 android:textColor="@color/white"
+                android:textFontWeight="900"
                 android:textSize="30dp" />
 
             <TextView
@@ -203,8 +204,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:ellipsize="end"
                 android:alpha="0.9"
+                android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:text="Awards"
@@ -233,41 +234,44 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:ellipsize="end"
                 android:alpha="0.9"
-                android:visibility="gone"
+                android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:text="Watch Now"
                 android:textColor="@color/white"
-                android:textSize="30dp" />
+                android:textSize="30dp"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_series"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_watch"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"/>
+                android:paddingBottom="50dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rv_series"
                 android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:paddingBottom="50dp"
                 android:weightSum="2">
 
                 <Button
+                    android:id="@+id/btn_download"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:onClick="Download"
                     android:background="@drawable/ic_button_two"
                     android:fontFamily="@font/raleway_medium"
                     android:text="Download"
@@ -275,9 +279,9 @@
                     android:textStyle="bold" />
 
                 <Button
+                    android:id="@+id/btn_play"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:onClick="PlayMovie"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/ic_button"

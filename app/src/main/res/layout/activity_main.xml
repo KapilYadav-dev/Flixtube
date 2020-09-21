@@ -7,6 +7,8 @@
     tools:context=".UI.HomeUI.MainActivity">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_main"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp">

@@ -50,12 +50,13 @@ import in.kay.flixtube.Utils.Helper;
 public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView exoPlayerView;
     SimpleExoPlayer exoPlayer;
-    String videoURL, title;
+    String videoURL, enUrl, title;
     TextView Name;
     ImageView back;
     FlipDetector.FlipListener flipListener;
     DatabaseReference rootRef;
     Helper helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,13 +96,14 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void getValue() {
-        videoURL = getIntent().getStringExtra("url");
+        enUrl = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
     }
 
     private void initz() {
-        rootRef= FirebaseDatabase.getInstance().getReference();
+        rootRef = FirebaseDatabase.getInstance().getReference();
         Sensey.getInstance().init(this);
+        helper = new Helper();
         Name = findViewById(R.id.title);
         Name.setText(title);
         exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exo_player_view);
@@ -116,6 +118,8 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void ExoPlayerLogic() {
+        videoURL = helper.decryptedMsg("Flixtube", enUrl);
+        // Toast.makeText(this, "Decrypted msg is "+videoURL, Toast.LENGTH_SHORT).show();
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
         exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
@@ -249,7 +253,7 @@ public class PlayerActivity extends AppCompatActivity {
                 .setBoldPositiveLabel(true)
                 .setCancelable(false)
                 .setFont(font)
-                .setPositiveListener(getString(R.string.ok),new iOSDialogClickListener() {
+                .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
                     @Override
                     public void onClick(iOSDialog dialog) {
                         ReportDB();
@@ -267,23 +271,22 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void ReportDB() {
-        helper=new Helper();
-        String date=helper.Date(this);
-        String time=helper.Time(this);
-        String movieName=title;
-        HashMap<String,Object>map =new HashMap<>();
-        map.put("Date",date);
-        map.put("Time",time);
-        map.put("MovieName",movieName);
+        String date = helper.Date(this);
+        String time = helper.Time(this);
+        String movieName = title;
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("Date", date);
+        map.put("Time", time);
+        map.put("MovieName", movieName);
         rootRef.child("Reports").push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                TastyToast.makeText(PlayerActivity.this,"Successfully reported Media",TastyToast.LENGTH_LONG,TastyToast.INFO);
+                TastyToast.makeText(PlayerActivity.this, "Successfully reported Media", TastyToast.LENGTH_LONG, TastyToast.INFO);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                TastyToast.makeText(PlayerActivity.this,"Error while reporting media, "+e,TastyToast.LENGTH_LONG,TastyToast.ERROR);
+                TastyToast.makeText(PlayerActivity.this, "Error while reporting media, " + e, TastyToast.LENGTH_LONG, TastyToast.ERROR);
             }
         });
 

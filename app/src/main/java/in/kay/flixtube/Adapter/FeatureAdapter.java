@@ -71,6 +71,7 @@ Context context;
                 intent.putExtra("imdb", model.getImdb());
                 intent.putExtra("type", "Movie");
                 intent.putExtra("trailer", model.getTrailer());
+                intent.putExtra("movieType",model.getType());
                 intent.putExtra("url", model.getUrl());
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);

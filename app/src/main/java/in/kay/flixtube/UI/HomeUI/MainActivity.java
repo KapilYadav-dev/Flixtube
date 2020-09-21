@@ -3,6 +3,7 @@ package in.kay.flixtube.UI.HomeUI;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,10 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +31,8 @@ import in.kay.flixtube.Adapter.MovieAdapter;
 import in.kay.flixtube.Adapter.SeriesAdapter;
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.Model.SeriesModel;
-import in.kay.flixtube.Model.UsersModel;
 import in.kay.flixtube.R;
-import in.kay.flixtube.Utils.Application;
+import in.kay.flixtube.UI.IntroUI.LandingActivity;
 import in.kay.flixtube.Utils.Helper;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,15 +44,13 @@ public class MainActivity extends AppCompatActivity {
     SeriesAdapter seriesAdapter;
     int size;
     Helper helper;
-    UsersModel usersModel;
-    Application application;
+    String name, violation, membership, mobileUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        application = (Application) this.getApplication();
-        initz();
+        InitzAll();
     }
 
     private void initz() {
@@ -57,6 +59,53 @@ public class MainActivity extends AppCompatActivity {
         LoadFeatured();
         LoadSeries();
         GetSizeRV();
+    }
+
+    private void InitzAll() {
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        helper = new Helper();
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                name = snapshot.child("Name").getValue(String.class);
+                membership = snapshot.child("Membership").getValue(String.class);
+                mobileUid = snapshot.child("MobileUid").getValue(String.class);
+                violation = snapshot.child("Violation").getValue(String.class);
+                String strmobileUid = helper.decryptedMsg(name, mobileUid);
+                if (strmobileUid.equalsIgnoreCase(helper.deviceId(MainActivity.this))) {
+                    findViewById(R.id.nsv_main).setVisibility(View.VISIBLE);
+                    initz();
+                } else {
+                    PopUp();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Log.d("UserValue", "Outside: " + name);
+    }
+
+    private void PopUp() {
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+        new iOSDialogBuilder(MainActivity.this)
+                .setTitle("Privacy Issue")
+                .setSubtitle("This isn't your device. Due to security permission, we can't let you to use this account.")
+                .setCancelable(false)
+                .setFont(font)
+                .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(MainActivity.this, LandingActivity.class));
+
+                    }
+                })
+                .build().show();
     }
 
 
@@ -95,11 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void LoadViews() {
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        /////
-        helper = new Helper();
-        /////
-        usersModel = application.getUsersModel();
         /////
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
         /////
@@ -114,12 +158,13 @@ public class MainActivity extends AppCompatActivity {
         /////
         rvMovies.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         rvFeatured.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvFeatured.setOnFlingListener(null);
         SnapHelper snapHelpernew = new PagerSnapHelper();
         snapHelpernew.attachToRecyclerView(rvFeatured);
         rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         /////
         tvName.setTypeface(font);
-        tvName.setText("Hey, " + usersModel.getName());
+        tvName.setText("Hey, " + name);
         tvFeatured.setTypeface(font);
         tvMovies.setTypeface(font);
         tvSeries.setTypeface(font);
@@ -131,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         movieAdapter = new MovieAdapter(options, this);
         rvMovies.setAdapter(movieAdapter);
-
+        movieAdapter.startListening();
     }
 
     private void LoadFeatured() {
@@ -140,8 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         featureAdapter = new FeatureAdapter(options, this);
         rvFeatured.setAdapter(featureAdapter);
-
-
+        featureAdapter.startListening();
     }
 
     private void LoadSeries() {
@@ -150,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         seriesAdapter = new SeriesAdapter(options, this);
         rvSeries.setAdapter(seriesAdapter);
-
+        seriesAdapter.startListening();
     }
 
 
@@ -181,19 +225,4 @@ public class MainActivity extends AppCompatActivity {
         android.os.Process.killProcess(pid);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        movieAdapter.startListening();
-        featureAdapter.startListening();
-        seriesAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        movieAdapter.stopListening();
-        featureAdapter.stopListening();
-        seriesAdapter.stopListening();
-    }
 }

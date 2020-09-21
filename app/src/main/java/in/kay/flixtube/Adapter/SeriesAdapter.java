@@ -72,6 +72,7 @@ Context context;
                 intent.putExtra("type", "Series");
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("key", getRef(position).getKey());
+                intent.putExtra("movieType",model.getType());
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }
