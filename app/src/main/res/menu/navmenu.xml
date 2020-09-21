@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item android:id="@+id/home"
+    android:icon="@drawable/ic_home"
+    android:title="Home"/>
+
+    <item android:id="@+id/downloads"
+        android:icon="@drawable/ic_baseline_cloud_download_24"
+        android:title="Downloads"/>
+
+    <item android:id="@+id/watchlist"
+        android:icon="@drawable/ic_watchlist"
+        android:title="Watchlist"/>
+
+    <item
+        android:id="@+id/membership"
+        android:icon="@drawable/ic_baseline_card_membership_24"
+        android:title="Membership" />
+
+    <item android:id="@+id/settings"
+        android:icon="@drawable/ic_baseline_settings_applications_24"
+        android:title="Settings"/>
+
+    <item android:id="@+id/help"
+        android:icon="@drawable/ic_help"
+        android:title="Help"/>
+
+    <item android:id="@+id/logout"
+        android:icon="@drawable/ic_baseline_power_settings_new_24"
+        android:title="Logout"/>
+
+
+</menu>
