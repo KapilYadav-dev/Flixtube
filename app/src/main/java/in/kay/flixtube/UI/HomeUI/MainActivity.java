@@ -168,6 +168,14 @@ public class MainActivity extends AppCompatActivity {
         tvFeatured.setTypeface(font);
         tvMovies.setTypeface(font);
         tvSeries.setTypeface(font);
+        if (membership.equalsIgnoreCase("VIP"))
+        {
+            findViewById(R.id.crown).setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            findViewById(R.id.crown).setVisibility(View.GONE);
+        }
     }
 
     private void LoadMovies() {

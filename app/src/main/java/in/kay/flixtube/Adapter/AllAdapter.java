@@ -60,8 +60,15 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
                                 .into(holder.img);
                     }
                 });
-        if (model.getType().equalsIgnoreCase("free")) {
-            holder.vip.setVisibility(View.GONE);
+        if (type.equalsIgnoreCase("Movies"))
+        {
+
+            if (model.getType().equalsIgnoreCase("free")) {
+                holder.vip.setVisibility(View.GONE);
+            }
+            else {
+                holder.vip.setVisibility(View.VISIBLE);
+            }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +105,7 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
             genre = itemView.findViewById(R.id.tv_genre);
             img = itemView.findViewById(R.id.iv_cover_img);
             vip = itemView.findViewById(R.id.iv_vip);
+            vip.setVisibility(View.GONE);
         }
     }
 }

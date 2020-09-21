@@ -17,6 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+            <ImageView
+                android:id="@+id/crown"
+                android:layout_width="30dp"
+                android:src="@drawable/ic_premium"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_toRightOf="@+id/tv_name"/>
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"

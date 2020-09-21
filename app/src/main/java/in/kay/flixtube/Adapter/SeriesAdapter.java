@@ -60,10 +60,6 @@ Context context;
                                 .into(holder.img);
                     }
                 });
-        if (model.getType().equalsIgnoreCase("free"))
-        {
-            holder.vip.setVisibility(View.GONE);
-        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +91,7 @@ Context context;
             genre=itemView.findViewById(R.id.tv_genre);
             img=itemView.findViewById(R.id.iv_cover_img);
             vip=itemView.findViewById(R.id.iv_vip);
+            vip.setVisibility(View.GONE);
         }
     }
 }

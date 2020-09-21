@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -26,12 +27,16 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +48,7 @@ import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
 import in.kay.flixtube.Utils.Helper;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements PaymentResultListener {
 
     String imdb, trailer, url, type, title, image, contentType;
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons, tvWatch;
@@ -119,6 +124,26 @@ public class DetailActivity extends AppCompatActivity {
             rvSeries.setAdapter(seriesPlayAdapter);
             seriesPlayAdapter.startListening();
         }
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Membership").setValue("VIP").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                TastyToast.makeText(DetailActivity.this,"Welcome to Flixtube VIP club...",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                TastyToast.makeText(DetailActivity.this,"Server down. Error : "+e,TastyToast.LENGTH_LONG,TastyToast.ERROR);
+            }
+        });
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        TastyToast.makeText(this,"Payment cancelled.",TastyToast.LENGTH_LONG,TastyToast.ERROR);
     }
 
     private class GetData extends AsyncTask<Void, Void, Void> {
@@ -238,14 +263,14 @@ public class DetailActivity extends AppCompatActivity {
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
         new iOSDialogBuilder(DetailActivity.this)
                 .setTitle("Buy Premium")
-                .setSubtitle("You discovered premium feature. Streaming is a premium content, thus require VIP account. Press Buy to continue")
+                .setSubtitle("You discovered a premium feature. Streaming a premium content requires VIP account. Press buy to continue")
                 .setBoldPositiveLabel(true)
                 .setFont(font)
                 .setCancelable(false)
                 .setPositiveListener(getString(R.string.buy), new iOSDialogClickListener() {
                     @Override
                     public void onClick(iOSDialog dialog) {
-                        Toast.makeText(DetailActivity.this, "Clicked!", Toast.LENGTH_LONG).show();
+                        BuyAccount();
                         dialog.dismiss();
 
                     }
@@ -257,6 +282,23 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 })
                 .build().show();
+    }
+
+    private void BuyAccount() {
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_sKxf90ARlhoVdi");
+        final Activity activity = this;
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Flixtube");
+            options.put("description", "Purchase premium Flixtube account");
+            options.put("currency", "INR");
+            String paisee = Integer.toString(Integer.parseInt("200") * 100);
+            options.put("amount", paisee);
+            checkout.open(activity, options);
+        } catch (Exception e) {
+            Toast.makeText(this, "Payment error please try again" + e, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void Download() {

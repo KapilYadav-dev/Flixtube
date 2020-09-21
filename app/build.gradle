@@ -44,6 +44,8 @@ dependencies {
     implementation 'com.github.yesidlazaro:GmailBackground:1.2.0'
     //Helper lib
     implementation 'in.dd4you.appsconfig:appsconfig:1.2.3'
+    //RazorPay
+    implementation 'com.razorpay:checkout:1.5.13'
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     //Volley
