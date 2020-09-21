@@ -1,5 +1,7 @@
 package in.kay.flixtube;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -73,9 +76,24 @@ public class navactivity extends AppCompatActivity {
                         break;
 
                     case R.id.logout:
-                        Toast.makeText(navactivity.this, "Logout activity open",Toast.LENGTH_SHORT).show();
+                        drawer.closeDrawer(GravityCompat.START);
+                        final AlertDialog.Builder logoutdialog= new AlertDialog.Builder(navactivity.this);
+                        logoutdialog.setTitle("Logout Box");
+                        logoutdialog.setMessage("Are you sure to logout?");
+                        logoutdialog.setCancelable(false);
+
+                        logoutdialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(navactivity.this,"Signed-out",Toast.LENGTH_SHORT).show();
+                                Intent intent= new Intent(navactivity.this,landingactivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                        logoutdialog.create().show();
                         break;
-                }
+                                }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
