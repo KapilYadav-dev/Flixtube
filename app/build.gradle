@@ -65,5 +65,8 @@ dependencies {
     implementation 'com.github.nisrulz:sensey:1.8.0'
     //Material dialog
     implementation 'com.gdacciaro:iosdialog:1.0.3'
+    //Material Lib
+    implementation 'com.google.android.material:material:1.0.0'
+
 
 }
