@@ -12,14 +12,12 @@ import com.squareup.picasso.Picasso;
 import in.dd4you.appsconfig.DD4YouConfig;
 
 public class Application extends android.app.Application {
-    DD4YouConfig dd4YouConfig;
 
     @Override
     public void onCreate() {
         super.onCreate();
         FirebaseOffline();
         PicassoOffline();
-        InternetCheck();
         PrefBuilder();
     }
 
@@ -33,12 +31,6 @@ public class Application extends android.app.Application {
                 .build();
     }
 
-    private void InternetCheck() {
-        dd4YouConfig = new DD4YouConfig(this);
-        if (!dd4YouConfig.isInternetConnectivity()) {
-            Toast.makeText(this, "Please check your internet connection...", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void FirebaseOffline() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
