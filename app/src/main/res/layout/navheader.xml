@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/expletus_sans_semibold_italic"
+        android:fontFamily="sans-serif-medium"
         android:text="Name"
         android:textColor="#221211"
         android:textSize="20dp" />
@@ -29,7 +29,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="15dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="sans-serif-light"
         android:text="Email address"
         android:textColor="#221211"
         android:textSize="18dp" />

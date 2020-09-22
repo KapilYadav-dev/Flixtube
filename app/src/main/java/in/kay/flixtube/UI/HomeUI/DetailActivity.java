@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,12 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -43,6 +36,13 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import in.kay.flixtube.Adapter.SeriesPlayAdapter;
 import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
@@ -52,7 +52,6 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
 
     String imdb, trailer, url, type, title, image, contentType;
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons, tvWatch;
-    RequestQueue requestQueue;
     ImageView iv;
     Helper helper;
     RecyclerView rvSeries;
@@ -63,9 +62,31 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        helper = new Helper();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        InitAll();
+        CheckInternet();
 
+    }
+
+    private void CheckInternet() {
+        if (helper.isNetwork(this)) {
+            InitAll();
+        } else {
+            Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+            new iOSDialogBuilder(this)
+                    .setTitle("Oh shucks!")
+                    .setSubtitle("Slow or no internet connection.\nPlease check your internet settings")
+                    .setCancelable(false)
+                    .setFont(font)
+                    .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                        @Override
+                        public void onClick(iOSDialog dialog) {
+                            CheckInternet();
+                            dialog.dismiss();
+                        }
+                    })
+                    .build().show();
+        }
     }
 
     private void InitAll() {
@@ -131,70 +152,85 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Membership").setValue("VIP").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                TastyToast.makeText(DetailActivity.this,"Welcome to Flixtube VIP club...",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                TastyToast.makeText(DetailActivity.this, "Welcome to Flixtube VIP club...", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                TastyToast.makeText(DetailActivity.this,"Server down. Error : "+e,TastyToast.LENGTH_LONG,TastyToast.ERROR);
+                TastyToast.makeText(DetailActivity.this, "Server down. Error : " + e, TastyToast.LENGTH_LONG, TastyToast.ERROR);
             }
         });
     }
 
     @Override
     public void onPaymentError(int i, String s) {
-        TastyToast.makeText(this,"Payment cancelled.",TastyToast.LENGTH_LONG,TastyToast.ERROR);
+        TastyToast.makeText(this, "Payment cancelled.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
     }
 
     private class GetData extends AsyncTask<Void, Void, Void> {
         @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            findViewById(R.id.progressBar).setVisibility(View.GONE);
+            findViewById(R.id.nsv_detail).setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected Void doInBackground(Void... voids) {
-            GetDatafromURL();
+            try {
+                GetDatafromURL();
+            } catch (JSONException | IOException e) {
+                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+            }
             return null;
         }
     }
 
-    private void GetDatafromURL() {
-        String URL = "http://www.omdbapi.com/?apikey=a7008f3&i=" + imdb + "&plot=long";
-        requestQueue = Volley.newRequestQueue(this);
-        StringRequest request = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+    private void GetDatafromURL() throws IOException, JSONException {
+        String strUrl = "http://www.omdbapi.com/?apikey=a7008f3&i=" + imdb + "&plot=long";
+        URL url = new URL(strUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        InputStream inputStream = connection.getInputStream();
+        if (inputStream == null) {
+            TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((line = br.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        final JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+        final String movieName = title = jsonObject.getString("Title");
+        final String movieGenre = jsonObject.getString("Genre");
+        final String movieImdb = jsonObject.getString("imdbRating");
+        final String movieDate = jsonObject.getString("Released");
+        final String movieTime = jsonObject.getString("Runtime");
+        final String moviePoster = image = jsonObject.getString("Poster");
+        final String moviePlot = jsonObject.getString("Plot");
+        final String movieCast = jsonObject.getString("Actors");
+        final String movieAward = jsonObject.getString("Awards");
+        runOnUiThread(new Runnable() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String movieName = title = jsonObject.getString("Title");
-                    String movieGenre = jsonObject.getString("Genre");
-                    String movieImdb = jsonObject.getString("imdbRating");
-                    String movieDate = jsonObject.getString("Released");
-                    String movieTime = jsonObject.getString("Runtime");
-                    String moviePoster = image = jsonObject.getString("Poster");
-                    Log.d("ImageValue", "Image is " + image);
-                    String moviePlot = jsonObject.getString("Plot");
-                    String movieCast = jsonObject.getString("Actors");
-                    String movieAward = jsonObject.getString("Awards");
-                    tvTitle.setText(movieName);
-                    tvAbout.setText(moviePlot);
-                    tvGenre.setText(movieGenre + "  |  " + movieDate);
-                    tvImdb.setText(movieImdb + "/10");
-                    tvCastName.setText(movieCast);
-                    tvAwards.setText(movieAward);
-                    tvTime.setText(movieTime);
-                    Picasso.get()
-                            .load(moviePoster)
-                            .into(iv);
-                    LoadSeries(jsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(DetailActivity.this, "Error occurred " + e, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailActivity.this, "Error occurred " + error, Toast.LENGTH_SHORT).show();
+            public void run() {
+                UpdateUI(jsonObject, movieName, movieGenre, movieImdb, movieDate, movieTime, moviePoster, moviePlot, movieCast, movieAward);
             }
         });
-        requestQueue.add(request);
+
+    }
+
+    private void UpdateUI(JSONObject jsonObject, String movieName, String movieGenre, String movieImdb, String movieDate, String movieTime, String moviePoster, String moviePlot, String movieCast, String movieAward) {
+        tvTitle.setText(movieName);
+        tvAbout.setText(moviePlot);
+        tvGenre.setText(movieGenre + "  |  " + movieDate);
+        tvImdb.setText(movieImdb + "/10");
+        tvCastName.setText(movieCast);
+        tvAwards.setText(movieAward);
+        tvTime.setText(movieTime);
+        Picasso.get()
+                .load(moviePoster)
+                .into(iv);
+        LoadSeries(jsonObject);
     }
 
     private void GetValues() {
@@ -303,7 +339,6 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
 
     public void Download() {
         TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-        helper = new Helper();
         helper.DownloadFile(this, title, "Movie", url);
     }
 

@@ -1,4 +1,4 @@
-package in.kay.flixtube;
+package in.kay.flixtube.UI.IntroUI;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +20,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class navactivity extends AppCompatActivity {
+import in.kay.flixtube.R;
+
+public class NavActivity extends AppCompatActivity {
 
     NavigationView nav;
     ActionBarDrawerToggle toggle;
@@ -52,32 +54,32 @@ public class navactivity extends AppCompatActivity {
                 switch(menuItem.getItemId())
                 {
                     case R.id.home:
-                        Toast.makeText(navactivity.this, "Home section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavActivity.this, "Home section open",Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.downloads:
-                        Toast.makeText(navactivity.this, "Downloads section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavActivity.this, "Downloads section open",Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.watchlist:
-                        Toast.makeText(navactivity.this, "Watchlist section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavActivity.this, "Watchlist section open",Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.membership:
-                        Toast.makeText(navactivity.this, "Membership section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavActivity.this, "Membership section open",Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.settings:
-                        Toast.makeText(navactivity.this, "Settings section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavActivity.this, "Settings section open",Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.help:
-                        Toast.makeText(navactivity.this, "Help section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavActivity.this, "Help section open",Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.logout:
                         drawer.closeDrawer(GravityCompat.START);
-                        final AlertDialog.Builder logoutdialog= new AlertDialog.Builder(navactivity.this);
+                        final AlertDialog.Builder logoutdialog= new AlertDialog.Builder(NavActivity.this);
                         logoutdialog.setTitle("Logout Box");
                         logoutdialog.setMessage("Are you sure to logout?");
                         logoutdialog.setCancelable(false);
@@ -86,8 +88,8 @@ public class navactivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 FirebaseAuth.getInstance().signOut();
-                                Toast.makeText(navactivity.this,"Signed-out",Toast.LENGTH_SHORT).show();
-                                Intent intent= new Intent(navactivity.this,landingactivity.class);
+                                Toast.makeText(NavActivity.this,"Signed-out",Toast.LENGTH_SHORT).show();
+                                Intent intent= new Intent(NavActivity.this, LandingActivity.class);
                                 startActivity(intent);
                             }
                         });

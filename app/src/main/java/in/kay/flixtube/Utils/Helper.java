@@ -34,6 +34,10 @@ public class Helper {
             return "Error";
         }
     }
+    public boolean isNetwork(Context context) {
+       dd4YouConfig=new DD4YouConfig(context);
+       return dd4YouConfig.isInternetConnectivity();
+    }
     public String decryptedMsg(String password,String str) {
         try {
             String decryptedMsg = AESCrypt.decrypt(password, str);

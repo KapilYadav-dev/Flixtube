@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,12 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import in.kay.flixtube.Adapter.AllAdapter;
 import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.R;
+import in.kay.flixtube.Utils.Helper;
 
 public class ViewAllActivity extends AppCompatActivity implements View.OnClickListener {
     RecyclerView rvAll;
@@ -26,16 +31,44 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
     EditText etQuery;
     ImageView ivSearch;
     String  type;
+    Helper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        type = getIntent().getStringExtra("type");
         setContentView(R.layout.activity_view_all);
+        type = getIntent().getStringExtra("type");
+        helper=new Helper();
+        CheckInternet();
+    }
+
+    private void InitzAll() {
         initz();
         LoadData("", type);
         SearchEvent(type);
         ClickEvents();
     }
+
+    private void CheckInternet() {
+        if (helper.isNetwork(this)) {
+            InitzAll();
+        } else {
+            Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+            new iOSDialogBuilder(this)
+                    .setTitle("Oh shucks!")
+                    .setSubtitle("Slow or no internet connection.\nPlease check your internet settings")
+                    .setCancelable(false)
+                    .setFont(font)
+                    .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                        @Override
+                        public void onClick(iOSDialog dialog) {
+                            CheckInternet();
+                            dialog.dismiss();
+                        }
+                    })
+                    .build().show();
+        }
+    }
+
 
     private void ClickEvents() {
         findViewById(R.id.tv_adventure).setOnClickListener(this);
