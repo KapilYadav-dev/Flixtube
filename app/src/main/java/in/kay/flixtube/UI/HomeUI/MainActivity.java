@@ -1,15 +1,22 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +27,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
     int size;
     Helper helper;
     String name, violation, membership, mobileUid;
+    NavigationView nav;
+    ActionBarDrawerToggle toggle;
+    DrawerLayout drawer;
+    TextView username;
+    TextView  useremail;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +68,72 @@ public class MainActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
         helper = new Helper();
         CheckInternet();
+        mAuth = FirebaseAuth.getInstance();
+
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        nav=(NavigationView)findViewById(R.id.navbar);
+        drawer =(DrawerLayout)findViewById(R.id.drawer);
+        useremail=findViewById(R.id.textemail);
+        //useremail.setText(mAuth.getCurrentUser().getEmail());
+
+        toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch(menuItem.getItemId())
+                {
+                    case R.id.home:
+                        Toast.makeText(MainActivity.this, "Home section open",Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.downloads:
+                        Toast.makeText(MainActivity.this, "Downloads section open",Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.watchlist:
+                        Toast.makeText(MainActivity.this, "Watchlist section open",Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.membership:
+                        Toast.makeText(MainActivity.this, "Membership section open",Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.settings:
+                        Toast.makeText(MainActivity.this, "Settings section open",Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.help:
+                        Toast.makeText(MainActivity.this, "Help section open",Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.logout:
+                        drawer.closeDrawer(GravityCompat.START);
+                        final AlertDialog.Builder logoutdialog= new AlertDialog.Builder(MainActivity.this);
+                        logoutdialog.setTitle("Logout Box");
+                        logoutdialog.setMessage("Are you sure to logout?");
+                        logoutdialog.setCancelable(false);
+
+                        logoutdialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(MainActivity.this,"Signed-out",Toast.LENGTH_SHORT).show();
+                                Intent intent= new Intent(MainActivity.this, LandingActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                        logoutdialog.create().show();
+                        break;
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
     }
 
     private void CheckInternet() {
