@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialog;
+import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialogListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import in.kay.flixtube.Adapter.FeatureAdapter;
 import in.kay.flixtube.Adapter.MovieAdapter;
@@ -104,31 +107,57 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.membership:
+                        InitAll();
 
-                        new iOSDialogBuilder(MainActivity.this)
-                                .setTitle("Membership")
-                                .setSubtitle("Subscribe to get access to unlimited movies...\n?")
-                                .setCancelable(false)
-                                .setPositiveListener(getString(R.string.subscribe), new iOSDialogClickListener() {
-                                    @Override
-                                    public void onClick(iOSDialog dialog) {
-                                        dialog.dismiss();
-                                        startActivity(new Intent(MainActivity.this, MembershipActivity.class));
-                                   }
-                                })
-                               .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
-                                    @Override
-                                    public void onClick(iOSDialog dialog) {
-                                        dialog.dismiss();
-                                   }
-                              })
-                                .build().show();
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
     }
+
+    private void InitAll() {
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final String membership = snapshot.child("Membership").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+            new TTFancyGifDialog.Builder(MainActivity.this)
+                    .setTitle("Membership")
+                    .setMessage("Get access to all of Flixtube's amazing content at just Rs. 200. What are you waiting for? Get set subscribe !!")
+                    .setPositiveBtnText("Subscribe")
+                    .setPositiveBtnBackground("#22b573")
+                    .setNegativeBtnText("Not now")
+                    .setNegativeBtnBackground("#c1272d")
+                    .setGifResource(R.drawable.subscription)      //pass your gif, png or jpg
+                    .isCancellable(true)
+                    .OnPositiveClicked(new TTFancyGifDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            if (membership.equalsIgnoreCase("VIP"))
+                                TastyToast.makeText(MainActivity.this,"You are already a member",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                            else {
+                                startActivity(new Intent(MainActivity.this, MembershipActivity.class));
+
+                            }
+                        }
+                    })
+                    .OnNegativeClicked(new TTFancyGifDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            TastyToast.makeText(MainActivity.this, "Cancel", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                        }
+                    })
+                    .build();
+        }
+
 
     private void LogoutPop() {
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
