@@ -104,7 +104,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="30dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="20dp"
                         android:fontFamily="sans-serif-medium"
                         android:onClick="ViewAllSeries"
                         android:text="View all"
@@ -119,7 +119,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="30dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="20dp"
                         android:fontFamily="sans-serif-medium"
                         android:onClick="ViewAllMovies"
                         android:text="View all"
@@ -141,7 +141,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="Series"
+                        android:text="WebSeries"
                         android:textColor="@color/white"
                         android:textSize="30dp" />
 

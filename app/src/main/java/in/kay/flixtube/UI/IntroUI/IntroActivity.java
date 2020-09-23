@@ -1,8 +1,10 @@
 package in.kay.flixtube.UI.IntroUI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
@@ -17,6 +19,27 @@ public class IntroActivity extends AhoyOnboarderActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirstTimeLogic();
+    }
+
+    private void FirstTimeLogic() {
+        final Boolean isFirstTime;
+        SharedPreferences app_preferences = PreferenceManager
+                .getDefaultSharedPreferences(IntroActivity.this);
+        SharedPreferences.Editor editor = app_preferences.edit();
+        isFirstTime = app_preferences.getBoolean("isFirstTime", true);
+        if (isFirstTime) {
+            Initz();
+            editor.putBoolean("isFirstTime", false);
+            editor.commit();
+        }
+        else
+        {
+            startActivity(new Intent(getApplicationContext(),LandingActivity.class));
+        }
+    }
+
+    private void Initz() {
         Sheet1();
         Sheet2();
         Sheet3();
@@ -52,7 +75,7 @@ public class IntroActivity extends AhoyOnboarderActivity {
     }
 
     private void Sheet1() {
-        ahoyOnboarderCard1 = new AhoyOnboarderCard("\uD835\uDD71\uD835\uDD91\uD835\uDD8E\uD835\uDD9D\uD835\uDD99\uD835\uDD9A\uD835\uDD87\uD835\uDD8A", "Flixtube is one of the largest internet TV and Movies provider in the world.", R.drawable.ic_flixtube);
+        ahoyOnboarderCard1 = new AhoyOnboarderCard("Flixtube", "Flixtube is one of the largest internet TV and Movies provider in the world.", R.drawable.ic_flixtube);
         ahoyOnboarderCard1.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard1.setTitleColor(R.color.white);
         ahoyOnboarderCard1.setDescriptionColor(R.color.white);

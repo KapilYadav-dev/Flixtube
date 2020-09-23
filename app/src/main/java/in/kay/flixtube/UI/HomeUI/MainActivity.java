@@ -27,6 +27,8 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +36,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import org.json.JSONObject;
 
 import in.kay.flixtube.Adapter.FeatureAdapter;
 import in.kay.flixtube.Adapter.MovieAdapter;
@@ -45,7 +51,7 @@ import in.kay.flixtube.R;
 import in.kay.flixtube.UI.IntroUI.LandingActivity;
 import in.kay.flixtube.Utils.Helper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PaymentResultListener {
     DatabaseReference rootRef;
     TextView tvName, tvFeatured, tvMovies, tvSeries;
     RecyclerView rvFeatured, rvMovies, rvSeries;
@@ -107,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.membership:
-                        InitAll();
-
+                        BuyPopUp();
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
@@ -116,19 +121,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void InitAll() {
-        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final String membership = snapshot.child("Membership").getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+    private void BuyPopUp() {
+        if (membership.equalsIgnoreCase("VIP")) {
+            TastyToast.makeText(getApplicationContext(), "You are already a VIP user...", TastyToast.LENGTH_LONG, TastyToast.INFO);
+        } else {
             new TTFancyGifDialog.Builder(MainActivity.this)
                     .setTitle("Membership")
                     .setMessage("Get access to all of Flixtube's amazing content at just Rs. 200. What are you waiting for? Get set subscribe !!")
@@ -141,12 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     .OnPositiveClicked(new TTFancyGifDialogListener() {
                         @Override
                         public void OnClick() {
-                            if (membership.equalsIgnoreCase("VIP"))
-                                TastyToast.makeText(MainActivity.this,"You are already a member",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
-                            else {
-                                startActivity(new Intent(MainActivity.this, MembershipActivity.class));
-
-                            }
+                            BuyAccount();
                         }
                     })
                     .OnNegativeClicked(new TTFancyGifDialogListener() {
@@ -158,6 +149,23 @@ public class MainActivity extends AppCompatActivity {
                     .build();
         }
 
+    }
+
+    private void BuyAccount() {
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_iSJv7N9Z4dJo63");
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Flixtube");
+            options.put("description", "Purchase premium Flixtube account");
+            options.put("currency", "INR");
+            String paisee = Integer.toString(Integer.parseInt("200") * 100);
+            options.put("amount", paisee);
+            checkout.open(MainActivity.this, options);
+        } catch (Exception e) {
+            TastyToast.makeText(getApplicationContext(), "Server error " + e, TastyToast.LENGTH_LONG, TastyToast.ERROR);
+        }
+    }
 
     private void LogoutPop() {
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
@@ -282,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 size = (int) snapshot.getChildrenCount();
-                Toast.makeText(MainActivity.this, Integer.toString(size), Toast.LENGTH_SHORT).show();
                 rvMovies.smoothScrollToPosition(size);
             }
 
@@ -320,6 +327,10 @@ public class MainActivity extends AppCompatActivity {
         tvSeries.setTypeface(font);
         if (membership.equalsIgnoreCase("VIP")) {
             findViewById(R.id.crown).setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            findViewById(R.id.crown).setVisibility(View.GONE);
         }
     }
 
@@ -382,5 +393,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         CheckInternet();
+    }
+
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Membership").setValue("VIP").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                TastyToast.makeText(MainActivity.this, "Welcome to Flixtube VIP club...", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                TastyToast.makeText(MainActivity.this, "Server down. Error : " + e, TastyToast.LENGTH_LONG, TastyToast.ERROR);
+            }
+        });
+    }
+
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        TastyToast.makeText(this, "Payment cancelled.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
