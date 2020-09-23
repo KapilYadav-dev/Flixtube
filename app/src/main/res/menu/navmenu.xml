@@ -13,15 +13,6 @@
         android:icon="@drawable/ic_watchlist"
         android:title="Watchlist"/>
 
-    <item
-        android:id="@+id/membership"
-        android:icon="@drawable/ic_baseline_card_membership_24"
-        android:title="Membership" />
-
-    <item android:id="@+id/settings"
-        android:icon="@drawable/ic_baseline_settings_applications_24"
-        android:title="Settings"/>
-
     <item android:id="@+id/help"
         android:icon="@drawable/ic_help"
         android:title="Help"/>

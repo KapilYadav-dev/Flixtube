@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
     TextView username;
-    TextView  useremail;
+    TextView useremail;
     FirebaseAuth mAuth;
 
     @Override
@@ -69,16 +69,18 @@ public class MainActivity extends AppCompatActivity {
         helper = new Helper();
         CheckInternet();
         mAuth = FirebaseAuth.getInstance();
+    }
 
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+    private void NavigationInitz() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        nav=(NavigationView)findViewById(R.id.navbar);
+        nav = (NavigationView) findViewById(R.id.navbar);
         nav.setItemIconTintList(null);
-        drawer =(DrawerLayout)findViewById(R.id.drawer);
-        useremail=findViewById(R.id.textemail);
+        drawer = (DrawerLayout) findViewById(R.id.drawer);
+        useremail = findViewById(R.id.textemail);
         //useremail.setText(mAuth.getCurrentUser().getEmail());
 
-        toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -86,55 +88,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-                switch(menuItem.getItemId())
-                {
-                    case R.id.home:
-                        Toast.makeText(MainActivity.this, "Home section open",Toast.LENGTH_SHORT).show();
-                        break;
-
+                switch (menuItem.getItemId()) {
                     case R.id.downloads:
-                        Toast.makeText(MainActivity.this, "Downloads section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Downloads section open", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.watchlist:
-                        Toast.makeText(MainActivity.this, "Watchlist section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Watchlist section open", Toast.LENGTH_SHORT).show();
                         break;
-
-                    case R.id.membership:
-                        Toast.makeText(MainActivity.this, "Membership section open",Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.settings:
-                        Toast.makeText(MainActivity.this, "Settings section open",Toast.LENGTH_SHORT).show();
-                        break;
-
                     case R.id.help:
-                        Toast.makeText(MainActivity.this, "Help section open",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Help section open", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.logout:
                         drawer.closeDrawer(GravityCompat.START);
-                        final AlertDialog.Builder logoutdialog= new AlertDialog.Builder(MainActivity.this);
-                        logoutdialog.setTitle("Logout Box");
-                        logoutdialog.setMessage("Are you sure to logout?");
-                        logoutdialog.setCancelable(false);
-
-                        logoutdialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                FirebaseAuth.getInstance().signOut();
-                                Toast.makeText(MainActivity.this,"Signed-out",Toast.LENGTH_SHORT).show();
-                                Intent intent= new Intent(MainActivity.this, LandingActivity.class);
-                                startActivity(intent);
-                            }
-                        });
-                        logoutdialog.create().show();
+                        LogoutPop();
                         break;
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
+    }
+
+    private void LogoutPop() {
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+        new iOSDialogBuilder(MainActivity.this)
+                .setTitle("See you soon,")
+                .setSubtitle("Ohh no! You're leaving...\nAre you sure?")
+                .setCancelable(false)
+                .setFont(font)
+                .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(MainActivity.this, LandingActivity.class));
+                    }
+                })
+                .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .build().show();
     }
 
     private void CheckInternet() {
@@ -160,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initz() {
         LoadViews();
+        NavigationInitz();
         LoadMovies();
         LoadFeatured();
         LoadSeries();
