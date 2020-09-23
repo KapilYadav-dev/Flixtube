@@ -157,4 +157,9 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
         rvAll.setAdapter(allAdapter);
         allAdapter.startListening();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CheckInternet();
+    }
 }

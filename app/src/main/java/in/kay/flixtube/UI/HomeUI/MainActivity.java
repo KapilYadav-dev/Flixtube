@@ -330,4 +330,9 @@ public class MainActivity extends AppCompatActivity {
         android.os.Process.killProcess(pid);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CheckInternet();
+    }
 }

@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.HashMap;
 
@@ -83,11 +84,11 @@ public class SignupActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         mAuth.getCurrentUser().sendEmailVerification();
-                        Toast.makeText(SignupActivity.this, name + ", you are registered successfully, check your email for verification", Toast.LENGTH_LONG).show();
+                        TastyToast.makeText(SignupActivity.this,"Welcome "+name+ " to Flixtube. Please check your mail for further process",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                         Createdatabase();
                         GotoLoginActivity();
                     } else
-                        Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        TastyToast.makeText(SignupActivity.this,task.getException().getMessage(),TastyToast.LENGTH_LONG,TastyToast.ERROR);
 
                 }
             });
