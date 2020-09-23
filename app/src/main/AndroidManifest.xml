@@ -14,18 +14,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UI.IntroUI.SignupActivity"
-            android:fitsSystemWindows="true" />
-        <activity android:name=".UI.IntroUI.LoginActivity"
-            android:fitsSystemWindows="true" />
-        <activity android:name=".UI.IntroUI.LandingActivity">
+        <activity android:name=".UI.IntroUI.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.HomeUI.ViewAllActivity"
+        <activity
+            android:name=".UI.IntroUI.SignupActivity"
+            android:fitsSystemWindows="true" />
+        <activity
+            android:name=".UI.IntroUI.LoginActivity"
+            android:fitsSystemWindows="true" />
+        <activity android:name=".UI.IntroUI.LandingActivity">
+
+        </activity>
+        <activity
+            android:name=".UI.HomeUI.ViewAllActivity"
             android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.HomeUI.PlayerActivity"
@@ -38,8 +44,7 @@
             android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.HomeUI.MainActivity"
-            android:fitsSystemWindows="true">
-        </activity>
+            android:fitsSystemWindows="true"></activity>
     </application>
 
 </manifest>

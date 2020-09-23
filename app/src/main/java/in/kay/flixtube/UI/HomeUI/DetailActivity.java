@@ -339,7 +339,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
 
     public void Download() {
         TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-        helper.DownloadFile(this, title, "Movie", url);
+        helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube",url));
     }
 
     @Override

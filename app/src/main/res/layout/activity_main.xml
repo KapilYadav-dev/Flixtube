@@ -37,7 +37,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="25dp"
                         android:layout_toRightOf="@+id/tv_name"
-                        android:src="@drawable/ic_premium" />
+                        android:src="@drawable/ic_premium"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_name"
@@ -158,7 +159,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 android:layout_marginTop="30dp"
+                android:layout_marginTop="30dp"
                 android:background="@color/colorPrimary" />
 
         </RelativeLayout>
@@ -166,6 +167,7 @@
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navbar"
             android:layout_width="wrap_content"
+            app:itemTextAppearance="@style/Font"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:layout_marginTop="30dp"

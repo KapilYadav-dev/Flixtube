@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F8A6A6"
+    android:background="#000000"
     android:orientation="vertical">
 
     <ImageView
@@ -19,7 +19,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="sans-serif-medium"
         android:text="Name"
-        android:textColor="#221211"
+        android:textColor="#FFFFFF"
         android:textSize="20dp" />
 
     <TextView
@@ -31,6 +31,6 @@
         android:layout_marginBottom="15dp"
         android:fontFamily="sans-serif-light"
         android:text="Email address"
-        android:textColor="#221211"
+        android:textColor="#FFFFFF"
         android:textSize="18dp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

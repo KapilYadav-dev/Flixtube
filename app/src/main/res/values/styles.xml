@@ -10,4 +10,9 @@
 
     </style>
 
+    <style name="Font">
+        <item name="android:fontFamily">@font/font_new</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
 </resources>

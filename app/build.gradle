@@ -67,6 +67,8 @@ dependencies {
     implementation 'com.gdacciaro:iosdialog:1.0.3'
     //Material Lib
     implementation 'com.google.android.material:material:1.0.0'
+    //Intro
+    implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
 
 
 }

@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         nav=(NavigationView)findViewById(R.id.navbar);
+        nav.setItemIconTintList(null);
         drawer =(DrawerLayout)findViewById(R.id.drawer);
         useremail=findViewById(R.id.textemail);
         //useremail.setText(mAuth.getCurrentUser().getEmail());
