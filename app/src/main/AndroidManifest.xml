@@ -30,6 +30,7 @@
         <activity android:name=".UI.IntroUI.LandingActivity">
 
         </activity>
+        <activity android:name=".UI.HomeUI.MembershipActivity"></activity>
         <activity
             android:name=".UI.HomeUI.ViewAllActivity"
             android:fitsSystemWindows="true" />

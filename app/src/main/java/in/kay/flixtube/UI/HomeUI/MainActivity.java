@@ -1,6 +1,5 @@
 package in.kay.flixtube.UI.HomeUI;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -104,6 +102,27 @@ public class MainActivity extends AppCompatActivity {
                         drawer.closeDrawer(GravityCompat.START);
                         LogoutPop();
                         break;
+
+                    case R.id.membership:
+
+                        new iOSDialogBuilder(MainActivity.this)
+                                .setTitle("Membership")
+                                .setSubtitle("Subscribe to get access to unlimited movies...\n?")
+                                .setCancelable(false)
+                                .setPositiveListener(getString(R.string.subscribe), new iOSDialogClickListener() {
+                                    @Override
+                                    public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
+                                        startActivity(new Intent(MainActivity.this, MembershipActivity.class));
+                                    }
+                                })
+                                .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
+                                    @Override
+                                    public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .build().show();
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
