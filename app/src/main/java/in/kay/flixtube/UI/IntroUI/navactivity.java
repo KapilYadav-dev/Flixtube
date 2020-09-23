@@ -1,4 +1,4 @@
-package in.kay.flixtube;
+package in.kay.flixtube.UI.IntroUI;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +20,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import in.kay.flixtube.R;
+
 public class navactivity extends AppCompatActivity {
+
 
     NavigationView nav;
     ActionBarDrawerToggle toggle;
@@ -87,7 +90,7 @@ public class navactivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 FirebaseAuth.getInstance().signOut();
                                 Toast.makeText(navactivity.this,"Signed-out",Toast.LENGTH_SHORT).show();
-                                Intent intent= new Intent(navactivity.this,landingactivity.class);
+                                Intent intent= new Intent(navactivity.this,LandingActivity.class);
                                 startActivity(intent);
                             }
                         });
