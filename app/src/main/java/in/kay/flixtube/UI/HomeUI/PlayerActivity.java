@@ -315,4 +315,10 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CheckInternet();
+    }
 }
