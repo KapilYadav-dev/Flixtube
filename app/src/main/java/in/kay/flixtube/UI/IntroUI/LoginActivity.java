@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import in.kay.flixtube.R;
 import in.kay.flixtube.UI.HomeUI.MainActivity;
@@ -71,23 +72,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         if (mAuth.getCurrentUser().isEmailVerified()) {
-                            Toast.makeText(LoginActivity.this, "Successful sign-in", Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(LoginActivity.this,"Welcome",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                            Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
                             GotoHome();
-                            FlagBool();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Your email isn't verified.", Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(LoginActivity.this,"Your mail isn't verified !!",TastyToast.LENGTH_LONG,TastyToast.WARNING);
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        TastyToast.makeText(LoginActivity.this,task.getException().getMessage(),TastyToast.LENGTH_LONG,TastyToast.ERROR);
                     }
                 }
             });
 
         }
-    }
-
-    private void FlagBool() {
-        Prefs.putBoolean("isFirst",false);
     }
 
     @Override

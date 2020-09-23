@@ -354,6 +354,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         intent.putExtra("title", title + " trailer");
         startActivity(intent);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
