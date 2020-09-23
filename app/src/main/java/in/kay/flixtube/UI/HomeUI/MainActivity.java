@@ -114,14 +114,14 @@ public class MainActivity extends AppCompatActivity {
                                     public void onClick(iOSDialog dialog) {
                                         dialog.dismiss();
                                         startActivity(new Intent(MainActivity.this, MembershipActivity.class));
-                                    }
+                                   }
                                 })
-                                .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
+                               .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
                                     @Override
                                     public void onClick(iOSDialog dialog) {
                                         dialog.dismiss();
-                                    }
-                                })
+                                   }
+                              })
                                 .build().show();
                 }
                 drawer.closeDrawer(GravityCompat.START);
