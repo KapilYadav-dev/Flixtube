@@ -61,6 +61,32 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        helper = new Helper();
+        CheckInternet();
+    }
+
+    private void CheckInternet() {
+        if (helper.isNetwork(this)) {
+            InitzAll();
+        } else {
+            Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+            new iOSDialogBuilder(this)
+                    .setTitle("Oh shucks!")
+                    .setSubtitle("Slow or no internet connection.\nPlease check your internet settings")
+                    .setCancelable(false)
+                    .setFont(font)
+                    .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                        @Override
+                        public void onClick(iOSDialog dialog) {
+                            CheckInternet();
+                            dialog.dismiss();
+                        }
+                    })
+                    .build().show();
+        }
+    }
+
+    private void InitzAll() {
         getValue();
         initz();
         SensorFn();
@@ -69,7 +95,6 @@ public class PlayerActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("Error", " exoplayer error " + e.toString());
         }
-
     }
 
     private void SensorFn() {
@@ -103,7 +128,6 @@ public class PlayerActivity extends AppCompatActivity {
     private void initz() {
         rootRef = FirebaseDatabase.getInstance().getReference();
         Sensey.getInstance().init(this);
-        helper = new Helper();
         Name = findViewById(R.id.title);
         Name.setText(title);
         exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exo_player_view);

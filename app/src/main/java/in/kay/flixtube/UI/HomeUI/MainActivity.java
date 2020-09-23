@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
         InitzAll();
 
         mAuth = FirebaseAuth.getInstance();
@@ -136,6 +137,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+=======
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        helper = new Helper();
+        CheckInternet();
+    }
+
+    private void CheckInternet() {
+        if (helper.isNetwork(this)) {
+            InitzAll();
+        } else {
+            Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
+            new iOSDialogBuilder(this)
+                    .setTitle("Oh shucks!")
+                    .setSubtitle("Slow or no internet connection.\nPlease check your internet settings")
+                    .setCancelable(false)
+                    .setFont(font)
+                    .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                        @Override
+                        public void onClick(iOSDialog dialog) {
+                            CheckInternet();
+                            dialog.dismiss();
+                        }
+                    })
+                    .build().show();
+        }
+>>>>>>> a45376dd22e06705ceb0f68f6ed2a4cfc582fb8a
     }
 
     private void initz() {
@@ -147,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void InitzAll() {
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        helper = new Helper();
         rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -187,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(MainActivity.this, LandingActivity.class));
-
                     }
                 })
                 .build().show();
@@ -218,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 size = (int) snapshot.getChildrenCount();
+                Toast.makeText(MainActivity.this, Integer.toString(size), Toast.LENGTH_SHORT).show();
                 rvMovies.smoothScrollToPosition(size);
             }
 
@@ -253,19 +278,14 @@ public class MainActivity extends AppCompatActivity {
         tvFeatured.setTypeface(font);
         tvMovies.setTypeface(font);
         tvSeries.setTypeface(font);
-        if (membership.equalsIgnoreCase("VIP"))
-        {
+        if (membership.equalsIgnoreCase("VIP")) {
             findViewById(R.id.crown).setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            findViewById(R.id.crown).setVisibility(View.GONE);
         }
     }
 
     private void LoadMovies() {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
-                .setQuery(rootRef.child("Movies"), MovieModel.class)
+                .setQuery(rootRef.child("Movies").limitToLast(5), MovieModel.class)
                 .build();
         movieAdapter = new MovieAdapter(options, this);
         rvMovies.setAdapter(movieAdapter);
@@ -283,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadSeries() {
         FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
-                .setQuery(rootRef.child("Webseries"), SeriesModel.class)
+                .setQuery(rootRef.child("Webseries").limitToLast(5), SeriesModel.class)
                 .build();
         seriesAdapter = new SeriesAdapter(options, this);
         rvSeries.setAdapter(seriesAdapter);
