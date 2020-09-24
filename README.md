@@ -27,4 +27,7 @@ A movie streaming app with great user interface and exciting features.
 
 7. Membership:- Avail much more by upgrading to a paid flixtube membership at very affordable prices.
 <h1>Screenshots</h1>
-![alt_text](https://raw.githubusercontent.com/KapilYadav-dev/Flixtube/master/Screenshots/home.PNG)
+
+   ---
+   
+![alt text](https://raw.githubusercontent.com/KapilYadav-dev/Flixtube/master/Screenshots/home.PNG)
