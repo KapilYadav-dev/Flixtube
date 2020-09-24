@@ -74,5 +74,6 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     //Custom dialog box
     implementation 'com.bestsoft32.tayyab:tt-fancy-gif-dialog:1.0.2'
+    //Custom dialog box
 }
 
