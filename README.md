@@ -30,4 +30,4 @@ A movie streaming app with great user interface and exciting features.
 
    ---
    
-![alt text](https://raw.githubusercontent.com/KapilYadav-dev/Flixtube/master/Screenshots/home.PNG)
+![alt text](https://1.bp.blogspot.com/-K7Fbbvx7kfI/X2zrqhJtAOI/AAAAAAAAAA0/iCeZ3P7hYkgGuRSifT1InD7asIzvUKjgQCNcBGAsYHQ/s1200/image1.png)
