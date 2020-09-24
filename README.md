@@ -1,4 +1,5 @@
 # Flixtube
+![Gif](https://1.bp.blogspot.com/-ixDVS-juYWQ/X2zvL2e4_HI/AAAAAAAAABA/IoRtP1s4PzwNWNz6b3HuHECcA-l3H9FSgCNcBGAsYHQ/s600/intro.gif)
 <h1>Short Description 😄</h1>
 A movie streaming app with great user interface and exciting features. 
 <h1>Features</h1>
