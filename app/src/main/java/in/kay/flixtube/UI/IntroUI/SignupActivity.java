@@ -135,16 +135,12 @@ public class SignupActivity extends AppCompatActivity {
                         "                <div id=\":ln\" class=\"a3s aXjCH msg-735102637744627034\"><u></u>\n" +
                         "                    <div width=\"100%\" bgcolor=\"#0d253f\" style=\"position: relative;top: 5rem;margin:0;\">\n" +
                         "                        <center style=\"width:100%;text-align:left;\">\n" +
-                        "                            <div style=\"display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;font-family:sans-serif\">\n" +
-                        "                                Hi mrkaydev, welcome to TMDb! Thanks for registering an account on The Movie\n" +
-                        "                                Database (TMDb). We're excited to see you join the community.\n" +
-                        "                            </div>\n" +
                         "                            <div style=\"max-width:680px;margin:auto\" class=\"m_-735102637744627034email-container\">\n" +
                         "                                <table role=\"presentation\" aria-hidden=\"true\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"center\" width=\"100%\" style=\"max-width:680px\">\n" +
                         "                                    <tbody>\n" +
                         "                                        <tr>\n" +
                         "                                            <td style=\"padding-top:30px;padding-left:20px;padding-right:20px;text-align:left\">\n" +
-                        "                                                <img style=\"display:block\" src=\"https://1.bp.blogspot.com/-nSfV5mMt7RM/X2yVffDd5lI/AAAAAAAAAAo/H6vrGaWJE7Uwk1Pr9xxE3PRbwQp8kS7ewCNcBGAsYHQ/s1304/Logo.png\" aria-hidden=\"true\" width=\"auto\" height=\"58\" alt=\"The Movie Database (TMDb)\" border=\"0\" class=\"CToWUd\">\n" +
+                        "                                                <img style=\"display:block\" src=\"https://1.bp.blogspot.com/-nSfV5mMt7RM/X2yVffDd5lI/AAAAAAAAAAo/H6vrGaWJE7Uwk1Pr9xxE3PRbwQp8kS7ewCNcBGAsYHQ/s1304/Logo.png\" aria-hidden=\"true\" width=\"auto\" height=\"58\"  border=\"0\" class=\"CToWUd\">\n" +
                         "                                            </td>\n" +
                         "                                        </tr>\n" +
                         "                                    </tbody>\n" +
@@ -226,18 +222,6 @@ public class SignupActivity extends AppCompatActivity {
                         "    <div class=\"ajx\"></div>\n" +
                         "</body>\n" +
                         "</html>")
-                .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(getApplicationContext(), "Send invoice to mail.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .withOnFailCallback(new BackgroundMail.OnFailCallback() {
-                    @Override
-                    public void onFail() {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .send();
     }
 
