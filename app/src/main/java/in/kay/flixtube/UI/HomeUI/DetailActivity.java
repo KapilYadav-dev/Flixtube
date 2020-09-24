@@ -1,9 +1,12 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -299,11 +302,9 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
+                if (snapshot.exists()) {
                     likeButton.setLiked(true);
-                }
-                else {
+                } else {
                     likeButton.setLiked(false);
                 }
             }
@@ -406,8 +407,26 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     }
 
     public void Download() {
-        TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-        helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+        } else {
+            TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+            helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1000) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                TastyToast.makeText(DetailActivity.this, "Permission successfully granted...", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
+
+            } else {
+                TastyToast.makeText(DetailActivity.this, "Please allow us to download..", Toast.LENGTH_SHORT, TastyToast.CONFUSING);
+                finish();
+            }
+        }
     }
 
     @Override
