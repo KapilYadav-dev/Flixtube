@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -42,6 +47,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 import in.kay.flixtube.Adapter.SeriesPlayAdapter;
 import in.kay.flixtube.Model.SeriesModel;
@@ -50,13 +56,14 @@ import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity implements PaymentResultListener {
 
-    String imdb, trailer, url, type, title, image, contentType;
+    String imdb, trailer, url, type, title, image, contentType, key;
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons, tvWatch;
     ImageView iv;
     Helper helper;
     RecyclerView rvSeries;
     DatabaseReference rootRef;
     SeriesPlayAdapter seriesPlayAdapter;
+    LikeButton likeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +187,14 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             try {
                 GetDatafromURL();
             } catch (JSONException | IOException e) {
-                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                Log.d("ErrorIS", "Error is " + e);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    }
+                });
+
             }
             return null;
         }
@@ -234,6 +248,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     }
 
     private void GetValues() {
+        key = getIntent().getStringExtra("key");
         imdb = getIntent().getStringExtra("imdb");
         trailer = getIntent().getStringExtra("trailer");
         type = getIntent().getStringExtra("type");
@@ -246,6 +261,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         Typeface brandon = Typeface.createFromAsset(this.getAssets(), "Brandon.ttf");
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "Gilroy-Light.ttf");
         /////////////////////////////////
+        likeButton = findViewById(R.id.star_button);
         tvTitle = findViewById(R.id.tv_title);
         tvCasting = findViewById(R.id.tv_casting);
         tvImdb = findViewById(R.id.tv_imdb);
@@ -274,7 +290,59 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         tvCasting.setTypeface(brandon);
         tvAward.setTypeface(brandon);
         tvWatch.setTypeface(brandon);
+        CheckLike();
+        LikeClick();
 
+    }
+
+    private void CheckLike() {
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                {
+                    likeButton.setLiked(true);
+                }
+                else {
+                    likeButton.setLiked(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void LikeClick() {
+        likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(final LikeButton likeButton) {
+                likeButton.setLiked(true);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("image", image);
+                map.put("title", title);
+                rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        TastyToast.makeText(getApplicationContext(), "Added to watchlist successfully", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        TastyToast.makeText(getApplicationContext(), "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    }
+                });
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                likeButton.setLiked(false);
+                rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).setValue(null);
+                TastyToast.makeText(getApplicationContext(), "Removed from watchlist", TastyToast.LENGTH_LONG, TastyToast.INFO);
+            }
+        });
     }
 
     public void PlayMovie(String membership) {
@@ -339,7 +407,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
 
     public void Download() {
         TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-        helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube",url));
+        helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url));
     }
 
     @Override

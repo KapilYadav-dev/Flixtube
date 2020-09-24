@@ -69,6 +69,7 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel, MovieAdapt
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("imdb", model.getImdb());
                 intent.putExtra("type", "Movie");
+                intent.putExtra("key", getRef(position).getKey());
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("url", model.getUrl());
                 intent.putExtra("movieType",model.getType());

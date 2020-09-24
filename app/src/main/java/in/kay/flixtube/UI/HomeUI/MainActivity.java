@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialog;
 import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialogListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -251,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     }
 
     private void PopUp() {
+        SendSecurityMail(helper.decryptedMsg(name,email));
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
         new iOSDialogBuilder(MainActivity.this)
                 .setTitle("Privacy Issue")
@@ -266,6 +268,162 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                     }
                 })
                 .build().show();
+    }
+
+    private void SendSecurityMail(String mail) {
+        BackgroundMail.newBuilder(this)
+                .withUsername(helper.decryptedMsg("Flixtube","oOnn5LVNkpTVyu1K619Po1pN0BBMN+9y5RCT9ALXjto="))
+                .withPassword(helper.decryptedMsg("Flixtube","RkS001zLel/UerhgNCNJGw=="))
+                .withProcessVisibility(false)
+                .withMailto(mail)
+                .withType(BackgroundMail.TYPE_HTML)
+                .withSubject("Alert "+name)
+                .withBody("<html lang=\"en\" data-lt-installed=\"true\"><head>\n" +
+                        "    <meta charset=\"utf-8\">\n" +
+                        "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
+                        "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                        "    <title></title>\n" +
+                        "    <link href=\"https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700\" rel=\"stylesheet\" type=\"text/css\">\n" +
+                        "\n" +
+                        "<style>\n" +
+                        "    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');\n" +
+                        "    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');\n" +
+                        "</style>\n" +
+                        "</head>\n" +
+                        "<body style=\"background-image: url('https://1.bp.blogspot.com/-xbuQ3STFAxY/X2x6eGIe-nI/AAAAAAAAAAc/pqe7fThqZqk6xMl5dzL8VYjhd7VukGmUQCNcBGAsYHQ/s1920/intro_back.png'); background-attachment: fixed; background-repeat: no-repeat;background-size: cover;\">\n" +
+                        "    <div class=\"adn ads\" style=\"display:block\" data-message-id=\"#msg-f:1678715116486140118\" data-legacy-message-id=\"174bfe81153c20d6\">\n" +
+                        "        <div class=\"aju\">\n" +
+                        "        </div>\n" +
+                        "        <div id=\":lo\">\n" +
+                        "            <div class=\"qQVYZb\"></div>\n" +
+                        "            <div class=\"utdU2e\"></div>\n" +
+                        "            <div class=\"lQs8Hd\" jsaction=\"SN3rtf:rcuQ6b\" jscontroller=\"i3Ohde\"></div>\n" +
+                        "            <div class=\"btm\"></div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"\">\n" +
+                        "            <div class=\"aHl\"></div>\n" +
+                        "            <div id=\":mt\" tabindex=\"-1\"></div>\n" +
+                        "            <div id=\":lm\" class=\"ii gt\">\n" +
+                        "                <div id=\":ln\" class=\"a3s aXjCH msg-735102637744627034\"><u></u>\n" +
+                        "                    <div width=\"100%\" bgcolor=\"#0d253f\" style=\"position: relative;top: 5rem;margin:0;\">\n" +
+                        "                        <center style=\"width:100%;text-align:left;\">\n" +
+                        "                            <div style=\"max-width:680px;margin:auto\" class=\"m_-735102637744627034email-container\">\n" +
+                        "                                <table role=\"presentation\" aria-hidden=\"true\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"center\" width=\"100%\" style=\"max-width:680px\">\n" +
+                        "                                    <tbody>\n" +
+                        "                                        <tr>\n" +
+                        "                                            <td style=\"padding-top:30px;padding-left:20px;padding-right:20px;text-align:left\">\n" +
+                        "                                                <img style=\"display:block\" src=\"https://1.bp.blogspot.com/-nSfV5mMt7RM/X2yVffDd5lI/AAAAAAAAAAo/H6vrGaWJE7Uwk1Pr9xxE3PRbwQp8kS7ewCNcBGAsYHQ/s1304/Logo.png\" aria-hidden=\"true\" width=\"auto\" height=\"58\" border=\"0\" class=\"CToWUd\">\n" +
+                        "                                            </td>\n" +
+                        "                                        </tr>\n" +
+                        "                                    </tbody>\n" +
+                        "                                </table>\n" +
+                        "                                <table class=\"m_-735102637744627034email-container\" role=\"presentation\" aria-hidden=\"true\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"center\" width=\"100%\" style=\"max-width:680px\">\n" +
+                        "                                    <tbody>\n" +
+                        "                                        <tr>\n" +
+                        "                                            <td>\n" +
+                        "                                                <table role=\"presentation\" aria-hidden=\"true\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                        <tr>\n" +
+                        "                                                            <td style=\"padding:40px 20px 0 20px;text-align:left;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#fff\">\n" +
+                        "                                                                <h2 style=\"font-size: 2.5rem;font-family: 'Poppins', sans-serif;font-weight:700;/* color: red; */letter-spacing:0.08em;margin:0 0 8px 0;color: #ff5520;\">Alert !!</h2>\n" +
+                        "                                                                <hr style=\"text-align:left;margin:0px;width:40px;height:3px;color:#01b4e4;background-color:#01b4e4;border-radius:4px;border:none\">\n" +
+                        "\n" +
+                        "                                                                <p style=\"font-weight:300;color:#fff;font-family: 'Poppins', sans-serif;font-size: 2rem;\">Your account get logged into "+helper.getDeviceInfo(this)+"</p>\n" +
+                        "\n" +
+                        "                                                                <p style=\"font-size: 1.5rem;font-family: 'Poppins', sans-serif;font-weight:300;color:#fff;\">This attempt has been blocked for security purpose.</p>\n" +
+                        "                                                                <p style=\"margin:40px 0;color:#fff\"></p>\n" +
+                        "                                                            </td>\n" +
+                        "                                                        </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </td>\n" +
+                        "                                        </tr>\n" +
+                        "                                    </tbody>\n" +
+                        "                                </table>\n" +
+                        "                                <table class=\"m_-735102637744627034email-container\" role=\"presentation\" aria-hidden=\"true\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"center\" width=\"100%\" style=\"max-width:680px\">\n" +
+                        "                                    <tbody>\n" +
+                        "                                        <tr>\n" +
+                        "                                            <td style=\"padding:30px 20px 30px 20px\">\n" +
+                        "                                                <hr style=\"color:#fff;height:1px;border:0;background-color:#fff\">\n" +
+                        "                                            </td>\n" +
+                        "                                        </tr>\n" +
+                        "                                        <tr>\n" +
+                        "                                        </tr>\n" +
+                        "                                        <tr>\n" +
+                        "                                            <td align=\"left\" valign=\"top\" style=\"color:#fff;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:normal;padding:0 20px\">\n" +
+                        "                                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse:collapse\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                        <tr>\n" +
+                        "                                                        </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </td>\n" +
+                        "                                        </tr>\n" +
+                        "                                        <tr>\n" +
+                        "                                            <td style=\"padding:0 20px 40px 20px;width:100%;font-size:13px;font-family:'Source Sans Pro',Arial,sans-serif;text-align:left;color:#fff\" class=\"m_-735102637744627034x-gmail-data-detectors\">\n" +
+                        "                                                <p style=\"margin:0;padding:0;font-size:13px\">You are receiving this\n" +
+                        "                                                    email because you are a registered user on Flixtube</p>\n" +
+                        "                                            </td>\n" +
+                        "                                        </tr>\n" +
+                        "                                    </tbody>\n" +
+                        "                                </table>\n" +
+                        "                            </div>\n" +
+                        "                        </center>\n" +
+                        "                        <div class=\"yj6qo\"></div>\n" +
+                        "                        <div class=\"adL\">\n" +
+                        "                        </div>\n" +
+                        "                    </div>\n" +
+                        "                    <div class=\"adL\">\n" +
+                        "                    </div>\n" +
+                        "                </div>\n" +
+                        "            </div>\n" +
+                        "            <div id=\":mp\" class=\"ii gt\" style=\"display:none\">\n" +
+                        "                <div id=\":mo\" class=\"a3s aXjCH undefined\"></div>\n" +
+                        "            </div>\n" +
+                        "            <div class=\"hi\"></div>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "    <div class=\"ajx\"></div>\n" +
+                        "<!-- Code injected by live-server -->\n" +
+                        "<script type=\"text/javascript\">\n" +
+                        "\t// <![CDATA[  <-- For SVG support\n" +
+                        "\tif ('WebSocket' in window) {\n" +
+                        "\t\t(function () {\n" +
+                        "\t\t\tfunction refreshCSS() {\n" +
+                        "\t\t\t\tvar sheets = [].slice.call(document.getElementsByTagName(\"link\"));\n" +
+                        "\t\t\t\tvar head = document.getElementsByTagName(\"head\")[0];\n" +
+                        "\t\t\t\tfor (var i = 0; i < sheets.length; ++i) {\n" +
+                        "\t\t\t\t\tvar elem = sheets[i];\n" +
+                        "\t\t\t\t\tvar parent = elem.parentElement || head;\n" +
+                        "\t\t\t\t\tparent.removeChild(elem);\n" +
+                        "\t\t\t\t\tvar rel = elem.rel;\n" +
+                        "\t\t\t\t\tif (elem.href && typeof rel != \"string\" || rel.length == 0 || rel.toLowerCase() == \"stylesheet\") {\n" +
+                        "\t\t\t\t\t\tvar url = elem.href.replace(/(&|\\?)_cacheOverride=\\d+/, '');\n" +
+                        "\t\t\t\t\t\telem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());\n" +
+                        "\t\t\t\t\t}\n" +
+                        "\t\t\t\t\tparent.appendChild(elem);\n" +
+                        "\t\t\t\t}\n" +
+                        "\t\t\t}\n" +
+                        "\t\t\tvar protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';\n" +
+                        "\t\t\tvar address = protocol + window.location.host + window.location.pathname + '/ws';\n" +
+                        "\t\t\tvar socket = new WebSocket(address);\n" +
+                        "\t\t\tsocket.onmessage = function (msg) {\n" +
+                        "\t\t\t\tif (msg.data == 'reload') window.location.reload();\n" +
+                        "\t\t\t\telse if (msg.data == 'refreshcss') refreshCSS();\n" +
+                        "\t\t\t};\n" +
+                        "\t\t\tif (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {\n" +
+                        "\t\t\t\tconsole.log('Live reload enabled.');\n" +
+                        "\t\t\t\tsessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);\n" +
+                        "\t\t\t}\n" +
+                        "\t\t})();\n" +
+                        "\t}\n" +
+                        "\telse {\n" +
+                        "\t\tconsole.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');\n" +
+                        "\t}\n" +
+                        "\t// ]]>\n" +
+                        "</script>\n" +
+                        "</body></html>")
+                .send();
     }
 
 

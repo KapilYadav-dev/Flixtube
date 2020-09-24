@@ -34,6 +34,10 @@ public class Helper {
             return "Error";
         }
     }
+    public String getDeviceInfo(Context context) {
+        dd4YouConfig=new DD4YouConfig(context);
+        return dd4YouConfig.getDeviceManufacturer()+" "+dd4YouConfig.getDeviceModel();
+    }
     public boolean isNetwork(Context context) {
        dd4YouConfig=new DD4YouConfig(context);
        return dd4YouConfig.isInternetConnectivity();
