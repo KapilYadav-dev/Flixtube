@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayer exoPlayer;
     String videoURL, enUrl, title;
     TextView Name;
-    ImageView back;
+    ImageView back,share;
     FlipDetector.FlipListener flipListener;
     DatabaseReference rootRef;
     Helper helper;
@@ -63,6 +64,23 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         helper = new Helper();
         CheckInternet();
+        share= findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onshare();
+            }
+        });
+    }
+    private void onshare() {
+        //  Uri imguri= Uri.parse("android..resource://in.flixtube/drawable/"+R.drawable.ic_flixtube);
+        Intent shareintent = new Intent(Intent.ACTION_SEND);
+        // shareintent.setType("image/*");
+       //  shareintent.putExtra(Intent.EXTRA_STREAM,imguri);
+        shareintent.setType("text/plain");
+        shareintent.putExtra(Intent.EXTRA_TITLE,"Flixtube");
+        shareintent.putExtra(Intent.EXTRA_TEXT,"Hey, am watching "+title+ " on Flixtube.\nJoin the app through the link for hassle-free binge watching.");
+        startActivity(Intent.createChooser(shareintent,"Share via "));
     }
 
     private void CheckInternet() {

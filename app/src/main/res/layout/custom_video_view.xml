@@ -62,6 +62,14 @@
         android:layout_marginEnd="150dp"
         android:src="@drawable/ic_fast_forward" />
 
+    <ImageView
+        android:id="@+id/share"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_share"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
