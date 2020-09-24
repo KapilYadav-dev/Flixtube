@@ -6,18 +6,19 @@
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
     tools:context=".UI.HomeUI.DetailActivity">
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_detail"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -68,7 +69,7 @@
                 android:layout_below="@id/cv_Top"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="40dp"
                 android:ellipsize="end"
                 android:letterSpacing="0.05"
                 android:maxLines="2"
@@ -77,22 +78,22 @@
                 android:textSize="32dp" />
 
             <com.like.LikeButton
-                app:icon_type="heart"
-                app:icon_size="10dp"
-                android:layout_below="@id/cv_Top"
-                android:layout_marginHorizontal="335dp"
-                android:layout_marginTop="20dp"
-
                 android:id="@+id/star_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/cv_Top"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                app:anim_scale_factor="2"
+                app:circle_end_color="@color/colorAccent"
                 app:circle_start_color="@color/colorAccent"
                 app:dots_primary_color="@color/colorAccent"
                 app:dots_secondary_color="#FFFF00"
-                app:circle_end_color="@color/colorAccent"
-                app:liked="false"
-                app:anim_scale_factor="5"
-                app:is_enabled="true"/>
+                app:icon_size="25dp"
+                app:icon_type="heart"
+                app:like_drawable="@drawable/ic_add"
+                app:unlike_drawable="@drawable/ic_not_add" />
 
             <TextView
                 android:id="@+id/tv_genre"
@@ -275,8 +276,8 @@
                 android:layout_below="@id/tv_watch"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:paddingBottom="50dp"
                 android:layout_marginEnd="20dp"
+                android:paddingBottom="50dp"
                 android:visibility="gone" />
 
             <LinearLayout

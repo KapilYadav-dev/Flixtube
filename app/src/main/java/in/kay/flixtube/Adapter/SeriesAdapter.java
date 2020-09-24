@@ -69,6 +69,7 @@ Context context;
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("key", getRef(position).getKey());
                 intent.putExtra("movieType",model.getType());
+                intent.putExtra("key", getRef(position).getKey());
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }

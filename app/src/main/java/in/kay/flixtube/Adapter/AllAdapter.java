@@ -60,13 +60,11 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
                                 .into(holder.img);
                     }
                 });
-        if (type.equalsIgnoreCase("Movies"))
-        {
+        if (type.equalsIgnoreCase("Movies")) {
 
             if (model.getType().equalsIgnoreCase("free")) {
                 holder.vip.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.vip.setVisibility(View.VISIBLE);
             }
         }
