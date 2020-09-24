@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     SeriesAdapter seriesAdapter;
     int size;
     Helper helper;
-    String name, violation, membership, mobileUid;
+    String name, violation, membership, mobileUid,email;
     NavigationView nav;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
@@ -85,8 +85,9 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         nav.setItemIconTintList(null);
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         useremail = findViewById(R.id.textemail);
-        //useremail.setText(mAuth.getCurrentUser().getEmail());
-
+        useremail.setText(helper.decryptedMsg(name,email));
+        username=findViewById(R.id.textname);
+        username.setText(name);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         drawer.addDrawerListener(toggle);
@@ -229,6 +230,8 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                 membership = snapshot.child("Membership").getValue(String.class);
                 mobileUid = snapshot.child("MobileUid").getValue(String.class);
                 violation = snapshot.child("Violation").getValue(String.class);
+                email=snapshot.child("Email").getValue(String.class);
+
                 String strmobileUid = helper.decryptedMsg(name, mobileUid);
                 if (strmobileUid.equalsIgnoreCase(helper.deviceId(MainActivity.this))) {
                     findViewById(R.id.nsv_main).setVisibility(View.VISIBLE);

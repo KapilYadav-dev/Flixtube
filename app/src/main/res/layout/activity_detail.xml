@@ -76,6 +76,24 @@
                 android:textColor="@color/white"
                 android:textSize="32dp" />
 
+            <com.like.LikeButton
+                app:icon_type="heart"
+                app:icon_size="10dp"
+                android:layout_below="@id/cv_Top"
+                android:layout_marginHorizontal="335dp"
+                android:layout_marginTop="20dp"
+
+                android:id="@+id/star_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:circle_start_color="@color/colorAccent"
+                app:dots_primary_color="@color/colorAccent"
+                app:dots_secondary_color="#FFFF00"
+                app:circle_end_color="@color/colorAccent"
+                app:liked="false"
+                app:anim_scale_factor="5"
+                app:is_enabled="true"/>
+
             <TextView
                 android:id="@+id/tv_genre"
                 android:layout_width="wrap_content"
