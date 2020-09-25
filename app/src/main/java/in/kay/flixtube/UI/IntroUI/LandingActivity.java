@@ -43,8 +43,11 @@ FirebaseAuth mAuth;
             case R.id.btn_signup:
                 startActivity(new Intent(LandingActivity.this, SignupActivity.class));
                 break;
-
-
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing
     }
 }
