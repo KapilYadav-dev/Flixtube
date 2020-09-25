@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.scottyab.aescrypt.AESCrypt;
 
+import java.io.File;
 import java.security.GeneralSecurityException;
 
 import in.dd4you.appsconfig.DD4YouConfig;
@@ -67,7 +68,7 @@ public class Helper {
         return time;
     }
 
-    public void DownloadFile(Context context,String title,String type,String url) {
+    public void DownloadFile(Context context, String title, String type, String url, String path) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription(type);
         request.setTitle(title);
@@ -75,7 +76,7 @@ public class Helper {
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         }
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title+".mp4");
+        request.setDestinationInExternalPublicDir(path, title+".mp4");
         DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
     }

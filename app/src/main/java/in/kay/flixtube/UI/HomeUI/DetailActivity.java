@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -45,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -416,8 +418,12 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         } else {
+            File myDirectory = new File("/Flixtube");
+            if(!myDirectory.exists()) {
+                myDirectory.mkdirs();
+            }
             TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-            helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url));
+            helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url),myDirectory.getAbsolutePath());
         }
     }
 
