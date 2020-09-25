@@ -69,14 +69,20 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onshare();
+
             }
         });
     }
     private void onshare() {
-        //  Uri imguri= Uri.parse("android..resource://in.flixtube/drawable/"+R.drawable.ic_flixtube);
+       //BitmapDrawable bitmapdrawable= (BitmapDrawable) shareimg.getDrawable();
+       // Bitmap bitmap = bitmapdrawable.getBitmap();
+      //  String imgpath= MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"Image", null);
+
+       // Uri imguri= Uri.parse(imgpath);
         Intent shareintent = new Intent(Intent.ACTION_SEND);
-        // shareintent.setType("image/*");
-       //  shareintent.putExtra(Intent.EXTRA_STREAM,imguri);
+       // shareintent.setType("image/*");
+        //shareintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        //shareintent.putExtra(Intent.EXTRA_STREAM,imguri);
         shareintent.setType("text/plain");
         shareintent.putExtra(Intent.EXTRA_TITLE,"Flixtube");
         shareintent.putExtra(Intent.EXTRA_TEXT,"Hey, am watching "+title+ " on Flixtube.\nJoin the app through the link for hassle-free binge watching.");

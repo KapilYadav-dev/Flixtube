@@ -50,6 +50,7 @@ import in.kay.flixtube.Model.MovieModel;
 import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
 import in.kay.flixtube.UI.IntroUI.LandingActivity;
+import in.kay.flixtube.UI.IntroUI.mail;
 import in.kay.flixtube.Utils.Helper;
 
 public class MainActivity extends AppCompatActivity implements PaymentResultListener {
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                         Toast.makeText(MainActivity.this, "Watchlist section open", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.help:
-                        Toast.makeText(MainActivity.this, "Help section open", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, mail.class));
                         break;
 
                     case R.id.logout:
