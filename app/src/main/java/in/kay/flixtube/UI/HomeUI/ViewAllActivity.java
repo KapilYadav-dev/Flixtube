@@ -122,6 +122,9 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.tv_horror:
                 searchData("Horror");
                 break;
+            case R.id.tv_all_content:
+                LoadData("", type);
+                break;
             case R.id.tv_adventure:
                 searchData("Adventure");
                 break;
@@ -161,5 +164,9 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         CheckInternet();
+    }
+
+    public void back(View view) {
+        onBackPressed();
     }
 }

@@ -14,5 +14,14 @@
         <item name="android:fontFamily">@font/font_new</item>
         <item name="android:textSize">20dp</item>
     </style>
+    <style name="ThemeOverlay.AppCompat.navTheme">
+
+        <!-- Color of text and icon when SELECTED -->
+        <item name="colorPrimary">@color/white</item>
+
+        <!-- Background color when SELECTED -->
+        <item name="colorControlHighlight">@color/darkRed</item>
+
+    </style>
 
 </resources>

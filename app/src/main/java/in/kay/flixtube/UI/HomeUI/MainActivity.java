@@ -3,6 +3,7 @@ package in.kay.flixtube.UI.HomeUI;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     SeriesAdapter seriesAdapter;
     int size;
     Helper helper;
-    String name, violation, membership, mobileUid,email;
+    String name, violation, membership, mobileUid, email;
     NavigationView nav;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
@@ -87,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         nav.setItemIconTintList(null);
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         useremail = findViewById(R.id.textemail);
-        useremail.setText(helper.decryptedMsg(name,email));
-        username=findViewById(R.id.textname);
+        useremail.setText(helper.decryptedMsg(name, email));
+        username = findViewById(R.id.textname);
         username.setText(name);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
@@ -222,6 +223,17 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         LoadFeatured();
         LoadSeries();
         GetSizeRV();
+        HideLoading();
+    }
+
+    private void HideLoading() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                findViewById(R.id.rl).setVisibility(View.VISIBLE);
+            }
+        }, 1500);
     }
 
     private void InitzAll() {
@@ -232,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                 membership = snapshot.child("Membership").getValue(String.class);
                 mobileUid = snapshot.child("MobileUid").getValue(String.class);
                 violation = snapshot.child("Violation").getValue(String.class);
-                email=snapshot.child("Email").getValue(String.class);
+                email = snapshot.child("Email").getValue(String.class);
 
                 String strmobileUid = helper.decryptedMsg(name, mobileUid);
                 if (strmobileUid.equalsIgnoreCase(helper.deviceId(MainActivity.this))) {
@@ -253,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     }
 
     private void PopUp() {
-        SendSecurityMail(helper.decryptedMsg(name,email));
+        SendSecurityMail(helper.decryptedMsg(name, email));
         Typeface font = Typeface.createFromAsset(this.getAssets(), "Gilroy-ExtraBold.ttf");
         new iOSDialogBuilder(MainActivity.this)
                 .setTitle("Privacy Issue")
@@ -273,12 +285,12 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
 
     private void SendSecurityMail(String mail) {
         BackgroundMail.newBuilder(this)
-                .withUsername(helper.decryptedMsg("Flixtube","oOnn5LVNkpTVyu1K619Po1pN0BBMN+9y5RCT9ALXjto="))
-                .withPassword(helper.decryptedMsg("Flixtube","RkS001zLel/UerhgNCNJGw=="))
+                .withUsername(helper.decryptedMsg("Flixtube", "oOnn5LVNkpTVyu1K619Po1pN0BBMN+9y5RCT9ALXjto="))
+                .withPassword(helper.decryptedMsg("Flixtube", "RkS001zLel/UerhgNCNJGw=="))
                 .withProcessVisibility(false)
                 .withMailto(mail)
                 .withType(BackgroundMail.TYPE_HTML)
-                .withSubject("Alert "+name)
+                .withSubject("Alert " + name)
                 .withBody("<html lang=\"en\" data-lt-installed=\"true\"><head>\n" +
                         "    <meta charset=\"utf-8\">\n" +
                         "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
@@ -329,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                         "                                                                <h2 style=\"font-size: 2.5rem;font-family: 'Poppins', sans-serif;font-weight:700;/* color: red; */letter-spacing:0.08em;margin:0 0 8px 0;color: #ff5520;\">Alert !!</h2>\n" +
                         "                                                                <hr style=\"text-align:left;margin:0px;width:40px;height:3px;color:#01b4e4;background-color:#01b4e4;border-radius:4px;border:none\">\n" +
                         "\n" +
-                        "                                                                <p style=\"font-weight:300;color:#fff;font-family: 'Poppins', sans-serif;font-size: 2rem;\">Your account get logged into "+helper.getDeviceInfo(this)+"</p>\n" +
+                        "                                                                <p style=\"font-weight:300;color:#fff;font-family: 'Poppins', sans-serif;font-size: 2rem;\">Your account get logged into " + helper.getDeviceInfo(this) + "</p>\n" +
                         "\n" +
                         "                                                                <p style=\"font-size: 1.5rem;font-family: 'Poppins', sans-serif;font-weight:300;color:#fff;\">This attempt has been blocked for security purpose.</p>\n" +
                         "                                                                <p style=\"margin:40px 0;color:#fff\"></p>\n" +
@@ -489,9 +501,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         tvSeries.setTypeface(font);
         if (membership.equalsIgnoreCase("VIP")) {
             findViewById(R.id.crown).setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             findViewById(R.id.crown).setVisibility(View.GONE);
         }
     }
@@ -579,5 +589,40 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         TastyToast.makeText(this, "Payment cancelled.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("TAGMSG", "onStart: ");
+        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TAGMSG", "onPause: ");
+        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TAGMSG", "onStop: ");
+        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("TAGMSG", "onDestroy: ");
+        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TAGMSG", "onRestart: ");
+        Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
 }

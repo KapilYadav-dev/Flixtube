@@ -3,8 +3,12 @@ package in.kay.flixtube.UI.IntroUI;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.View;
 
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
@@ -15,14 +19,29 @@ import java.util.List;
 
 import in.kay.flixtube.R;
 
-public class IntroActivity extends AhoyOnboarderActivity {
+public class IntroClass extends AhoyOnboarderActivity {
     AhoyOnboarderCard ahoyOnboarderCard1,ahoyOnboarderCard2,ahoyOnboarderCard3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TakePermission();
         FirstTimeLogic();
         hideSystemUI();
     }
+
+    private void TakePermission() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                startActivity(intent);
+            }
+        }
+    }
+
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
@@ -39,7 +58,7 @@ public class IntroActivity extends AhoyOnboarderActivity {
     private void FirstTimeLogic() {
         final Boolean isFirstTime;
         SharedPreferences app_preferences = PreferenceManager
-                .getDefaultSharedPreferences(IntroActivity.this);
+                .getDefaultSharedPreferences(IntroClass.this);
         SharedPreferences.Editor editor = app_preferences.edit();
         isFirstTime = app_preferences.getBoolean("isFirstTime", true);
         if (isFirstTime) {
@@ -100,6 +119,6 @@ public class IntroActivity extends AhoyOnboarderActivity {
 
     @Override
     public void onFinishButtonPressed() {
-        startActivity(new Intent(IntroActivity.this,LandingActivity.class));
+        startActivity(new Intent(IntroClass.this,LandingActivity.class));
     }
 }

@@ -293,9 +293,15 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void ContinueWatching() {
-        Prefs.putString("url", videoURL);
-        Prefs.putString("title", title);
-        Prefs.putLong("time", exoPlayer.getCurrentPosition());
+        try {
+            Prefs.putString("url", videoURL);
+            Prefs.putString("title", title);
+            Prefs.putLong("time", exoPlayer.getCurrentPosition());
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     private void pausePlayer() {

@@ -6,32 +6,40 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_flixtube" />
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/ic_splash" />
 
     <TextView
         android:id="@+id/textname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:fontFamily="sans-serif-medium"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/brandon"
         android:text="Name"
         android:textColor="#FFFFFF"
-        android:textSize="20dp" />
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/textemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="15dp"
-        android:fontFamily="sans-serif-light"
+        android:layout_marginStart="10dp"
+        android:alpha="0.8"
+        android:fontFamily="@font/font_new"
         android:text="Email address"
         android:textColor="#FFFFFF"
         android:textSize="18dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#707070"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_gravity="bottom"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

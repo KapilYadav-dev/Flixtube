@@ -177,6 +177,10 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         TastyToast.makeText(this, "Payment cancelled.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
     }
 
+    public void back(View view) {
+        onBackPressed();
+    }
+
     private class GetData extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -187,6 +191,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
 
         @Override
         protected Void doInBackground(Void... voids) {
+            Log.d("LOGMSG", "ASYNC CALLED");
             try {
                 GetDatafromURL();
             } catch (JSONException | IOException e) {

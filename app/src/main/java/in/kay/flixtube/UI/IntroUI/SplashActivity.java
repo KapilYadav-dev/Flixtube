@@ -1,11 +1,10 @@
 package in.kay.flixtube.UI.IntroUI;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -18,13 +17,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         YoYo.with(Techniques.FadeOut)
-                .duration(3000)
+                .duration(3500)
                 .playOn(findViewById(R.id.iv));
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashActivity.this, IntroActivity.class);
+                Intent i = new Intent(SplashActivity.this, IntroClass.class);
                 startActivity(i);
                 finish();
             }
