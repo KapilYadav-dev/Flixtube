@@ -1,6 +1,8 @@
 package in.kay.flixtube.UI.HomeUI;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -180,6 +182,14 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
         hideSystemUI();
+        findViewById(R.id.lock).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                TastyToast.makeText(getApplicationContext(),"Back to sensor mode",TastyToast.LENGTH_SHORT,TastyToast.INFO);
+                return false;
+            }
+        });
     }
 
     private void ExoPlayerLogic() {
@@ -228,9 +238,12 @@ public class PlayerActivity extends AppCompatActivity {
                     onBackPressed();
 
                 } else if (playbackState == ExoPlayer.STATE_BUFFERING) {
+                    findViewById(R.id.exo_player_progress_bar).setVisibility(View.VISIBLE);
+                    findViewById(R.id.rl).setVisibility(View.GONE);
 
                 } else if (!(playbackState == ExoPlayer.STATE_BUFFERING)) {
-
+                    findViewById(R.id.exo_player_progress_bar).setVisibility(View.GONE);
+                    findViewById(R.id.rl).setVisibility(View.VISIBLE);
                 }
             }
 
@@ -364,4 +377,15 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
 
+    public void LockMode(View view) {
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            TastyToast.makeText(getApplicationContext(),"Locked to Portrait Mode",TastyToast.LENGTH_SHORT,TastyToast.INFO);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            TastyToast.makeText(getApplicationContext(),"Locked to Landscape Mode",TastyToast.LENGTH_SHORT,TastyToast.INFO);
+        }
+
+    }
 }

@@ -1,106 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#242626">
 
-    <TextView
-        android:id="@+id/tv_one"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="200dp"
-        android:alpha="0.8"
-        android:text="Email"
-        android:textColor="@color/white"
-        android:textSize="14dp" />
-
-    <EditText
-        android:id="@+id/et_email"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:maxLines="1"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:layout_below="@id/tv_one"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.9"
-        android:background="@drawable/back_black"
-        android:hint="Enter your email address"
-        android:padding="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="#B1AEAE"
-        android:textSize="18dp" />
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_email"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:alpha="0.8"
-        android:text="Password"
-        android:textColor="@color/white"
-        android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="200dp"
+                android:alpha="0.8"
+                android:text="Email"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
 
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="match_parent"
-        android:maxLines="1"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_two"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:inputType="text"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.9"
-        android:background="@drawable/back_black"
-        android:hint="Enter your password"
-        android:padding="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="#B1AEAE"
-        android:textSize="18dp" />
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_one"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:alpha="0.9"
+                android:background="@drawable/back_black"
+                android:hint="Enter your email address"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:padding="15dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B1AEAE"
+                android:textSize="18dp" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/button"
-        android:text="Log in"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18dp" />
+            <TextView
+                android:id="@+id/tv_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_email"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="40dp"
+                android:alpha="0.8"
+                android:text="Password"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/tv_forgot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_login"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:alpha="0.8"
-        android:text="Forgotten password? Reset"
-        android:textColor="@color/white"
-        android:textSize="18dp" />
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_two"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:alpha="0.9"
+                android:background="@drawable/back_black"
+                android:hint="Enter your password"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="15dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B1AEAE"
+                android:textSize="18dp" />
 
-    <TextView
-        android:id="@+id/tv_signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="60dp"
-        android:alpha="1"
-        android:text="Didn't have a account? Sign up"
-        android:textColor="@color/white"
-        android:textSize="18dp" />
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_password"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button"
+                android:text="Log in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tv_forgot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_login"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:alpha="0.8"
+                android:text="Forgotten password? Reset"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tv_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_forgot"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="60dp"
+                android:alpha="1"
+                android:text="Didn't have a account? Sign up"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

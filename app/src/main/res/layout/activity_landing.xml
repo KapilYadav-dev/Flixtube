@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#101212"
     tools:context=".UI.IntroUI.LandingActivity">
 
-    <ImageView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="230dp"
-        android:background="@drawable/ic_landing_back" />
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="230dp"
+                android:background="@drawable/ic_landing_back" />
 
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_landing"
-        android:layout_marginTop="70dp"/>
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="70dp"
+                android:src="@drawable/ic_landing" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="230dp"
-        android:textAllCaps="false"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button2"
-        android:layout_below="@id/img"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:text="Login"
-        android:textColor="@color/white"/>
-    <Button
-        android:id="@+id/btn_signup"
-        android:textAllCaps="false"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:layout_below="@id/btn_login"
-        android:textSize="18dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Sign up"
-        android:textColor="@color/white"/>
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="150dp"
+                android:background="@drawable/button2"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
+            <Button
+                android:id="@+id/btn_signup"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_login"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button"
+                android:text="Sign up"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

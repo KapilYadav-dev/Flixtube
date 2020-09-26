@@ -12,7 +12,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/ic_back" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="150dp"
         android:ellipsize="end"
         android:fontFamily="@font/raleway_medium"
@@ -35,7 +35,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="50dp"
         android:src="@drawable/ic_rewind" />
 
     <ImageView
@@ -59,7 +59,7 @@
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="150dp"
+        android:layout_marginEnd="50dp"
         android:src="@drawable/ic_fast_forward" />
 
     <ImageView
@@ -70,7 +70,15 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp" />
 
-
+    <ImageView
+        android:id="@+id/lock"
+        android:onClick="LockMode"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_lock"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

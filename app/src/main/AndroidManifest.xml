@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission  android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:name=".Utils.Application"
@@ -20,6 +20,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.IntroUI.SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,29 +30,29 @@
         </activity>
         <activity
             android:name=".UI.IntroUI.IntroClass"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.IntroUI.SignupActivity"
-            android:fitsSystemWindows="true"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.IntroUI.LoginActivity"
-            android:fitsSystemWindows="true"
-            android:screenOrientation="portrait"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.IntroUI.LandingActivity"
-            android:fitsSystemWindows="true"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.HomeUI.ViewAllActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.HomeUI.PlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:fitsSystemWindows="true"
-            android:resizeableActivity="true"
-            android:screenOrientation="landscape" />
+            android:resizeableActivity="true" />
         <activity
             android:name=".UI.HomeUI.DetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

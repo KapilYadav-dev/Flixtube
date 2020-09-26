@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:background="#242626">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
@@ -192,12 +198,14 @@
         android:id="@+id/tv_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/btn_signup"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:alpha="1"
         android:text="Already have an account? Login"
         android:textColor="@color/white"
         android:textSize="18dp" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
