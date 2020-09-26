@@ -210,45 +210,81 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     }
 
     private void GetDatafromURL() throws IOException, JSONException {
-        String strUrl = "https://api.themoviedb.org/3/find/"+imdb+"?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US&external_source=imdb_id";
-        URL url = new URL(strUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        InputStream inputStream = connection.getInputStream();
-        if (inputStream == null) {
-            TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
-        }
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
-        StringBuilder stringBuilder = new StringBuilder();
-        while ((line = br.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        final JSONObject parentObject = new JSONObject(stringBuilder.toString());
-        final JSONArray parentarray= parentObject.getJSONArray("movie_results");
-        final JSONObject jsonObject = parentarray.getJSONObject(0);
-
-        final String movieName = title = jsonObject.getString("title");
-        // final String movieGenre = jsonObject.getString("Genre");
-        final double movieImdb = jsonObject.getDouble("vote_average");
-        final String movieDate = jsonObject.getString("release_date");
-        // final String movieTime = jsonObject.getString("Runtime");
-        final String moviePoster = image = "https://image.tmdb.org/t/p/w500"+jsonObject.getString("poster_path");
-        final String moviePlot = jsonObject.getString("overview");
-        //final String movieCast = jsonObject.getString("Actors");
-        // final String movieAward = jsonObject.getString("Awards");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
+        if (type.equalsIgnoreCase("Series") || type.equalsIgnoreCase("Webseries")) {
+            String strUrl = "https://api.themoviedb.org/3/find/" + imdb + "?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US&external_source=imdb_id";
+            URL url = new URL(strUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            if (inputStream == null) {
+                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
             }
-        });
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            final JSONObject parentObject = new JSONObject(stringBuilder.toString());
+            final JSONArray parentarray = parentObject.getJSONArray("tv_results");
+            final JSONObject jsonObject = parentarray.getJSONObject(0);
+
+            final String movieName = title = jsonObject.getString("original_name");
+            // final String movieGenre = jsonObject.getString("Genre");
+            final double movieImdb = jsonObject.getDouble("vote_average");
+            final String movieDate = jsonObject.getString("first_air_date");
+            // final String movieTime = jsonObject.getString("Runtime");
+            final String moviePoster = image = "https://image.tmdb.org/t/p/w500" + jsonObject.getString("poster_path");
+            final String moviePlot = jsonObject.getString("overview");
+            //final String movieCast = jsonObject.getString("Actors");
+            // final String movieAward = jsonObject.getString("Awards");
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
+                }
+            });
+        } else {
+            String strUrl = "https://api.themoviedb.org/3/find/" + imdb + "?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US&external_source=imdb_id";
+            URL url = new URL(strUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            if (inputStream == null) {
+                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            final JSONObject parentObject = new JSONObject(stringBuilder.toString());
+            final JSONArray parentarray = parentObject.getJSONArray("movie_results");
+            final JSONObject jsonObject = parentarray.getJSONObject(0);
+
+            final String movieName = title = jsonObject.getString("title");
+            // final String movieGenre = jsonObject.getString("Genre");
+            final double movieImdb = jsonObject.getDouble("vote_average");
+            final String movieDate = jsonObject.getString("release_date");
+            // final String movieTime = jsonObject.getString("Runtime");
+            final String moviePoster = image = "https://image.tmdb.org/t/p/w500" + jsonObject.getString("poster_path");
+            final String moviePlot = jsonObject.getString("overview");
+            //final String movieCast = jsonObject.getString("Actors");
+            // final String movieAward = jsonObject.getString("Awards");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
+                }
+            });
+        }
     }
 
     private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot) {
         tvTitle.setText(movieName);
         tvAbout.setText(moviePlot);
-        tvGenre.setText(movieDate);
+        tvGenre.setText("Release date : "+movieDate);
         tvImdb.setText(movieImdb + "/10");
         //tvCastName.setText(movieCast);
         //tvAwards.setText(movieAward);
