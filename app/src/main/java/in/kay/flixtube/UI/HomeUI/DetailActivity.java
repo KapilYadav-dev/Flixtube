@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -42,6 +41,7 @@ import com.razorpay.PaymentResultListener;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -210,7 +210,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     }
 
     private void GetDatafromURL() throws IOException, JSONException {
-        String strUrl = "http://www.omdbapi.com/?apikey=a7008f3&i=" + imdb + "&plot=long";
+        String strUrl = "https://api.themoviedb.org/3/find/"+imdb+"?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US&external_source=imdb_id";
         URL url = new URL(strUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         InputStream inputStream = connection.getInputStream();
@@ -223,33 +223,36 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         while ((line = br.readLine()) != null) {
             stringBuilder.append(line);
         }
-        final JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-        final String movieName = title = jsonObject.getString("Title");
-        final String movieGenre = jsonObject.getString("Genre");
-        final String movieImdb = jsonObject.getString("imdbRating");
-        final String movieDate = jsonObject.getString("Released");
-        final String movieTime = jsonObject.getString("Runtime");
-        final String moviePoster = image = jsonObject.getString("Poster");
-        final String moviePlot = jsonObject.getString("Plot");
-        final String movieCast = jsonObject.getString("Actors");
-        final String movieAward = jsonObject.getString("Awards");
+        final JSONObject parentObject = new JSONObject(stringBuilder.toString());
+        final JSONArray parentarray= parentObject.getJSONArray("movie_results");
+        final JSONObject jsonObject = parentarray.getJSONObject(0);
+
+        final String movieName = title = jsonObject.getString("title");
+        // final String movieGenre = jsonObject.getString("Genre");
+        final double movieImdb = jsonObject.getDouble("vote_average");
+        final String movieDate = jsonObject.getString("release_date");
+        // final String movieTime = jsonObject.getString("Runtime");
+        final String moviePoster = image = "https://image.tmdb.org/t/p/w500"+jsonObject.getString("poster_path");
+        final String moviePlot = jsonObject.getString("overview");
+        //final String movieCast = jsonObject.getString("Actors");
+        // final String movieAward = jsonObject.getString("Awards");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                UpdateUI(jsonObject, movieName, movieGenre, movieImdb, movieDate, movieTime, moviePoster, moviePlot, movieCast, movieAward);
+
+                UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
             }
         });
-
     }
 
-    private void UpdateUI(JSONObject jsonObject, String movieName, String movieGenre, String movieImdb, String movieDate, String movieTime, String moviePoster, String moviePlot, String movieCast, String movieAward) {
+    private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot) {
         tvTitle.setText(movieName);
         tvAbout.setText(moviePlot);
-        tvGenre.setText(movieGenre + "  |  " + movieDate);
+        tvGenre.setText(movieDate);
         tvImdb.setText(movieImdb + "/10");
-        tvCastName.setText(movieCast);
-        tvAwards.setText(movieAward);
-        tvTime.setText(movieTime);
+        //tvCastName.setText(movieCast);
+        //tvAwards.setText(movieAward);
+        //tvTime.setText(movieTime);
         Picasso.get()
                 .load(moviePoster)
                 .into(iv);
