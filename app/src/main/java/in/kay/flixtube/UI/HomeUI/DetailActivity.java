@@ -77,7 +77,6 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         helper = new Helper();
         rootRef = FirebaseDatabase.getInstance().getReference();
         CheckInternet();
-
     }
 
     private void CheckInternet() {

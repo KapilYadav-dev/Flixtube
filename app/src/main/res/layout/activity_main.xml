@@ -7,12 +7,6 @@
     android:background="@color/colorBlack"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
@@ -24,144 +18,13 @@
             android:id="@+id/rl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:context=".UI.HomeUI.MainActivity">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nsv_main"
+            <FrameLayout
+                android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="70dp"
-                android:visibility="gone">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/crown"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_toRightOf="@+id/tv_name"
-                        android:src="@drawable/ic_premium"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tv_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Hi, Amy"
-                        android:textColor="@color/white"
-                        android:textSize="30dp" />
-
-                    <TextView
-                        android:id="@+id/tv_slogan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_name"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/raleway_medium"
-                        android:text="Ready to choose your movie?"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-
-
-                    <TextView
-                        android:id="@+id/tv_featured"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_slogan"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="50dp"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Featured"
-                        android:textColor="@color/white"
-                        android:textSize="30dp" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_featured"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_featured"
-                        android:layout_margin="10dp" />
-
-                    <TextView
-                        android:id="@+id/tv_movies"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/rv_featured"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Movies"
-                        android:textColor="@color/white"
-                        android:textSize="30dp" />
-
-                    <TextView
-                        android:id="@+id/tv_series_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/rv_movies"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:onClick="ViewAllSeries"
-                        android:text="View all"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/tv_movie_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/rv_featured"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:onClick="ViewAllMovies"
-                        android:text="View all"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_movies"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_movies"
-                        android:layout_margin="10dp" />
-
-                    <TextView
-                        android:id="@+id/tv_series"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/rv_movies"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-black"
-                        android:text="WebSeries"
-                        android:textColor="@color/white"
-                        android:textSize="30dp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_series"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_series"
-                        android:layout_margin="10dp" />
-
-                </RelativeLayout>
-            </androidx.core.widget.NestedScrollView>
+                android:layout_height="match_parent"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

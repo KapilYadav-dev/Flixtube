@@ -1,8 +1,12 @@
 package in.kay.flixtube.Utils;
 
 import android.content.ContextWrapper;
+import android.graphics.Typeface;
 import android.widget.Toast;
 
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -10,9 +14,9 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import in.dd4you.appsconfig.DD4YouConfig;
+import in.kay.flixtube.R;
 
 public class Application extends android.app.Application {
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -20,6 +24,7 @@ public class Application extends android.app.Application {
         PicassoOffline();
         PrefBuilder();
     }
+
 
 
     private void PrefBuilder() {
