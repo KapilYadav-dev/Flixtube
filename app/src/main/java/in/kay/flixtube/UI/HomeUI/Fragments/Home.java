@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import in.kay.flixtube.Utils.Helper;
 
 public class Home extends Fragment implements PaymentResultListener {
 
+    Context mcontext;
     View view;
     DatabaseReference rootRef;
     TextView tvName, tvFeatured, tvMovies, tvSeries;
@@ -58,6 +60,17 @@ public class Home extends Fragment implements PaymentResultListener {
     String name, violation, membership, mobileUid, email;
     FirebaseAuth mAuth;
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mcontext=context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     private void INITZ() {
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -94,7 +107,7 @@ public class Home extends Fragment implements PaymentResultListener {
                 view.findViewById(R.id.progressBar).setVisibility(View.GONE);
                 view.findViewById(R.id.rr).setVisibility(View.VISIBLE);
             }
-        }, 3000);
+        },  1000);
     }
 
     private void InitzAll() {
@@ -108,9 +121,10 @@ public class Home extends Fragment implements PaymentResultListener {
                 email = snapshot.child("Email").getValue(String.class);
 
                 String strmobileUid = helper.decryptedMsg(name, mobileUid);
-                if (strmobileUid.equalsIgnoreCase(helper.deviceId(getContext()))) {
+                initz();
+                if (strmobileUid.equalsIgnoreCase(helper.deviceId(mcontext))) {
                     view.findViewById(R.id.nsv_main).setVisibility(View.VISIBLE);
-                    initz();
+
                 } else {
                     PopUp();
                 }
@@ -126,8 +140,8 @@ public class Home extends Fragment implements PaymentResultListener {
 
     private void PopUp() {
         SendSecurityMail(helper.decryptedMsg(name, email));
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "Gilroy-ExtraBold.ttf");
-        new iOSDialogBuilder(getContext())
+        Typeface font = Typeface.createFromAsset(mcontext.getAssets(), "Gilroy-ExtraBold.ttf");
+        new iOSDialogBuilder(mcontext)
                 .setTitle("Privacy Issue")
                 .setSubtitle("This isn't your device. Due to security permission, we can't let you to use this account.")
                 .setCancelable(false)
@@ -137,14 +151,14 @@ public class Home extends Fragment implements PaymentResultListener {
                     public void onClick(iOSDialog dialog) {
                         dialog.dismiss();
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getContext(), LandingActivity.class));
+                        startActivity(new Intent(mcontext, LandingActivity.class));
                     }
                 })
                 .build().show();
     }
 
     private void SendSecurityMail(String mail) {
-        BackgroundMail.newBuilder(getContext())
+        BackgroundMail.newBuilder(mcontext)
                 .withUsername(helper.decryptedMsg("Flixtube", "oOnn5LVNkpTVyu1K619Po1pN0BBMN+9y5RCT9ALXjto="))
                 .withPassword(helper.decryptedMsg("Flixtube", "RkS001zLel/UerhgNCNJGw=="))
                 .withProcessVisibility(false)
@@ -201,7 +215,7 @@ public class Home extends Fragment implements PaymentResultListener {
                         "                                                                <h2 style=\"font-size: 2.5rem;font-family: 'Poppins', sans-serif;font-weight:700;/* color: red; */letter-spacing:0.08em;margin:0 0 8px 0;color: #ff5520;\">Alert !!</h2>\n" +
                         "                                                                <hr style=\"text-align:left;margin:0px;width:40px;height:3px;color:#01b4e4;background-color:#01b4e4;border-radius:4px;border:none\">\n" +
                         "\n" +
-                        "                                                                <p style=\"font-weight:300;color:#fff;font-family: 'Poppins', sans-serif;font-size: 2rem;\">Your account get logged into " + helper.getDeviceInfo(getContext()) + "</p>\n" +
+                        "                                                                <p style=\"font-weight:300;color:#fff;font-family: 'Poppins', sans-serif;font-size: 2rem;\">Your account get logged into " + helper.getDeviceInfo(mcontext) + "</p>\n" +
                         "\n" +
                         "                                                                <p style=\"font-size: 1.5rem;font-family: 'Poppins', sans-serif;font-weight:300;color:#fff;\">This attempt has been blocked for security purpose.</p>\n" +
                         "                                                                <p style=\"margin:40px 0;color:#fff\"></p>\n" +
@@ -334,11 +348,11 @@ public class Home extends Fragment implements PaymentResultListener {
 
     private void CheckInternet() {
         helper = new Helper();
-        if (helper.isNetwork(getContext())) {
+        if (helper.isNetwork(mcontext)) {
             INITZ();
         } else {
-            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "Gilroy-ExtraBold.ttf");
-            new iOSDialogBuilder(getContext())
+            Typeface font = Typeface.createFromAsset(mcontext.getAssets(), "Gilroy-ExtraBold.ttf");
+            new iOSDialogBuilder(mcontext)
                     .setTitle("Oh shucks!")
                     .setSubtitle("Slow or no internet connection.\nPlease check your internet settings")
                     .setCancelable(false)
@@ -356,7 +370,7 @@ public class Home extends Fragment implements PaymentResultListener {
 
     private void LoadViews() {
         /////
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "Gilroy-ExtraBold.ttf");
+        Typeface font = Typeface.createFromAsset(mcontext.getAssets(), "Gilroy-ExtraBold.ttf");
         /////
         tvName = view.findViewById(R.id.tv_name);
         tvFeatured = view.findViewById(R.id.tv_featured);
@@ -367,12 +381,12 @@ public class Home extends Fragment implements PaymentResultListener {
         rvSeries = view.findViewById(R.id.rv_series);
         rvMovies = view.findViewById(R.id.rv_movies);
         /////
-        rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, true));
-        rvFeatured.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvMovies.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, true));
+        rvFeatured.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
         rvFeatured.setOnFlingListener(null);
         SnapHelper snapHelpernew = new PagerSnapHelper();
         snapHelpernew.attachToRecyclerView(rvFeatured);
-        rvSeries.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, true));
+        rvSeries.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, true));
         /////
         tvName.setTypeface(font);
         tvName.setText("Hey, " + name);
@@ -402,7 +416,7 @@ public class Home extends Fragment implements PaymentResultListener {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
                 .setQuery(rootRef.child("Movies").limitToLast(5), MovieModel.class)
                 .build();
-        movieAdapter = new MovieAdapter(options, getContext());
+        movieAdapter = new MovieAdapter(options, mcontext);
         rvMovies.setAdapter(movieAdapter);
         movieAdapter.startListening();
     }
@@ -411,35 +425,36 @@ public class Home extends Fragment implements PaymentResultListener {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
                 .setQuery(rootRef.child("Movies").orderByChild("featured").equalTo("Yes"), MovieModel.class)
                 .build();
-        featureAdapter = new FeatureAdapter(options, getContext());
+        featureAdapter = new FeatureAdapter(options, mcontext);
         rvFeatured.setAdapter(featureAdapter);
         featureAdapter.startListening();
     }
+
 
     private void LoadSeries() {
         FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()
                 .setQuery(rootRef.child("Webseries").limitToLast(5), SeriesModel.class)
                 .build();
-        seriesAdapter = new SeriesAdapter(options, getContext());
+        seriesAdapter = new SeriesAdapter(options, mcontext);
         rvSeries.setAdapter(seriesAdapter);
         seriesAdapter.startListening();
     }
 
 
     public void ViewAllSeries(View view) {
-        Intent intent = new Intent(getContext(), ViewAllActivity.class);
+        Intent intent = new Intent(mcontext, ViewAllActivity.class);
         intent.putExtra("type", "Webseries");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        Animatoo.animateFade(getContext());
+        Animatoo.animateFade(mcontext);
     }
 
     public void ViewAllMovies(View view) {
-        Intent intent = new Intent(getContext(), ViewAllActivity.class);
+        Intent intent = new Intent(mcontext, ViewAllActivity.class);
         intent.putExtra("type", "Movies");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        Animatoo.animateFade(getContext());
+        Animatoo.animateFade(mcontext);
     }
 
 
@@ -448,12 +463,12 @@ public class Home extends Fragment implements PaymentResultListener {
         rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Membership").setValue("VIP").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                TastyToast.makeText(getContext(), "Welcome to Flixtube VIP club...", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                TastyToast.makeText(mcontext, "Welcome to Flixtube VIP club...", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                TastyToast.makeText(getContext(), "Server down. Error : " + e, TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                TastyToast.makeText(mcontext, "Server down. Error : " + e, TastyToast.LENGTH_LONG, TastyToast.ERROR);
             }
         });
     }
@@ -461,8 +476,7 @@ public class Home extends Fragment implements PaymentResultListener {
 
     @Override
     public void onPaymentError(int i, String s) {
-        TastyToast.makeText(getContext(), "Payment cancelled.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+        TastyToast.makeText(mcontext, "Payment cancelled.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
     }
-
 
 }

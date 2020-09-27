@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -475,7 +476,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     }
 
     private void CheckLike() {
-        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).addValueEventListener(new ValueEventListener() {
+        rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(type).child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -500,7 +501,14 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("image", image);
                 map.put("title", title);
-                rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                if (TextUtils.isEmpty(contentType))
+                {
+                    map.put("contentType", "free");
+                }
+                else {
+                    map.put("contentType", contentType);
+                }
+                rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(type).child(key).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         TastyToast.makeText(getApplicationContext(), "Added to watchlist successfully", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
@@ -516,7 +524,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             @Override
             public void unLiked(LikeButton likeButton) {
                 likeButton.setLiked(false);
-                rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(key).setValue(null);
+                rootRef.child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Watchlist").child(type).child(key).setValue(null);
                 TastyToast.makeText(getApplicationContext(), "Removed from watchlist", TastyToast.LENGTH_LONG, TastyToast.INFO);
             }
         });

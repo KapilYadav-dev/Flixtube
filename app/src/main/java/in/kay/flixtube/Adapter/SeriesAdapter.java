@@ -65,7 +65,7 @@ Context context;
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("imdb", model.getImdb());
-                intent.putExtra("type", "Series");
+                intent.putExtra("type", "Webseries");
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("key", getRef(position).getKey());
                 intent.putExtra("movieType",model.getType());

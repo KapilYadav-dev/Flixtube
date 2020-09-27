@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/brandon"
         android:letterSpacing="0.1"
         android:text="Download"
@@ -27,30 +27,34 @@
             android:layout_below="@id/tvHead"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/iv_not_found"
+            android:visibility="visible"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_not_found" />
+
+        <TextView
+            android:id="@+id/tv_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:visibility="visible"
+            android:text="No Content found"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/iv_not_found"
+            android:fontFamily="@font/brandon"
+            android:alpha="0.5"/>
     </RelativeLayout>
 
 
 
-    <ImageView
-        android:id="@+id/iv_not_found"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_not_found" />
 
-    <TextView
-        android:id="@+id/tv_not_found"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:visibility="gone"
-        android:text="No Content found"
-        android:textColor="@color/white"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:fontFamily="@font/brandon"
-        android:alpha="0.5"/>
 
 
 </FrameLayout>
