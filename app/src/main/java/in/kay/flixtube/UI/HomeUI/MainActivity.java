@@ -32,9 +32,9 @@ import com.sdsmdg.tastytoast.TastyToast;
 
 import in.kay.flixtube.R;
 import in.kay.flixtube.UI.HomeUI.Fragments.Download;
+import in.kay.flixtube.UI.HomeUI.Fragments.Help;
 import in.kay.flixtube.UI.HomeUI.Fragments.Home;
 import in.kay.flixtube.UI.IntroUI.LandingActivity;
-import in.kay.flixtube.UI.IntroUI.mail;
 import in.kay.flixtube.Utils.Helper;
 
 public class MainActivity extends AppCompatActivity {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Watchlist section open", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.help:
-                        startActivity(new Intent(MainActivity.this, mail.class));
+                        selectedFragment = new Help();
                         break;
                     case R.id.logout:
                         selectedFragment = null;
