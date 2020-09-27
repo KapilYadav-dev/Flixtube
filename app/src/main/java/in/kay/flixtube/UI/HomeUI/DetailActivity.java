@@ -253,12 +253,13 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             });
         }
         else {
-            String strUrl = "https://api.themoviedb.org/3/find/" + imdb + "?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US&external_source=imdb_id";
+            String movieGenre = "";
+            String strUrl = "https://api.themoviedb.org/3/movie/" +imdb+ "?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US";
             URL url = new URL(strUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = connection.getInputStream();
             if (inputStream == null) {
-                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                TastyToast.makeText(DetailActivity.this, "Something went wrong in id fetching", TastyToast.LENGTH_LONG, TastyToast.ERROR);
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String line;
@@ -266,15 +267,29 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             while ((line = br.readLine()) != null) {
                 stringBuilder.append(line);
             }
-            final JSONObject parentObject = new JSONObject(stringBuilder.toString());
-            final JSONArray parentarray = parentObject.getJSONArray("movie_results");
-            final JSONObject jsonObject = parentarray.getJSONObject(0);
+            // Log.d("id","Fetched id");
+            final JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+            // final JSONArray parentarray = parentObject.getJSONArray("movie_results");
+            //final JSONObject jsonObject = parentarray.getJSONObject(0);
+
+            final JSONArray genrearray = jsonObject.getJSONArray("genres");
+            final String genrename[] = new String[genrearray.length()];
+
+            for (int i = 0; i < genrearray.length(); i++) {
+                JSONObject genreobject = genrearray.getJSONObject(i);
+                genrename[i] = genreobject.getString("name");
+
+                if(i<genrearray.length()-1)
+                    movieGenre = movieGenre +genrename[i]+", ";
+                else
+                    movieGenre = movieGenre +genrename[i];
+
+            }
 
             final String movieName = title = jsonObject.getString("title");
-            // final String movieGenre = jsonObject.getString("Genre");
             final double movieImdb = jsonObject.getDouble("vote_average");
             final String movieDate = jsonObject.getString("release_date");
-            // final String movieTime = jsonObject.getString("Runtime");
+            final String movieTime = jsonObject.getString("runtime");
             final String moviePoster = image = "https://image.tmdb.org/t/p/w500" + jsonObject.getString("poster_path");
             final String moviePlot = jsonObject.getString("overview");
             //final String movieCast = jsonObject.getString("Actors");
@@ -283,11 +298,11 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             uid = Integer.toString(id);
             final String movieCast = CastDataFetch();
 
+            final String finalMovieGenre = movieGenre;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
-                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot, movieCast);
+                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot, movieCast, finalMovieGenre, movieTime);
                 }
             });
         }
@@ -336,14 +351,14 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     }
 
 
-    private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot, String movieCast) {
+    private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot, String movieCast, String movieGenre, String movieTime) {
         tvTitle.setText(movieName);
         tvAbout.setText(moviePlot);
-        tvGenre.setText("Release date : "+movieDate);
+        tvGenre.setText(movieGenre + "  |  " + movieDate);
         tvImdb.setText(movieImdb + "/10");
         tvCastName.setText(movieCast);
         //tvAwards.setText(movieAward);
-        //tvTime.setText(movieTime);
+        tvTime.setText(movieTime+ " min");
         Picasso.get()
                 .load(moviePoster)
                 .into(iv);
