@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:weightSum="2">
 
         <RelativeLayout
@@ -150,11 +150,41 @@
         android:textColorHint="#B1AEAE"
         android:textSize="18dp" />
 
+            <TextView
+                android:id="@+id/tv_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_password"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:alpha="0.8"
+                android:text="Confirm Password"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/et_confirmpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:layout_below="@id/tv_five"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:alpha="0.9"
+                android:background="@drawable/back_black"
+                android:hint="Re-enter password"
+                android:padding="15dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B1AEAE"
+                android:textSize="18dp" />
+
     <TextView
-        android:id="@+id/tv_five"
+        android:id="@+id/tv_six"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/et_password"
+        android:layout_below="@id/et_confirmpassword"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:alpha="0.8"
@@ -166,7 +196,7 @@
         android:id="@+id/et_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_five"
+        android:layout_below="@id/tv_six"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
