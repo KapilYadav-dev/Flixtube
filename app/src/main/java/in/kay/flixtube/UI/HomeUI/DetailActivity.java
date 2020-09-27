@@ -69,6 +69,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     DatabaseReference rootRef;
     SeriesPlayAdapter seriesPlayAdapter;
     LikeButton likeButton;
+    String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,10 +242,17 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
+                    try {
+                        UpdateUIseries(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
-        } else {
+        }
+        else {
             String strUrl = "https://api.themoviedb.org/3/find/" + imdb + "?api_key=78f8e2ad04a35e7d8a8117dfef2de601&language=en-US&external_source=imdb_id";
             URL url = new URL(strUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -271,22 +279,84 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             final String moviePlot = jsonObject.getString("overview");
             //final String movieCast = jsonObject.getString("Actors");
             // final String movieAward = jsonObject.getString("Awards");
+            final int id = jsonObject.getInt("id");
+            uid = Integer.toString(id);
+            final String movieCast = CastDataFetch();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
-                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
+                    UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot, movieCast);
                 }
             });
         }
     }
 
-    private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot) {
+    private String CastDataFetch() {
+        String castnamefinal="";
+        try {
+            String caststrUrl = "https://api.themoviedb.org/3/movie/" + uid + "/credits?api_key=78f8e2ad04a35e7d8a8117dfef2de601";
+            URL casturl = new URL(caststrUrl);
+            HttpURLConnection new_connection = (HttpURLConnection) casturl.openConnection();
+            InputStream new_inputStream = new_connection.getInputStream();
+            if (new_inputStream == null) {
+                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+            }
+            BufferedReader new_br = new BufferedReader(new InputStreamReader(new_inputStream));
+            String str_line;
+            StringBuilder cast_stringBuilder = new StringBuilder();
+            while ((str_line = new_br.readLine()) != null) {
+                cast_stringBuilder.append(str_line);
+            }
+            JSONObject castparentObject = new JSONObject(cast_stringBuilder.toString());
+            JSONArray parentarray = castparentObject.getJSONArray("cast");
+            final String castname[] = new String[4];
+
+            for (int i = 0; i < 4; i++) {
+                JSONObject castobject = parentarray.getJSONObject(i);
+                castname[i] = castobject.getString("name");
+
+                if(i!=3)
+                    castnamefinal= castnamefinal+castname[i]+", ";
+                else
+                    castnamefinal=castnamefinal+castname[i];
+
+            }
+            Log.d("DETAILARRAY", "CastDataFetch: " + castnamefinal);
+
+        }catch (IOException e) {
+            Log.d("DETAILARRAY", "Error: " + e);
+            e.printStackTrace();
+        } catch (JSONException e) {
+            Log.d("DETAILARRAY", "Error: " + e);
+            e.printStackTrace();
+        }
+        return castnamefinal;
+    }
+
+
+    private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot, String movieCast) {
         tvTitle.setText(movieName);
         tvAbout.setText(moviePlot);
         tvGenre.setText("Release date : "+movieDate);
         tvImdb.setText(movieImdb + "/10");
-        //tvCastName.setText(movieCast);
+        tvCastName.setText(movieCast);
+        //tvAwards.setText(movieAward);
+        //tvTime.setText(movieTime);
+        Picasso.get()
+                .load(moviePoster)
+                .into(iv);
+        LoadSeries(jsonObject);
+    }
+
+    private void UpdateUIseries(JSONObject jsonObject, String movieName, Double movieImdb, String movieDate, String moviePoster, String moviePlot) throws IOException, JSONException {
+        tvTitle.setText(movieName);
+        tvAbout.setText(moviePlot);
+        // tvGenre.setText(movieGenre + "  |  " + movieDate);
+        tvGenre.setText("Release date : "+movieDate);
+        tvImdb.setText(movieImdb + "/10");
+        //  tvCastName.setText(movieCast);
         //tvAwards.setText(movieAward);
         //tvTime.setText(movieTime);
         Picasso.get()
