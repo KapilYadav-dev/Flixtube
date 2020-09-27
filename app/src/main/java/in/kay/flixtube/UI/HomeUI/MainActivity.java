@@ -1,7 +1,10 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -25,11 +28,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import in.kay.flixtube.R;
-import in.kay.flixtube.UI.HomeUI.Fragments.HomeFragment;
+import in.kay.flixtube.UI.HomeUI.Fragments.Download;
+import in.kay.flixtube.UI.HomeUI.Fragments.Help;
+import in.kay.flixtube.UI.HomeUI.Fragments.Home;
 import in.kay.flixtube.UI.IntroUI.LandingActivity;
-import in.kay.flixtube.UI.IntroUI.mail;
 import in.kay.flixtube.Utils.Helper;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         helper = new Helper();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
+                    new Home()).commit();
         }
         ReadValueFromDatabase();
     }
@@ -90,16 +95,21 @@ public class MainActivity extends AppCompatActivity {
                 Fragment selectedFragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.home:
-                        selectedFragment = new HomeFragment();
+                        selectedFragment = new Home();
                         break;
                     case R.id.downloads:
-                        Toast.makeText(MainActivity.this, "Downloads section open", Toast.LENGTH_SHORT).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+                        } else {
+                            selectedFragment = new Download();
+                        }
                         break;
                     case R.id.watchlist:
                         Toast.makeText(MainActivity.this, "Watchlist section open", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.help:
-                        startActivity(new Intent(MainActivity.this, mail.class));
+                        selectedFragment = new Help();
                         break;
                     case R.id.logout:
                         selectedFragment = null;
@@ -121,6 +131,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1000) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                TastyToast.makeText(this, "Permission successfully granted...", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
+
+            } else {
+                TastyToast.makeText(this, "Please allow us permission..", Toast.LENGTH_SHORT, TastyToast.CONFUSING);
+                finish();
+            }
+        }
+    }
 
     private void LogoutPop() {
         Typeface font = Typeface.createFromAsset(getApplicationContext().getAssets(), "Gilroy-ExtraBold.ttf");

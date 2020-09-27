@@ -44,7 +44,7 @@ import in.kay.flixtube.UI.HomeUI.ViewAllActivity;
 import in.kay.flixtube.UI.IntroUI.LandingActivity;
 import in.kay.flixtube.Utils.Helper;
 
-public class HomeFragment extends Fragment implements PaymentResultListener {
+public class Home extends Fragment implements PaymentResultListener {
 
     View view;
     DatabaseReference rootRef;

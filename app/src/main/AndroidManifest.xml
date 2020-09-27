@@ -10,14 +10,22 @@
         android:name=".Utils.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".UI.IntroUI.mail"
-            android:screenOrientation="portrait" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+
         <activity
             android:name=".UI.IntroUI.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -46,7 +54,7 @@
             android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.HomeUI.ViewAllActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation"
             android:fitsSystemWindows="true" />
         <activity
             android:name=".UI.HomeUI.PlayerActivity"
