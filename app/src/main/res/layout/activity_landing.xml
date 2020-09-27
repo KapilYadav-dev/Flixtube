@@ -39,7 +39,8 @@
                 android:background="@drawable/button2"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="18dp"/>
 
             <Button
                 android:id="@+id/btn_signup"
@@ -53,6 +54,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18dp" />
+
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

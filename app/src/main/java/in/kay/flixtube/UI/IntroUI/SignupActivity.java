@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,9 +25,9 @@ import in.kay.flixtube.Utils.Helper;
 
 public class SignupActivity extends AppCompatActivity {
 
-    EditText etusername, etpassword, etemail;
+    EditText etusername, etpassword, etemail, etconfirmpassword;
     private FirebaseAuth mAuth;
-    String name, email, password;
+    String name, email, password, confirmpassword;
     DatabaseReference rootRef;
     Helper helper;
     @Override
@@ -41,6 +40,7 @@ public class SignupActivity extends AppCompatActivity {
         etemail = findViewById(R.id.et_email);
         etusername = findViewById(R.id.et_firstname);
         etpassword = findViewById(R.id.et_password);
+        etconfirmpassword = findViewById(R.id.et_confirmpassword);
         findViewById(R.id.tv_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +59,7 @@ public class SignupActivity extends AppCompatActivity {
         name = etusername.getText().toString();
         email = etemail.getText().toString();
         password = etpassword.getText().toString();
+        confirmpassword = etconfirmpassword.getText().toString();
 
         if (name.isEmpty()) {
             etusername.setError("Username is required");
@@ -79,7 +80,13 @@ public class SignupActivity extends AppCompatActivity {
             etpassword.setError("Password cannot be empty");
             etpassword.requestFocus();
             return;
-        } else {
+        }
+        if(!password.equals(confirmpassword)){
+            etconfirmpassword.setError("Passwords do not match");
+            etconfirmpassword.requestFocus();
+            return;
+        }
+        else {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
