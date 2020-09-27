@@ -233,7 +233,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void GotoLoginActivity() {
-        startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+        Intent intent=new Intent(SignupActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void Createdatabase() {

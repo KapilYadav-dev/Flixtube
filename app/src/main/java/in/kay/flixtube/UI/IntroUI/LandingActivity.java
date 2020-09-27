@@ -37,11 +37,15 @@ FirebaseAuth mAuth;
 
         switch (view.getId()) {
             case R.id.btn_login:
-                startActivity(new Intent(LandingActivity.this, LoginActivity.class));
+                Intent intent=new Intent(LandingActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
 
             case R.id.btn_signup:
-                startActivity(new Intent(LandingActivity.this, SignupActivity.class));
+                Intent i=new Intent(LandingActivity.this, SignupActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
                 break;
         }
     }

@@ -36,6 +36,10 @@ public class Download extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
         listView=view.findViewById(R.id.listview);
+        File myDirectory = new File("/Flixtube");
+        if(!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
         String path = Environment.getExternalStorageDirectory().toString()+"/Flixtube/";
         final File f = new File(path);
         File file[] = f.listFiles();
@@ -68,6 +72,7 @@ public class Download extends Fragment {
             }
         });
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

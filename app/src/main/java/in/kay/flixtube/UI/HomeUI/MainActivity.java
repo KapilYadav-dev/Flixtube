@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -83,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
         nav = (NavigationView) findViewById(R.id.navbar);
         nav.setItemIconTintList(null);
         drawer = (DrawerLayout) findViewById(R.id.drawer);
-     //   useremail = findViewById(R.id.textemail);
-      //  useremail.setText(helper.decryptedMsg(name, email));
-      //  username = findViewById(R.id.textname);
-     //   username.setText(name);
+        useremail = findViewById(R.id.textemail);
+        useremail.setText(helper.decryptedMsg(name, email));
+        username = findViewById(R.id.textname);
+        username.setText(name);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 drawer.closeDrawer(GravityCompat.START);
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).commit();
+                            selectedFragment,null   ).addToBackStack(null).commit();
                 }
                 return true;
             }
@@ -142,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 TastyToast.makeText(this, "Please allow us permission..", Toast.LENGTH_SHORT, TastyToast.CONFUSING);
-                finish();
             }
         }
     }
@@ -174,8 +174,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        CloseApp();
-
+       if (getFragmentManager().getBackStackEntryCount()>1)
+       {
+           getFragmentManager().popBackStack();
+           CloseApp();
+       }
+       else {
+           super.onBackPressed();
+       }
     }
 
     private void CloseApp() {

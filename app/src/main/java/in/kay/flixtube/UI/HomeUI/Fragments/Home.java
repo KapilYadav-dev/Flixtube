@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.androidstudy.networkmanager.Monitor;
+import com.androidstudy.networkmanager.Tovuti;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -64,7 +66,7 @@ public class Home extends Fragment implements PaymentResultListener {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mcontext=context;
+        mcontext = context;
     }
 
     @Override
@@ -107,7 +109,7 @@ public class Home extends Fragment implements PaymentResultListener {
                 view.findViewById(R.id.progressBar).setVisibility(View.GONE);
                 view.findViewById(R.id.rr).setVisibility(View.VISIBLE);
             }
-        },  1000);
+        }, 1000);
     }
 
     private void InitzAll() {
@@ -124,7 +126,6 @@ public class Home extends Fragment implements PaymentResultListener {
                 initz();
                 if (strmobileUid.equalsIgnoreCase(helper.deviceId(mcontext))) {
                     view.findViewById(R.id.nsv_main).setVisibility(View.VISIBLE);
-
                 } else {
                     PopUp();
                 }
@@ -348,24 +349,17 @@ public class Home extends Fragment implements PaymentResultListener {
 
     private void CheckInternet() {
         helper = new Helper();
-        if (helper.isNetwork(mcontext)) {
-            INITZ();
-        } else {
-            Typeface font = Typeface.createFromAsset(mcontext.getAssets(), "Gilroy-ExtraBold.ttf");
-            new iOSDialogBuilder(mcontext)
-                    .setTitle("Oh shucks!")
-                    .setSubtitle("Slow or no internet connection.\nPlease check your internet settings")
-                    .setCancelable(false)
-                    .setFont(font)
-                    .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
-                        @Override
-                        public void onClick(iOSDialog dialog) {
-                            CheckInternet();
-                            dialog.dismiss();
-                        }
-                    })
-                    .build().show();
-        }
+        Tovuti.from(mcontext).monitor(new Monitor.ConnectivityListener() {
+            @Override
+            public void onConnectivityChanged(int connectionType, boolean isConnected, boolean isFast) {
+                if (isConnected) {
+                    INITZ();
+                } else {
+                    view.findViewById(R.id.rr).setVisibility(View.GONE);
+                    view.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void LoadViews() {

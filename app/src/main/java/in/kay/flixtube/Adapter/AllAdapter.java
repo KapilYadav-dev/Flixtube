@@ -79,6 +79,7 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("url", model.getUrl());
                 intent.putExtra("key", getRef(position).getKey());
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }

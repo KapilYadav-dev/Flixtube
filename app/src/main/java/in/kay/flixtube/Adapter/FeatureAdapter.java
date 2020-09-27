@@ -74,6 +74,7 @@ Context context;
                 intent.putExtra("trailer", model.getTrailer());
                 intent.putExtra("movieType",model.getType());
                 intent.putExtra("url", model.getUrl());
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }

@@ -70,6 +70,7 @@ Context context;
                 intent.putExtra("key", getRef(position).getKey());
                 intent.putExtra("movieType",model.getType());
                 intent.putExtra("key", getRef(position).getKey());
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
             }
