@@ -9,7 +9,6 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
         android:layout_height="match_parent">
 
         <RelativeLayout
@@ -95,7 +94,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/brandon"
                         android:hint="Enter Message"
-                        android:inputType="textLongMessage"
+                        android:inputType="textMultiLine"
                         android:maxLines="10"
                         android:padding="10dp"
                         android:textColor="@color/black"

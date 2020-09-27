@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import in.kay.flixtube.R;
 
 
 public class Help extends Fragment {
-
+Context mcontext;
     Button btn;
     EditText msg,sub;
 
@@ -47,7 +48,7 @@ public class Help extends Fragment {
                 if(!message.isEmpty())
                     startActivity(Intent.createChooser(intent,"Send email via"));
                 else
-                    TastyToast.makeText(getContext(),"You cannot send an empty mail",TastyToast.LENGTH_SHORT,TastyToast.CONFUSING);
+                    TastyToast.makeText(mcontext,"You cannot send an empty mail",TastyToast.LENGTH_SHORT,TastyToast.CONFUSING);
             }
         });
     }
@@ -57,5 +58,11 @@ public class Help extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_help, container, false);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mcontext=context;
     }
 }

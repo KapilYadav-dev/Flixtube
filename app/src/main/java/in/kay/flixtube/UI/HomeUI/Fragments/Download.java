@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ public class Download extends Fragment {
     View view;
     ArrayList<String> arrayList=new ArrayList<>();
     ListView listView;
+    Context mcontext;
+    
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -40,7 +43,7 @@ public class Download extends Fragment {
         {
             arrayList.add(file[i].getName());
         }
-        ArrayAdapter arrayAdapter=new ArrayAdapter(getContext(),R.layout.custom_list_view,R.id.textView,arrayList);
+        ArrayAdapter arrayAdapter=new ArrayAdapter(mcontext,R.layout.custom_list_view,R.id.textView,arrayList);
         listView.setAdapter(arrayAdapter);
         if (arrayList.size()==0)
         {
@@ -57,7 +60,7 @@ public class Download extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String movieName= (String) listView.getItemAtPosition(i);
                 File file = new File(Environment.getExternalStorageDirectory().toString()+"/Flixtube/"+movieName);
-                Uri fileUri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider", file);
+                Uri fileUri = FileProvider.getUriForFile(mcontext, BuildConfig.APPLICATION_ID + ".provider", file);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(fileUri, "video/*");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//DO NOT FORGET THIS EVER
@@ -72,4 +75,9 @@ public class Download extends Fragment {
         return inflater.inflate(R.layout.fragment_download, container, false);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mcontext=context;
+    }
 }

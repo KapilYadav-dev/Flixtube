@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import in.kay.flixtube.R;
 import in.kay.flixtube.UI.HomeUI.Fragments.Download;
 import in.kay.flixtube.UI.HomeUI.Fragments.Help;
 import in.kay.flixtube.UI.HomeUI.Fragments.Home;
+import in.kay.flixtube.UI.HomeUI.Fragments.Watchlist;
 import in.kay.flixtube.UI.IntroUI.LandingActivity;
 import in.kay.flixtube.Utils.Helper;
 
@@ -81,14 +83,16 @@ public class MainActivity extends AppCompatActivity {
         nav = (NavigationView) findViewById(R.id.navbar);
         nav.setItemIconTintList(null);
         drawer = (DrawerLayout) findViewById(R.id.drawer);
-        useremail = findViewById(R.id.textemail);
-        useremail.setText(helper.decryptedMsg(name, email));
-        username = findViewById(R.id.textname);
-        username.setText(name);
+     //   useremail = findViewById(R.id.textemail);
+      //  useremail.setText(helper.decryptedMsg(name, email));
+      //  username = findViewById(R.id.textname);
+     //   username.setText(name);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -106,19 +110,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.watchlist:
-                        Toast.makeText(MainActivity.this, "Watchlist section open", Toast.LENGTH_SHORT).show();
+                        selectedFragment = new Watchlist();
                         break;
                     case R.id.help:
                         selectedFragment = new Help();
                         break;
                     case R.id.logout:
                         selectedFragment = null;
-                        drawer.closeDrawer(GravityCompat.START);
                         LogoutPop();
                         break;
                     case R.id.membership:
                         selectedFragment = null;
-                        //  BuyPopUp();
                         break;
                 }
                 drawer.closeDrawer(GravityCompat.START);
@@ -173,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         CloseApp();
+
     }
 
     private void CloseApp() {
