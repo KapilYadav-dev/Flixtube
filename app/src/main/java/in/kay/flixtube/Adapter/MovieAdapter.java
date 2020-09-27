@@ -75,7 +75,6 @@ public class MovieAdapter extends FirebaseRecyclerAdapter<MovieModel, MovieAdapt
                 intent.putExtra("movieType",model.getType());
                 view.getContext().startActivity(intent);
                 Animatoo.animateSlideLeft(context);
-                holder.itemView.setClickable(false);
             }
         });
     }

@@ -61,7 +61,7 @@ import in.kay.flixtube.Utils.Helper;
 
 public class DetailActivity extends AppCompatActivity implements PaymentResultListener {
 
-    String imdb, trailer, url, type, title, image, contentType, key;
+    String imdb, trailer, url, type, title, image, contentType, key, TMBDId;
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons, tvWatch;
     ImageView iv;
     Helper helper;
@@ -224,10 +224,11 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             while ((line = br.readLine()) != null) {
                 stringBuilder.append(line);
             }
+            connection.disconnect();
             final JSONObject parentObject = new JSONObject(stringBuilder.toString());
             final JSONArray parentarray = parentObject.getJSONArray("tv_results");
             final JSONObject jsonObject = parentarray.getJSONObject(0);
-
+            TMBDId = jsonObject.getString("id");
             final String movieName = title = jsonObject.getString("original_name");
             // final String movieGenre = jsonObject.getString("Genre");
             final double movieImdb = jsonObject.getDouble("vote_average");
@@ -237,7 +238,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             final String moviePlot = jsonObject.getString("overview");
             //final String movieCast = jsonObject.getString("Actors");
             // final String movieAward = jsonObject.getString("Awards");
-
+            CastDataFetch();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -258,10 +259,11 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             while ((line = br.readLine()) != null) {
                 stringBuilder.append(line);
             }
+            connection.disconnect();
             final JSONObject parentObject = new JSONObject(stringBuilder.toString());
             final JSONArray parentarray = parentObject.getJSONArray("movie_results");
             final JSONObject jsonObject = parentarray.getJSONObject(0);
-
+            TMBDId = jsonObject.getString("id");
             final String movieName = title = jsonObject.getString("title");
             // final String movieGenre = jsonObject.getString("Genre");
             final double movieImdb = jsonObject.getDouble("vote_average");
@@ -271,6 +273,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             final String moviePlot = jsonObject.getString("overview");
             //final String movieCast = jsonObject.getString("Actors");
             // final String movieAward = jsonObject.getString("Awards");
+            CastDataFetch();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -278,13 +281,45 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
                     UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot);
                 }
             });
+
         }
+
+        Log.d("TMDB", "TMDB ID is: " + TMBDId);
+    }
+
+    private void CastDataFetch() {
+        try {
+            String caststrUrl = "https://api.themoviedb.org/3/movie/" + TMBDId + "credits?api_key=78f8e2ad04a35e7d8a8117dfef2de601";
+            URL casturl = new URL(caststrUrl);
+            HttpURLConnection new_connection = (HttpURLConnection) casturl.openConnection();
+            InputStream new_inputStream = new_connection.getInputStream();
+            if (new_inputStream == null) {
+                TastyToast.makeText(DetailActivity.this, "Something went wrong.", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+            }
+            BufferedReader new_br = new BufferedReader(new InputStreamReader(new_inputStream));
+            String str_line;
+            StringBuilder cast_stringBuilder = new StringBuilder();
+            while ((str_line = new_br.readLine()) != null) {
+                cast_stringBuilder.append(str_line);
+                Log.d("DETAILARRAY", "CastDataFetch: "+cast_stringBuilder.toString());
+            }
+            final JSONObject castparentObject = new JSONObject(cast_stringBuilder.toString());
+            final JSONArray parentarray = castparentObject.getJSONArray("cast");
+            Log.d("DETAILARRAY", "CastDataFetch: "+castparentObject);
+        } catch (IOException e) {
+            Log.d("DETAILARRAY", "Error: "+e);
+            e.printStackTrace();
+        } catch (JSONException e) {
+            Log.d("DETAILARRAY", "Error: "+e);
+            e.printStackTrace();
+        }
+
     }
 
     private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot) {
         tvTitle.setText(movieName);
         tvAbout.setText(moviePlot);
-        tvGenre.setText("Release date : "+movieDate);
+        tvGenre.setText("Release date : " + movieDate);
         tvImdb.setText(movieImdb + "/10");
         //tvCastName.setText(movieCast);
         //tvAwards.setText(movieAward);
@@ -457,11 +492,11 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         } else {
             File myDirectory = new File("/Flixtube");
-            if(!myDirectory.exists()) {
+            if (!myDirectory.exists()) {
                 myDirectory.mkdirs();
             }
             TastyToast.makeText(this, "Downloading " + title, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-            helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url),myDirectory.getAbsolutePath());
+            helper.DownloadFile(this, title, "Movie", helper.decryptedMsg("Flixtube", url), myDirectory.getAbsolutePath());
         }
     }
 
@@ -491,9 +526,4 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         startActivity(intent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        CheckInternet();
-    }
 }

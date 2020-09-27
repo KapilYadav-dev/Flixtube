@@ -1,5 +1,6 @@
 package in.kay.flixtube.UI.HomeUI;
 
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -72,6 +73,7 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
 
     private void ClickEvents() {
         findViewById(R.id.tv_adventure).setOnClickListener(this);
+        findViewById(R.id.tv_all_content).setOnClickListener(this);
         findViewById(R.id.tv_horror).setOnClickListener(this);
         findViewById(R.id.tv_romance).setOnClickListener(this);
         findViewById(R.id.tv_Documentary).setOnClickListener(this);
@@ -105,7 +107,12 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
     private void initz() {
         rootRef = FirebaseDatabase.getInstance().getReference();
         rvAll = findViewById(R.id.rv_all);
-        rvAll.setLayoutManager(new GridLayoutManager(this, 2));
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            rvAll.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            rvAll.setLayoutManager(new GridLayoutManager(this, 4));
+        }
         etQuery = findViewById(R.id.et_query);
         ivSearch = findViewById(R.id.iv_search);
     }
