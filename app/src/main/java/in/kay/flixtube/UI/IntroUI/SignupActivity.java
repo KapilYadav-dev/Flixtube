@@ -247,5 +247,9 @@ public class SignupActivity extends AppCompatActivity {
         map.put("Violation", "No");
         rootRef.child("User").child(mAuth.getCurrentUser().getUid()).setValue(map);
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
 }

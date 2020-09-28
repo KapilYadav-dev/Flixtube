@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (task.isSuccessful()) {
                         if (mAuth.getCurrentUser().isEmailVerified()) {
                             TastyToast.makeText(LoginActivity.this,"Welcome",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
-                            Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
                             GotoHome();
                         } else {
                             TastyToast.makeText(LoginActivity.this,"Your mail isn't verified !!",TastyToast.LENGTH_LONG,TastyToast.WARNING);
@@ -122,6 +121,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 
