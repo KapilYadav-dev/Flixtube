@@ -69,6 +69,7 @@ public class IntroClass extends AhoyOnboarderActivity {
         else
         {
             startActivity(new Intent(getApplicationContext(),LandingActivity.class));
+            this.finish();
         }
     }
 

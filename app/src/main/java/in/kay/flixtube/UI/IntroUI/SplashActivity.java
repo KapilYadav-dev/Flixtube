@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         YoYo.with(Techniques.FadeOut)
-                .duration(3500)
+                .duration(2000)
                 .playOn(findViewById(R.id.iv));
 
         new Handler().postDelayed(new Runnable() {
@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        }, 3000);
+        }, 1500);
 
     }
 }

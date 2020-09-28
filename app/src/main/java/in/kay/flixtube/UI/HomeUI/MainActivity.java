@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -31,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import java.io.File;
 
 import in.kay.flixtube.R;
 import in.kay.flixtube.UI.HomeUI.Fragments.Download;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                 != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
                         } else {
-                            selectedFragment = new Download();
+                               selectedFragment=new Download();
                         }
                         break;
                     case R.id.watchlist:
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 drawer.closeDrawer(GravityCompat.START);
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment,null   ).addToBackStack(null).commit();
+                            selectedFragment, null).addToBackStack(null).commit();
                 }
                 return true;
             }
@@ -174,14 +174,41 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       if (getFragmentManager().getBackStackEntryCount()>1)
-       {
-           getFragmentManager().popBackStack();
-           CloseApp();
-       }
-       else {
-           super.onBackPressed();
-       }
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            getFragmentManager().popBackStack();
+            CloseApp();
+        } else if (getSupportFragmentManager().getBackStackEntryCount()==0)
+        {
+            //Toast.makeText(this, "Only 1 left", Toast.LENGTH_SHORT).show();
+            ShowDiag();
+        }
+        else {
+            super.onBackPressed();
+
+        }
+    }
+
+    private void ShowDiag() {
+        Typeface font = Typeface.createFromAsset(getApplicationContext().getAssets(), "Gilroy-ExtraBold.ttf");
+        new iOSDialogBuilder(this)
+                .setTitle("Exit")
+                .setSubtitle("Ohh no! You're leaving...\nAre you sure?")
+                .setCancelable(false)
+                .setFont(font)
+                .setPositiveListener(getString(R.string.ok), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                        CloseApp();
+                    }
+                })
+                .setNegativeListener(getString(R.string.dismiss), new iOSDialogClickListener() {
+                    @Override
+                    public void onClick(iOSDialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .build().show();
     }
 
     private void CloseApp() {

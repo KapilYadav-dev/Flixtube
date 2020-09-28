@@ -40,6 +40,7 @@
         </activity>
         <activity
             android:name=".UI.IntroUI.IntroClass"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:fitsSystemWindows="true" />
         <activity
