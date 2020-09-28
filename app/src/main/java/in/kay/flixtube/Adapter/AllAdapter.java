@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -86,6 +88,19 @@ public class AllAdapter extends FirebaseRecyclerAdapter<MovieModel, AllAdapter.A
         });
     }
 
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        if (getItemCount()==0)
+        {
+            TastyToast.makeText(context,"No Result found",TastyToast.LENGTH_LONG,TastyToast.INFO);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
 
     @NonNull
     @Override

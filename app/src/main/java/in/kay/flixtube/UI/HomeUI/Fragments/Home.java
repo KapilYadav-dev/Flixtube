@@ -82,7 +82,6 @@ public class Home extends Fragment implements PaymentResultListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        CheckInternet();
     }
 
     @Override
@@ -342,6 +341,12 @@ public class Home extends Fragment implements PaymentResultListener {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CheckInternet();
     }
 
     private void CheckInternet() {

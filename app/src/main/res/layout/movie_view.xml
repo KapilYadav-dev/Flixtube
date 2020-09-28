@@ -7,6 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv"
+        android:visibility="visible"
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
@@ -64,4 +65,5 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="12dp" />
+
 </RelativeLayout>

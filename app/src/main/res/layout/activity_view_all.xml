@@ -26,39 +26,27 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_search"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/iv_back"
-            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="50dp">
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_search" />
-
-                <EditText
-                    android:id="@+id/et_query"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:alpha="0.9"
-                    android:background="@null"
-                    android:fontFamily="@font/raleway_medium"
-                    android:hint="Search what you looking for..."
-                    android:maxLines="1"
-                    android:textColor="@color/colorBlack"
-                    android:textColorHint="#292929"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content">
+                    <SearchView
+                        android:id="@+id/et_query"
+                        android:queryHint="Search here"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>

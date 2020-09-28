@@ -78,7 +78,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         setContentView(R.layout.activity_detail);
         helper = new Helper();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        CheckInternet();
+        //CheckInternet();
     }
 
     private void CheckInternet() {
@@ -311,13 +311,13 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             }
             JSONObject castparentObject = new JSONObject(cast_stringBuilder.toString());
             JSONArray parentarray = castparentObject.getJSONArray("cast");
-            final String castname[] = new String[4];
+            final String castname[] = new String[10];
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 10; i++) {
                 JSONObject castobject = parentarray.getJSONObject(i);
                 castname[i] = castobject.getString("name");
 
-                if(i!=3)
+                if(i!=9)
                     castnamefinal= castnamefinal+castname[i]+", ";
                 else
                     castnamefinal=castnamefinal+castname[i];
@@ -505,7 +505,7 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             options.put("name", "Flixtube");
             options.put("description", "Purchase premium Flixtube account");
             options.put("currency", "INR");
-            String paisee = Integer.toString(Integer.parseInt("200") * 100);
+            String paisee = Integer.toString(Integer.parseInt("199") * 100);
             options.put("amount", paisee);
             checkout.open(activity, options);
         } catch (Exception e) {

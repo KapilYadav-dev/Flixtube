@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,8 +30,7 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
     RecyclerView rvAll;
     AllAdapter allAdapter;
     DatabaseReference rootRef;
-    EditText etQuery;
-    ImageView ivSearch;
+    SearchView etQuery;
     String  type;
     Helper helper;
     @Override
@@ -86,18 +86,24 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void SearchEvent(final String type) {
-        ivSearch.setOnClickListener(new View.OnClickListener() {
+        etQuery.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View view) {
-                String strQuery = etQuery.getText().toString();
-                LoadData(strQuery, type);
+            public boolean onQueryTextSubmit(String s) {
+                LoadData(s, type);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                LoadData(s, type);
+                return false;
             }
         });
     }
 
     private void LoadData(String strQuery, String type) {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
-                .setQuery(rootRef.child(type).orderByChild("title").startAt(strQuery).endAt(strQuery + "\uf8ff"), MovieModel.class)
+                .setQuery(rootRef.child(type).orderByChild("search").startAt(strQuery.toLowerCase()).endAt(strQuery.toLowerCase() + "\uf8ff"), MovieModel.class)
                 .build();
         allAdapter = new AllAdapter(options, this, type);
         rvAll.setAdapter(allAdapter);
@@ -114,7 +120,6 @@ public class ViewAllActivity extends AppCompatActivity implements View.OnClickLi
             rvAll.setLayoutManager(new GridLayoutManager(this, 4));
         }
         etQuery = findViewById(R.id.et_query);
-        ivSearch = findViewById(R.id.iv_search);
     }
 
     @Override
