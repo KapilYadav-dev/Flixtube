@@ -63,7 +63,7 @@
                 android:alpha="0.9"
                 android:background="@drawable/back_black"
                 android:hint="Enter your password"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:padding="15dp"
                 android:textColor="@color/white"
