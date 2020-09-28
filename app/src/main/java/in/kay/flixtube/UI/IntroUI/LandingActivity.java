@@ -29,7 +29,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void CheckIsFirst() {
-        if (mAuth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().isEmailVerified()) {
             startActivity(new Intent(this, MainActivity.class));
             this.finish();
         }

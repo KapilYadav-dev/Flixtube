@@ -390,12 +390,12 @@ public class Home extends Fragment implements PaymentResultListener {
         rvSeries = view.findViewById(R.id.rv_series);
         rvMovies = view.findViewById(R.id.rv_movies);
         /////
-        rvMovies.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, true));
+        rvMovies.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
         rvFeatured.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
         rvFeatured.setOnFlingListener(null);
         SnapHelper snapHelpernew = new PagerSnapHelper();
         snapHelpernew.attachToRecyclerView(rvFeatured);
-        rvSeries.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, true));
+        rvSeries.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
         /////
         tvName.setTypeface(font);
         tvName.setText("Hey, " + name);

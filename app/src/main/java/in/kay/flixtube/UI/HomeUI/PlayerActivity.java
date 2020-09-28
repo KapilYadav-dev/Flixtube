@@ -66,14 +66,7 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         helper = new Helper();
         CheckInternet();
-        share= findViewById(R.id.share);
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onshare();
 
-            }
-        });
     }
     private void onshare() {
        //BitmapDrawable bitmapdrawable= (BitmapDrawable) shareimg.getDrawable();
@@ -137,6 +130,14 @@ public class PlayerActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("Error", " exoplayer error " + e.toString());
         }
+        share= findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onshare();
+
+            }
+        });
     }
 
     private void SensorFn() {

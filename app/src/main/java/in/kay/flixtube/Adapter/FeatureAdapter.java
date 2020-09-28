@@ -31,9 +31,6 @@ Context context;
         this.context = context;
     }
 
-    public FeatureAdapter(@NonNull FirebaseRecyclerOptions<MovieModel> options) {
-        super(options);
-    }
 
     @Override
     protected void onBindViewHolder(@NonNull final FeatureAdapterViewHolder holder, final int position, @NonNull final MovieModel model) {
