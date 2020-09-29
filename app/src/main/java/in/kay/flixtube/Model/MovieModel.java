@@ -45,15 +45,5 @@ public class MovieModel {
         return url;
     }
 
-    public MovieModel(String imdb, String category, String title, String trailer, String type, String url, String image,String featured) {
-        this.imdb = imdb;
-        this.category = category;
-        this.title = title;
-        this.trailer = trailer;
-        this.type = type;
-        this.url = url;
-        this.image = image;
-        this.featured = featured;
-    }
 
 }

@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -320,29 +320,20 @@ public class Home extends Fragment implements PaymentResultListener {
     }
 
     private void FnSeries() {
-        rootRef.child("Webseries").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                size = (int) snapshot.getChildrenCount();
-                rvSeries.smoothScrollToPosition(size);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        seriesAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+            //    Toast.makeText(mcontext, "Count is "+seriesAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
+                rvSeries.scrollToPosition(seriesAdapter.getItemCount());
             }
         });
     }
 
     private void FnMovie() {
-        rootRef.child("Movies").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                size = (int) snapshot.getChildrenCount();
-                rvMovies.smoothScrollToPosition(size);
-            }
+        movieAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+              //  Toast.makeText(mcontext, "Count is "+movieAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
+                rvMovies.scrollToPosition(movieAdapter.getItemCount());
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -395,12 +386,12 @@ public class Home extends Fragment implements PaymentResultListener {
         rvMovies = view.findViewById(R.id.rv_movies);
         /////
         linearLayoutManager = new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false);
-        rvMovies.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
+        rvMovies.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, true));
         rvFeatured.setLayoutManager(linearLayoutManager);
         rvFeatured.setOnFlingListener(null);
         SnapHelper snapHelpernew = new PagerSnapHelper();
         snapHelpernew.attachToRecyclerView(rvFeatured);
-        rvSeries.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
+        rvSeries.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, true));
         /////
         tvName.setTypeface(font);
         tvName.setText("Hey, " + name);

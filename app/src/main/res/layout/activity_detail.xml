@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -218,12 +218,19 @@
                 android:textFontWeight="900"
                 android:textSize="30dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_below="@id/tv_casting"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_cast"/>
+
             <TextView
                 android:id="@+id/tv_cast_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_casting"
                 android:layout_marginStart="20dp"
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:alpha="0.7"
@@ -236,7 +243,7 @@
                 android:id="@+id/tv_award"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_cast_name"
+                android:layout_below="@id/rv_cast"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"

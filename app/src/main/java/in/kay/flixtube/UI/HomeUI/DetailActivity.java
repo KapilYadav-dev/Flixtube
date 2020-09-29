@@ -53,9 +53,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import in.kay.flixtube.Adapter.CastAdapter;
 import in.kay.flixtube.Adapter.SeriesPlayAdapter;
+import in.kay.flixtube.Model.CastModel;
 import in.kay.flixtube.Model.SeriesModel;
 import in.kay.flixtube.R;
 import in.kay.flixtube.Utils.Helper;
@@ -66,12 +70,12 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
     TextView tvTitle, tvTime, tvPlot, tvCasting, tvGenre, tvAbout, tvAward, tvAwards, tvCastName, tvImdb, tvSeasons, tvWatch;
     ImageView iv;
     Helper helper;
-    RecyclerView rvSeries;
+    RecyclerView rvSeries,rvCast;
     DatabaseReference rootRef;
     SeriesPlayAdapter seriesPlayAdapter;
     LikeButton likeButton;
     String uid;
-
+    CastAdapter adapter=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,7 +286,6 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
                     UpdateUI(jsonObject, movieName, movieImdb, movieDate, moviePoster, moviePlot, movieCast, finalMovieGenre, movieTime);
                 }
             });
-        //Log.d("DETAILARRAY", "Reached end of fn");
     }
 
 
@@ -311,17 +314,20 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             }
             JSONObject castparentObject = new JSONObject(cast_stringBuilder.toString());
             JSONArray parentarray = castparentObject.getJSONArray("cast");
-            final String castname[] = new String[10];
-
-            for (int i = 0; i < 10; i++) {
+            List<CastModel> castModels=new ArrayList<>();
+            for (int i = 0; i < parentarray.length(); i++) {
                 JSONObject castobject = parentarray.getJSONObject(i);
-                castname[i] = castobject.getString("name");
-
-                if(i!=9)
-                    castnamefinal= castnamefinal+castname[i]+", ";
-                else
-                    castnamefinal=castnamefinal+castname[i];
-
+                String cast_image="https://image.tmdb.org/t/p/w500"+castobject.getString("profile_path");
+                String name=castobject.getString("name");
+                castModels.add(new CastModel(cast_image,name));
+                adapter=new CastAdapter(castModels);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UpdateView();
+                    }
+                });
+                //Log.d("MODLEIS", name   );
             }
            // Log.d("DETAILARRAY", "CastDataFetch: " + castnamefinal);
 
@@ -333,6 +339,11 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
             e.printStackTrace();
         }
         return castnamefinal;
+    }
+
+    private void UpdateView() {
+        rvCast.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private void UpdateUI(JSONObject jsonObject, String movieName, double movieImdb, String movieDate, String moviePoster, String moviePlot, String movieCast, String movieGenre, String movieTime) {
@@ -381,7 +392,9 @@ public class DetailActivity extends AppCompatActivity implements PaymentResultLi
         iv = findViewById(R.id.iv_cover_img);
         /////////////////////////////////
         rvSeries = findViewById(R.id.rv_series);
+        rvCast=findViewById(R.id.rv_cast);
         rvSeries.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvCast.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         /////////////////////////////////
         tvAbout.setTypeface(typeface);
         tvGenre.setTypeface(typeface);
