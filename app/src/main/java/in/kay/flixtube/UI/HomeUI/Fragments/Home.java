@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.razorpay.PaymentResultListener;
 import com.sdsmdg.tastytoast.TastyToast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import in.kay.flixtube.Adapter.FeatureAdapter;
 import in.kay.flixtube.Adapter.MovieAdapter;
 import in.kay.flixtube.Adapter.SeriesAdapter;
@@ -58,7 +62,7 @@ public class Home extends Fragment implements PaymentResultListener {
     Helper helper;
     String name, violation, membership, mobileUid, email;
     FirebaseAuth mAuth;
-
+    LinearLayoutManager linearLayoutManager;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -390,8 +394,9 @@ public class Home extends Fragment implements PaymentResultListener {
         rvSeries = view.findViewById(R.id.rv_series);
         rvMovies = view.findViewById(R.id.rv_movies);
         /////
+        linearLayoutManager = new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false);
         rvMovies.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
-        rvFeatured.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.HORIZONTAL, false));
+        rvFeatured.setLayoutManager(linearLayoutManager);
         rvFeatured.setOnFlingListener(null);
         SnapHelper snapHelpernew = new PagerSnapHelper();
         snapHelpernew.attachToRecyclerView(rvFeatured);
@@ -421,6 +426,7 @@ public class Home extends Fragment implements PaymentResultListener {
         });
     }
 
+
     private void LoadMovies() {
         FirebaseRecyclerOptions<MovieModel> options = new FirebaseRecyclerOptions.Builder<MovieModel>()
                 .setQuery(rootRef.child("Movies").limitToLast(5), MovieModel.class)
@@ -437,8 +443,28 @@ public class Home extends Fragment implements PaymentResultListener {
         featureAdapter = new FeatureAdapter(options, mcontext);
         rvFeatured.setAdapter(featureAdapter);
         featureAdapter.startListening();
+        ScrollLogic();
     }
 
+    private void ScrollLogic() {
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+
+                if (linearLayoutManager.findLastCompletelyVisibleItemPosition() < (featureAdapter.getItemCount() - 1)) {
+
+                    linearLayoutManager.smoothScrollToPosition(rvFeatured, new RecyclerView.State(), linearLayoutManager.findLastCompletelyVisibleItemPosition() + 1);
+                }
+
+                else if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == (featureAdapter.getItemCount() - 1)) {
+
+                    linearLayoutManager.smoothScrollToPosition(rvFeatured, new RecyclerView.State(), 0);
+                }
+            }
+        }, 0, 3000);
+    }
 
     private void LoadSeries() {
         FirebaseRecyclerOptions<SeriesModel> options = new FirebaseRecyclerOptions.Builder<SeriesModel>()

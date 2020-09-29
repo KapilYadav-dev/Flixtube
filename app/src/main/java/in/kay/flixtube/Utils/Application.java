@@ -10,7 +10,6 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FirebaseOffline();
         PicassoOffline();
         PrefBuilder();
     }
@@ -25,9 +24,6 @@ public class Application extends android.app.Application {
     }
 
 
-    private void FirebaseOffline() {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
 
     private void PicassoOffline() {
         Picasso.Builder builder = new Picasso.Builder(this);
