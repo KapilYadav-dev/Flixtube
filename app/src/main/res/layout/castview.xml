@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_margin="05dp">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_gravity="center"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/ts"
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="0.2dp" />
 
     <TextView
         android:id="@+id/profile_name"
-        android:layout_width="100dp"
+        android:layout_width="70dp"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:ellipsize="end"
+        android:layout_below="@id/profile_image"
         android:maxLines="1"
-        android:layout_margin="10dp"
-        android:fontFamily="@font/brandon"
+        android:alpha="0.7"
+        android:padding="5dp"
+        android:fontFamily="sans-serif-light"
         android:text="Adam Janes"
         android:textColor="@color/white"
-        android:textSize="15dp" />
-</LinearLayout>
+        android:textSize="14dp" />
+</RelativeLayout>

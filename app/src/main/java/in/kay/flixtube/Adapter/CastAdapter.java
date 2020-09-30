@@ -36,13 +36,13 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Viewholder> {
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         holder.name.setText(castModels.get(position).getName());
-        if (castModels.get(position).getProfile_path().equalsIgnoreCase("") || TextUtils.isEmpty(castModels.get(position).getProfile_path()))
+        if (castModels.get(position).getProfile_path().equalsIgnoreCase("") || TextUtils.isEmpty(castModels.get(position).getProfile_path())|| TextUtils.isEmpty(castModels.get(position).getProfile_path()))
         {
             Picasso.get().load(R.drawable.ts).into(holder.image);
         }
         else
         {
-            Picasso.get().load(castModels.get(position).getProfile_path()).into(holder.image);
+            Picasso.get().load(castModels.get(position).getProfile_path()).error(R.drawable.ts).into(holder.image);
         }
     }
 
